@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   
+    <!-- important meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+   <!-- Title -->
+   <title>Notes - Marketplace</title>
+<!--Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="../css/Bootstrap/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../css/resonsive-tabs/responsive-tabs.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+ <link rel="stylesheet" href="../css/manage-system-configuration.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">    
+    
+</head>
+
+<body>
+   
+    <!-- Header Starts-->
+    <header>
+        <nav class="fixed-top navbar navbar2 navbar-expand-md">
+           <div class="container-fluid" id="header-logo">
+                            <span id="mobile-nav-open-btn">&#9776;</span>
+               <a class="navbar-brand smooth-scroll" href="#">
+                   <img src="../images/Homepage/logo.png" alt="Logo">
+               </a>
+            </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                        <ul class="nav ml-auto" id="header-link">
+                             <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                            <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Notes Under Review</a>
+                                <a class="dropdown-item" href="#">Published Notes</a>
+                                <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                            <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Spam Reports</a>
+                               
+                                </div>
+                                </div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a><div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                 <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                <a class="dropdown-item" href="#">Manage Administrator</a>
+                                <a class="dropdown-item" href="#">Manage Category</a>
+                                <a class="dropdown-item" href="#">Manage Type</a>
+                                <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div></div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Update Profile</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                        </ul>
+                    </div>
+            </div>
+          
+            <div id="mobile-nav">
+                <span id="mobile-nav-close-btn">&times;</span>
+                <div id="mobile-nav-content">
+                    <ul class="nav navbar-nav">
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                            <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Notes Under Review</a>
+                                <a class="dropdown-item" href="#">Published Notes</a>
+                                <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                            <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Spam Reports</a>
+                               
+                                </div>
+                                </div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a><div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                 <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                <a class="dropdown-item" href="#">Manage Administrator</a>
+                                <a class="dropdown-item" href="#">Manage Category</a>
+                                <a class="dropdown-item" href="#">Manage Type</a>
+                                <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div></div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Update Profile</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>          
+        </nav>
+    </header>
+    <!-- Header Ends-->
+    
+    
+   <!-- Profile Details Starts-->
+    <section id="profile-details">
+      <div class="content-box-md">
+            <div class="container">
+                <h3>Manage System Configuration</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form>
+    
+                    <div class="form-group">
+                       <label>Support emails address<span> *</span></label>
+                            <input type="text" class="form-control" id="support-name" placeholder="Entername" required>
+                    </div>
+                                    
+                    
+                     <div class="form-group">
+                       <label>Support phonenumber<span> *</span></label>
+                            <input type="text" class="form-control" id="country-code" placeholder="Enter phone number" required>
+                    </div>
+                    <div class="form-group">
+                       <label>Emails Address(es)(for various events will send notifications to these users)*<span> *</span></label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter email address" required>
+                    </div>
+                    <div class="form-group">
+                       <label>Facebook URL</label>
+                            <input type="text" class="form-control" id="facebook" placeholder="Enter facebook url" required>
+                    </div>
+                    <div class="form-group">
+                       <label>Twitter URL</label>
+                            <input type="text" class="form-control" id="twitter" placeholder="Enter twitter url" required>
+                    </div>
+                    <div class="form-group">
+                       <label>Linkedin URL</label>
+                            <input type="text" class="form-control" id="facebook" placeholder="Enter linkedin url" required>
+                    </div>
+      
+                    
+                                        <div class="form-group">
+                                           <label>Default image for notes (if seller do not upload)</label>
+                                           
+                                           <div class="image-upload form-control1 text-center">
+    <label for="pic-input">
+        <img src="../images/User-Profile/upload.png">
+        <h6 class="text center">Upload a picture</h6>
+    </label>
+
+    <input id="pic-input" type="file"/>
+</div>
+                                            
+                                       
+                                            
+                                        </div>
+                                    
+
+                                   
+                                        <div class="form-group">
+                                           <label>Default profile picture(if seller do not upload)</label>
+                                          <div class="image-upload form-control1 text-center">
+    <label for="pic-input">
+        <img src="../images/User-Profile/upload.png">
+        <h6 class="text center">Upload a picture</h6>
+    </label>
+
+    <input id="pic-input" type="file"/>
+</div>
+                                           </div>
+                                            
+                                        
+                                   
+                               
+                                
+                                <button class="btn">SUBMIT</button>
+
+                </form>
+                    </div>
+                </div>
+                
+            </div>
+              
+        </div> 
+    </section>
+    <!-- Profile Details Ends-->
+    
+    <!-- Footer Begins-->
+     <footer class="footer-admin">
+        <div class="container">
+
+            <p>Version 1.1.24<span class="text-right">Copywriter&copy; TatvaSoft All Rights Reserved by</span></p>
+
+        </div>
+    </footer>
+    <!-- Footer Ends-->
+    
+    <!-- JQuery -->
+    <script src="../js/jquery.js"></script>   
+    
+    <!-- Bootsrtap JS -->     
+    <script src="../js/Bootstrap/bootstrap.min.js"></script>
+    
+    <!--Custom JS-->
+    <script src="../js/script.js"></script>
+</body>
+</html>

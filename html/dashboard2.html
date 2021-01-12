@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   
+    <!-- important meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Title -->
+    <title>Notes - Marketplace</title>
+    
+     <link rel="shortcut icon" href="../images/favicon.ico">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="../css/Bootstrap/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../css/resonsive-tabs/responsive-tabs.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+ <link rel="stylesheet" href="../css/dashboard2.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">    
+
+    
+    
+    
+</head>
+
+<body id="dashboard1-page">
+   
+    <!-- Header Starts-->
+    <header>
+        <nav class="fixed-top navbar navbar2 navbar-expand-md">
+           <div class="container-fluid" id="header-logo">
+              <span id="mobile-nav-open-btn">&#9776;</span>
+               <a class="navbar-brand smooth-scroll" href="#">
+                   <img src="../images/Homepage/logo.png" alt="Logo">
+               </a>
+           </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                        <ul class="nav ml-auto" id="header-link">
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Search Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Sell Your Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Buyer Requests</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Contact Us</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                               <a class="dropdown-item" href="#">My Profile</a>
+                                <a class="dropdown-item" href="#">My Downloads</a>
+                                <a class="dropdown-item" href="#">My Sold Notes</a>
+                                <a class="dropdown-item" href="#">My Rejected Notes</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                        </ul>
+                    </div>
+            </div>
+             
+            <div id="mobile-nav">
+                <span id="mobile-nav-close-btn">&times;</span>
+                <div id="mobile-nav-content">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Search Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Sell Your Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Buyer Requests</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Contact Us</a></li>
+                            <li class="nav-item dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" data-target="#" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                               <a class="dropdown-item" href="#">My Profile</a>
+                                <a class="dropdown-item" href="#">My Downloads</a>
+                                <a class="dropdown-item" href="#">My Sold Notes</a>
+                                <a class="dropdown-item" href="#">My Rejected Notes</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>       
+        </nav>
+    </header>
+    <!-- Header Ends-->
+    
+    
+    
+    <section id="dashboard">
+        <div class="content-box-md">
+           <div class="container">
+            <h1>Dashboard</h1>
+             <div class="dashboard-blocks text-center">
+                    <div class="earnings detail">
+                        <img src="../images/my-earning.png">
+                        <p>My Earning</p>
+                    </div> 
+                   
+                        <div class="num-notes-sold detail">
+                            <h5>100</h5>
+                            <p>Number of Notes Sold</p>
+                        </div>
+                        <div class="money-earned detail">
+                            <h5>$10,00,000</h5>
+                            <p>Money Earned</p>
+                        </div>
+                    
+             
+                    
+               </div>
+           </div>
+            
+        </div>
+    </section>
+    
+   
+  <section id="in-progress-notes">
+     <div class="content-box-md">
+         <div class="container">
+           <div class="row">
+               <div class="col-md-5 col-sm-12 col-12"><h3>In Progress Notes</h3></div>
+               <div class="col-md-7 col-sm-12 col-12">
+                  <form class="sb">
+                  
+                    <div class="form-group has-search">
+                         <span class="fa fa-search form-control-feedback"></span>        
+                         <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                    </div>
+                   
+                    <div class="form-group"> 
+                        <button type="submit" class="btn btn-outline-secondary">Search</button>
+                    </div>
+                    </form>
+                   </div>
+             </div>
+             <div class="table-responsive">
+             <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ADDED DATE</th>
+                  <th scope="col">TITLE</th>
+                  <th scope="col">CATEGORY</th>
+                  <th scope="col">STATUS</th>
+                  <th scope="col">ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+               <td>09-10-2020</td>
+                  <td><a href="#">Data Science</a></td>
+                  <td>Science</td>
+                  <td>Draft</td>
+                  <td><a href="#"><img src="../images/Dashboard/edit.png"></a><a href="#"><img src="../images/delete.png"></a></td>
+                <tr>
+                  
+                  <td>10-10-2020</td>
+                    <td><a href="#">Accounts</a></td>
+                  <td>Commerce</td>
+                  <td>In Review</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                </tr>
+                <tr>
+                  
+                  <td>11-10-2020</td>
+                    <td><a href="#">Social Studies</a></td>
+                  <td>Social</td>
+                  <td>Submitted</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                </tr>
+                <tr>
+                  
+                  <td>12-10-2020</td>
+                    <td><a href="#">AI</a></td>
+                  <td>IT</td>
+                  <td>Submitted</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                </tr>
+                <tr>
+                  
+                  <td>03-10-2020</td>
+                    <td><a href="#">Lorem ipsum dolor sit amet</a></td>
+                  <td>Lorem</td>
+                  <td>Draft</td>
+                  <td><a href="#"><img src="../images/Dashboard/edit.png"></a><a href="#"><img src="../images/delete.png"></a></td>
+                </tr>
+              </tbody>
+            </table>
+             </div>
+         </div>
+     </div>
+      <section id="pagination1">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                </a>
+                </li>
+                <li class="page-item"><a class="page-link btn-pagination" href="#1">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+  </section>
+   
+    
+    <section id="published-notes">
+     <div class="content-box-md">
+         <div class="container">
+            <div class="row">
+               <div class="col-md-5 col-sm-12 col-12"><h3>Published Notes</h3></div>
+               <div class="col-md-7 col-sm-12 col-12">
+                  <form class="sb">
+                  
+                    <div class="form-group has-search">
+                         <span class="fa fa-search form-control-feedback"></span>        
+                         <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                    </div>
+                   
+                    <div class="form-group"> 
+                        <button type="submit" class="btn btn-outline-secondary">Search</button>
+                    </div>
+                    </form>
+                   </div>
+             </div>
+             <div class="table-responsive">
+             <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">ADDED DATE</th>
+                  <th scope="col">TITLE</th>
+                  <th scope="col">CATEGORY</th>
+                  <th scope="col">SELL TYPE</th>
+                  <th scope="col">PRICE</th>
+                  <th scope="col">ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+               
+               <td>09-10-2020</td>
+                  <td><a href="#">Data Science</a></td>
+                  <td>Science</td>
+                  <td>Paid</td>
+                  <td>$575</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                <tr>
+                  
+                  <td>10-10-2020</td>
+                    <td><a href="#">Accounts</a></td>
+                  <td>Commerce</td>
+                  <td>Paid</td>
+                  <td>$575</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                </tr>
+                <tr>
+                  
+                  <td>11-10-2020</td>
+                    <td><a href="#">Social Studies</a></td>
+                  <td>Social</td>
+                  <td>Free</td>
+                  <td>$0</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                </tr>
+                <tr>
+                  
+                  <td>12-10-2020</td>
+                    <td><a href="#">AI</a></td>
+                  <td>IT</td>
+                  <td>Free</td>
+                  <td>$0</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                </tr>
+                <tr>
+                  
+                  <td>03-10-2020</td>
+                    <td><a href="#">Lorem ipsum dolor sit amet</a></td>
+                  <td>Lorem</td>
+                  <td>Free</td>
+                  <td>$3542</td>
+                  <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+         </div>
+     </div>
+      
+  </section>
+   
+   <section id="pagination2">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                </a>
+                </li>
+                <li class="page-item"><a class="page-link btn-pagination" href="#1">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+
+    <!-- Footer Begins-->
+     <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-6 col-sm-7">
+                    <p>Copywriter&copy; TatvaSoft All Rights Reserved by</p>
+                </div>
+                <div class="col-md-4 col-6 col-sm-5 text-right">
+                    <ul class="social-list list-inline ">
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <!-- Footer Ends-->
+    
+    <!-- JQuery -->
+    <script src="../js/jquery.js"></script>   
+    
+    <!-- Bootsrtap JS -->     
+    <script src="../js/Bootstrap/bootstrap.min.js"></script>
+    
+    <!--Custom JS-->
+    <script src="../js/script.js"></script>
+</body>
+</html>

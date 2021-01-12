@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- important meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>Notes - Marketplace</title>
+    <!--Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="../css/Bootstrap/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../css/resonsive-tabs/responsive-tabs.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/add-category.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">
+
+
+</head>
+
+<body>
+
+    <!-- Header Starts-->
+    <header>
+        <nav class="fixed-top navbar navbar2 navbar-expand-md">
+            <div class="container-fluid" id="header-logo">
+                <span id="mobile-nav-open-btn">&#9776;</span>
+                <a class="navbar-brand smooth-scroll" href="#">
+                    <img src="../images/Homepage/logo.png" alt="Logo">
+                </a>
+            </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav ml-auto" id="header-link">
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+
+                                    <a class="dropdown-item" href="#">Notes Under Review</a>
+                                    <a class="dropdown-item" href="#">Published Notes</a>
+                                    <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                    <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                                <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+
+                                    <a class="dropdown-item" href="#">Spam Reports</a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                    <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                    <a class="dropdown-item" href="#">Manage Administrator</a>
+                                    <a class="dropdown-item" href="#">Manage Category</a>
+                                    <a class="dropdown-item" href="#">Manage Type</a>
+                                    <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Update Profile</a>
+                                    <a class="dropdown-item" href="#">Change Password</a>
+                                    <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="mobile-nav">
+                <span id="mobile-nav-close-btn">&times;</span>
+                <div id="mobile-nav-content">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+
+                                    <a class="dropdown-item" href="#">Notes Under Review</a>
+                                    <a class="dropdown-item" href="#">Published Notes</a>
+                                    <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                    <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                                <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+
+                                    <a class="dropdown-item" href="#">Spam Reports</a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                    <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                    <a class="dropdown-item" href="#">Manage Administrator</a>
+                                    <a class="dropdown-item" href="#">Manage Category</a>
+                                    <a class="dropdown-item" href="#">Manage Type</a>
+                                    <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Update Profile</a>
+                                    <a class="dropdown-item" href="#">Change Password</a>
+                                    <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Header Ends-->
+
+    <div class="wrap">
+        <!-- Add category form Starts-->
+        <section id="add-category" class="above-footer">
+            <div class="content-box-md">
+                <div class="container">
+                    <h3>Add Category</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <form>
+
+                                <div class="form-group">
+                                    <label>Category Name<span> *</span></label>
+                                    <input type="text" class="form-control" id="first-name" placeholder="Enter your first name" required>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea1">Description<span> *</span></label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="6"></textarea>
+                                </div>
+
+
+
+
+                                <button class="btn">SUBMIT</button>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+        <!-- Add category form Ends-->
+    </div>
+    <!-- Footer Begins-->
+    <footer class="footer-admin">
+        <div class="container">
+
+            <p>Version 1.1.24<span class="text-right">Copywriter&copy; TatvaSoft All Rights Reserved by</span></p>
+
+        </div>
+    </footer>
+    <!-- Footer Ends-->
+
+    <!-- JQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <!-- Bootsrtap JS -->
+    <script src="../js/Bootstrap/bootstrap.min.js"></script>
+
+    <!--Custom JS-->
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

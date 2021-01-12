@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   
+    <!-- important meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Title -->
+    <title>Notes - Marketplace</title>
+    
+    <!--Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="../css/Bootstrap/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../css/resonsive-tabs/responsive-tabs.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+ <link rel="stylesheet" href="../css/notes-details-page.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">  
+
+</head>
+
+<body id="notes-details-page">
+   
+    <!-- Header Starts-->
+    <header>
+        <nav class="fixed-top navbar navbar2 navbar-expand-md">
+           <div class="container-fluid" id="header-logo">
+              <span id="mobile-nav-open-btn">&#9776;</span>
+               <a class="navbar-brand smooth-scroll" href="#">
+                   <img src="../images/Homepage/logo.png" alt="Logo">
+               </a>
+            </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                        <ul class="nav ml-auto" id="header-link">
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Search Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Sell Your Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Buyer Requests</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Contact Us</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                               <a class="dropdown-item" href="#">My Profile</a>
+                                <a class="dropdown-item" href="#">My Downloads</a>
+                                <a class="dropdown-item" href="#">My Sold Notes</a>
+                                <a class="dropdown-item" href="#">My Rejected Notes</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                        </ul>
+                    </div>
+            </div>
+           
+            <div id="mobile-nav">
+                <span id="mobile-nav-close-btn">&times;</span>
+                <div id="mobile-nav-content">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Search Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Sell Your Notes</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Buyer Requests</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">FAQ</a></li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Contact Us</a></li>
+                           <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                              <a class="dropdown-item" href="#">My Profile</a>
+                                <a class="dropdown-item" href="#">My Downloads</a>
+                                <a class="dropdown-item" href="#">My Sold Notes</a>
+                                <a class="dropdown-item" href="#">My Rejected Notes</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>       
+        </nav>
+    </header>
+    <!-- Header Ends-->
+    
+    <!--Details-start-->
+    <section id="note-details">
+       <div class="content-box-lg">
+          <div class="container">
+             <h3>Notes Details</h3>
+              <div class="row">
+                  <div class="col-lg-6 col-md-12">
+                      <div class="row">
+                         <div class="col-md-5">
+                             <img src="../images/Search/1.jpg" alt="image">
+                         </div>
+                         <div class="col-md-7">
+                             <h5>Computer Science</h5>
+                             <h6>Sciences</h6>
+                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae quidem, reiciendis, quis est assumenda nihil nobis ratione quod deleniti possimus dolores cum commodi </p>
+                             <button class="btn" type="button" data-toggle="modal" data-target="#exampleModalCenter"><D>DOWNLOAD /$15</D></button>
+                             <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title text-center" id="exampleModalCenterTitle"><img src="../images/Notes%2520Details/SUCCESS.png"><br>Thank you for purchasing</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                Dear Smith,<br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur necessitatibus quo, omnis ducimus adipisci a eos saepe temporibus maxime sed unde ratione quis commodi sit repellendus, eligendi porro suscipit. Illum?
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                     </div>
+                          
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-md-12 notes-right">
+                      <p>Institution:<span>University of California</span></p>
+                      <p>Country:<span>United State</span></p>
+                      <p>Course Name:<span>Computer Engineering</span></p>
+                      <p>Course Code:<span>248705</span></p>
+                      <p>Professor:<span>Mr. Richard Brown</span></p>
+                      <p>Number of pages:<span>277</span></p>
+                      <p>Approved Date:<span>November 25 2020</span></p>
+                      <p>Rating:<span><label class="rate"><input type="radio" id="star5" name="rate" value="5" />
+    <label for="star5" title="text">5 stars</label>
+    <input type="radio" id="star4" name="rate" value="4" />
+    <label for="star4" title="text">4 stars</label>
+    <input type="radio" id="star3" name="rate" value="3" />
+    <label for="star3" title="text">3 stars</label>
+    <input type="radio" id="star2" name="rate" value="2" />
+    <label for="star2" title="text">2 stars</label>
+    <input type="radio" id="star1" name="rate" value="1" />
+    <label for="star1" title="text">1 star</label></label>100 reviews</span></p>
+                      <p>5 Users marked this note as inappropriate</p>
+                  </div>
+              </div>
+          </div>
+           
+       </div>
+        
+    </section>
+    <!-- Details ends-->
+    <div class="container">
+       <hr class="division">
+    </div>
+    <!-- Details 2 begins-->
+    <section id="notes-preview-review">
+        <div class="content-box-md">
+            <div class="container">
+               <div class="row">
+                  <div class="col-lg-6 col-md-12">
+                     <h3>Notes Preview</h3>
+                      <div class="notes-preview">
+                        <div id="Iframe-Cicis-Menu-To-Go" class="set-margin-cicis-menu-to-go set-padding-cicis-menu-to-go set-border-cicis-menu-to-go set-box-shadow-cicis-menu-to-go center-block-horiz">
+  <div class="responsive-wrapper 
+     responsive-wrapper-padding-bottom-90pct"
+     style="-webkit-overflow-scrolling: touch; overflow: auto;">
+     <iframe src="http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf">
+      <p style="font-size: 110%;"><em><strong>ERROR: </strong>  
+An &#105;frame should be displayed here but your browser version does not support &#105;frames.</em> Please update your browser to its most recent version and try again, or access the file <a href="http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf">with this link.</a></p>
+    </iframe>
+  </div>
+</div>
+
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-md-12">
+                     <h3>Customers Review</h3>
+                      <div class="notes-review">
+                         <div class="row">
+                            <div class="col-md-2 col-sm-2 col-3">
+                               <img src="../images/member.png" class="rounded-circle"> 
+                            </div>
+                             <div class="col-md-10 col-sm-10 col-9">
+                                 <h5>Richard Brown</h5>
+                                <div class="rate"><input type="radio" id="star5" name="rate" value="5" />
+    <label for="star5" title="text">5 stars</label>
+    <input type="radio" id="star4" name="rate" value="4" />
+    <label for="star4" title="text">4 stars</label>
+    <input type="radio" id="star3" name="rate" value="3" />
+    <label for="star3" title="text">3 stars</label>
+    <input type="radio" id="star2" name="rate" value="2" />
+    <label for="star2" title="text">2 stars</label>
+    <input type="radio" id="star1" name="rate" value="1" />
+    <label for="star1" title="text">1 star</label></div><br><br>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, nostrum cupiditate minima aspernatur possimus accusantium enim fugit voluptates repellat</p>        
+                                <hr> 
+                             </div>
+                              
+                             <div class="col-md-2 col-sm-2 col-3">
+                                 <img src="../images/member.png" class="rounded-circle"> 
+                            </div>
+                             <div class="col-md-10 col-sm-10 col-9">
+                                 <h5>Richard Brown</h5>
+                                <div class="rate"><input type="radio" id="star5" name="rate" value="5" />
+    <label for="star5" title="text">5 stars</label>
+    <input type="radio" id="star4" name="rate" value="4" />
+    <label for="star4" title="text">4 stars</label>
+    <input type="radio" id="star3" name="rate" value="3" />
+    <label for="star3" title="text">3 stars</label>
+    <input type="radio" id="star2" name="rate" value="2" />
+    <label for="star2" title="text">2 stars</label>
+    <input type="radio" id="star1" name="rate" value="1" />
+    <label for="star1" title="text">1 star</label></div><br><br>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, nostrum cupiditate minima aspernatur possimus accusantium enim fugit voluptates repellat</p>    
+                                        <hr> 
+                                </div>
+                                
+                                   
+                             <div class="col-md-2 col-sm-2 col-3">
+                                 <img src="../images/member.png" class="rounded-circle"> 
+                            </div>
+                             <div class="col-md-10 col-sm-10 col-9">
+                                 <h5>Richard Brown</h5>
+                                 <div class="rate"><input type="radio" id="star5" name="rate" value="5" />
+    <label for="star5" title="text">5 stars</label>
+    <input type="radio" id="star4" name="rate" value="4" />
+    <label for="star4" title="text">4 stars</label>
+    <input type="radio" id="star3" name="rate" value="3" />
+    <label for="star3" title="text">3 stars</label>
+    <input type="radio" id="star2" name="rate" value="2" />
+    <label for="star2" title="text">2 stars</label>
+    <input type="radio" id="star1" name="rate" value="1" />
+    <label for="star1" title="text">1 star</label></div><br><br>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, nostrum cupiditate minima aspernatur possimus accusantium enim fugit voluptates repellat</p>        
+                                 
+                             </div>
+                         </div> 
+                      </div>
+                  </div>
+                   
+               </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- Details 2 ends-->
+    <!-- Footer Begins-->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-6 col-sm-7">
+                    <p>Copywriter&copy; TatvaSoft All Rights Reserved by</p>
+                </div>
+                <div class="col-md-4 col-6 col-sm-5 text-right">
+                    <ul class="social-list list-inline ">
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <!-- Footer Ends-->
+    
+    <!-- JQuery -->
+    <script src="../js/jquery.js"></script>   
+    <!-- Dropdown Menu-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"> 
+    </script> 
+    
+    <!-- Bootsrtap JS -->     
+    <script src="../js/Bootstrap/bootstrap.min.js"></script>
+    
+    
+    <!--Custom JS-->
+    <script src="../js/script.js"></script>
+</body>
+</html>

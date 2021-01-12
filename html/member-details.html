@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   
+    <!-- important meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+     <!-- Title -->
+   <title>Notes - Marketplace</title>
+<!--Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="../css/Bootstrap/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../css/resonsive-tabs/responsive-tabs.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+ <link rel="stylesheet" href="../css/member-details.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">    
+    
+   
+    
+    
+</head>
+
+<body id="member-details-page">
+   
+    <!-- Header Starts-->
+     <header>
+        <nav class="fixed-top navbar navbar2 navbar-expand-md">
+           <div class="container-fluid" id="header-logo">
+                            <span id="mobile-nav-open-btn">&#9776;</span>
+               <a class="navbar-brand smooth-scroll" href="#">
+                   <img src="../images/Homepage/logo.png" alt="Logo">
+               </a>
+            </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                        <ul class="nav ml-auto" id="header-link">
+                             <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                            <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Notes Under Review</a>
+                                <a class="dropdown-item" href="#">Published Notes</a>
+                                <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                            <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Spam Reports</a>
+                               
+                                </div>
+                                </div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a><div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                 <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                <a class="dropdown-item" href="#">Manage Administrator</a>
+                                <a class="dropdown-item" href="#">Manage Category</a>
+                                <a class="dropdown-item" href="#">Manage Type</a>
+                                <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div></div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Update Profile</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                        </ul>
+                    </div>
+            </div>
+          
+            <div id="mobile-nav">
+                <span id="mobile-nav-close-btn">&times;</span>
+                <div id="mobile-nav-content">
+                    <ul class="nav navbar-nav">
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                            <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Notes Under Review</a>
+                                <a class="dropdown-item" href="#">Published Notes</a>
+                                <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                            <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+                               
+                                <a class="dropdown-item" href="#">Spam Reports</a>
+                               
+                                </div>
+                                </div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a><div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                 <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                <a class="dropdown-item" href="#">Manage Administrator</a>
+                                <a class="dropdown-item" href="#">Manage Category</a>
+                                <a class="dropdown-item" href="#">Manage Type</a>
+                                <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div></div></li>
+                            <li class="nav-item"><div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Update Profile</a>
+                                <a class="dropdown-item" href="#">Change Password</a>
+                                <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div></div></li>
+                            <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>          
+        </nav>
+    </header>
+    <!-- Header Ends-->
+    
+    <section id="mem-details">
+       <div class="content-box-md">
+        <div class="container">
+           <h1>Member Details</h1>
+           <div class="row">
+               <div class="col-lg-7 col-md-12 col-sm-12">
+                   <div class="row">
+                       <div class="col-lg-3 col-md-3 col-sm-12 col-12"><img src="../images/member.png"></div>
+                       <div class="col-lg-9 col-md-9 col-sm-12 col-12">
+                          <div class="row">
+                          <div class="col-lg-5 col-md-5 col-sm-6 col-6 labels">
+                           <p>First Name:<p>
+                            <p>Last Name:<p>
+                            <p>Email:<p>
+                            <p>DOB:<p>
+                            <p>Phone Number:<p>
+                            <p>College/University:<p></div>
+                           
+                            
+                            <div class="col-lg-7 col-md-7 col-sm-6 col-6 labels-content">
+                                <p>Richard</p>
+                                <p>Brown</p>
+                                <p>richardbrown77@gmail.com</p>
+                                <p>13-08-1990</p>
+                                <p>9988731221</p>
+                                <p>University of california</p>
+                            </div>
+                            </div>
+                       </div>
+                   </div>
+                   
+               </div>
+               
+               <div class="col-lg-5 col-md-12 col-sm-12 col-12 right-side vertical">
+                 
+                   <div class="row">
+                   <div class="col-lg-5 col-md-6 col-sm-6 col-6 labels">
+                       <p>Address 1:<p>
+                            <p>Address 2:<p>
+                            <p>City:<p>
+                            <p>State:<p>
+                            <p>Country:<p>
+                            <p>Zip Code:<p>  
+                   </div>
+                   <div class="col-lg-7 col-md-6 col-sm-6 col-6 labels-content">
+                       
+                                <p>144-Diamond</p>
+                                <p>Star Colony</p>
+                                <p>New York</p>
+                                <p>New York State</p>
+                                <p>United State</p>
+                                <p>11004-05</p>
+                   </div>
+                    
+                </div> 
+               </div>
+           </div>
+            
+        </div>
+        </div>
+    </section>
+
+  <section id="in-progress-notes">
+     <div class="content-box-md">
+         <div class="container">
+          
+           
+                        <h3>Published Notes</h3>
+       <div class="table-responsive">
+             <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">SR NO.</th>
+                  <th scope="col">NOTE TITLE</th>
+                  <th scope="col">CATEGORY</th>
+                  <th scope="col">STATUS</th>
+                  <th scope="col">DOWNLOADED NOTES</th>
+                  <th scope="col">TOTAL EARNINGS</th>
+                  <th scope="col">DATE ADDED</th>
+                  <th scope="col">PUBLISHED DATE</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+               <td>1</td>
+               
+                  
+                  <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                <tr>
+                  <td>2</td>
+                  <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+                <tr>
+                  
+                  <td>4</td>
+                  <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+                <tr>
+                  
+                  <td>5</td>
+                 <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+                
+                <td>6</td>
+               <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                <tr>
+                  
+                  <td>7</td>
+                 <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                 <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+                <tr>
+                  
+                  <td>9</td>
+                  <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+                <tr>
+                  
+                  <td>10</td>
+                  <td><a href="#">Software Engineer</a></td>
+                  <td>IT</td>
+                  <td>Published</td>
+                  <td><a href="#">22</a></td>
+                  <td>$111</td>
+                  <td>09-10-2020 11:24</td>
+                  <td>09-10-2020 11:24</td>
+                  <td><span class="dropdown">
+  <a  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+   <a class="dropdown-item" href="#">Download</a>
+  </div>
+</span></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+         </div>
+     </div>
+      <section id="pagination1">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                </a>
+                </li>
+                <li class="page-item"><a class="page-link btn-pagination" href="#1">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+  </section>
+   
+    
+   
+    <!-- Footer Begins-->
+   <footer class="footer-admin">
+        <div class="container">
+
+            <p>Version 1.1.24<span class="text-right">Copywriter&copy; TatvaSoft All Rights Reserved by</span></p>
+
+        </div>
+    </footer>
+    <!-- Footer Ends-->
+    
+    <!-- JQuery -->
+    <script src="../js/jquery.js"></script>   
+    
+    <script src="../popper.min.js"></script>
+    <!-- Bootsrtap JS -->     
+    <script src="../js/Bootstrap/bootstrap.min.js"></script>
+    
+    <!--Custom JS-->
+    <script src="../js/script.js"></script>
+</body>
+</html>

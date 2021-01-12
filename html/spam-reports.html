@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+ <!-- important meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Title -->
+    <title>Notes - Marketplace</title>
+    
+    <!--Favicon-->
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <!--Google Fonts-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="../css/font-awesome/css/font-awesome.min.css">
+
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="../css/Bootstrap/bootstrap.min.css">
+
+    <link rel="stylesheet" href="../css/resonsive-tabs/responsive-tabs.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+ <link rel="stylesheet" href="../css/spam-report.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">  
+</head>
+
+<body id="span-report-page">
+
+    <!-- Header Starts-->
+    <header>
+        <nav class="fixed-top navbar navbar2 navbar-expand-md">
+            <div class="container-fluid" id="header-logo">
+                <span id="mobile-nav-open-btn">&#9776;</span>
+                <a class="navbar-brand smooth-scroll" href="#">
+                    <img src="../images/Homepage/logo.png" alt="Logo">
+                </a>
+            </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav ml-auto" id="header-link">
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+
+                                    <a class="dropdown-item" href="#">Notes Under Review</a>
+                                    <a class="dropdown-item" href="#">Published Notes</a>
+                                    <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                    <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                                <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+
+                                    <a class="dropdown-item" href="#">Spam Reports</a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                    <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                    <a class="dropdown-item" href="#">Manage Administrator</a>
+                                    <a class="dropdown-item" href="#">Manage Category</a>
+                                    <a class="dropdown-item" href="#">Manage Type</a>
+                                    <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Update Profile</a>
+                                    <a class="dropdown-item" href="#">Change Password</a>
+                                    <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="mobile-nav">
+                <span id="mobile-nav-close-btn">&times;</span>
+                <div id="mobile-nav-content">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Dashboard</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="notes-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Notes</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+
+                                    <a class="dropdown-item" href="#">Notes Under Review</a>
+                                    <a class="dropdown-item" href="#">Published Notes</a>
+                                    <a class="dropdown-item" href="#">Downloaded Notes</a>
+                                    <a class="dropdown-item" href="#">Rejected Notes</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><a class="nav-link smooth-scroll" href="">Members</a></li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="spam-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Reports</a>
+                                <div class="dropdown-menu" aria-labelledby="spam-dropdown">
+
+                                    <a class="dropdown-item" href="#">Spam Reports</a>
+
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="settings-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                                <div class="dropdown-menu" aria-labelledby="notes-dropdown">
+                                    <a class="dropdown-item" href="#">Manage System Configuration</a>
+                                    <a class="dropdown-item" href="#">Manage Administrator</a>
+                                    <a class="dropdown-item" href="#">Manage Category</a>
+                                    <a class="dropdown-item" href="#">Manage Type</a>
+                                    <a class="dropdown-item" href="#">Manage Countries</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown"><a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Update Profile</a>
+                                    <a class="dropdown-item" href="#">Change Password</a>
+                                    <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Header Ends-->
+
+
+
+    <section id="spam-report">
+        <div class="content-box-md">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3>Spam Reports</h3>
+                    </div>
+                    <div class="col-md-8">
+                        <form class="form-inline">
+
+                            <div class="form-group has-search">
+                                <span class="fa fa-search form-control-feedback"></span>
+                                <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-outline-secondary">Search</button>
+                                <!-- Button trigger modal -->
+
+
+                                <!-- Modal -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">SR NO.</th>
+                                <th scope="col">REPORTED BY</th>
+                                <th scope="col">NOTE TITLE</th>
+                                <th scope="col">CATEGORY</th>
+                                <th scope="col">DATE EDITED</th>
+                                <th scope="col">REMARK</th>
+                                <th scope="col">ACTION</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>1</td>
+
+                            <td><a href="#">Khyati Patel</a></td>
+                            <td>Software Development</td>
+                            <td>IT</td>
+                            <td>09-10-2020 11:24</td>
+                            <td>Lorem ipsum dolor sit amet</td>
+                            <td><a href="#"><img src="../images/delete.png"></a></td>
+                            <td><span class="dropdown">
+                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Download Notes</a>
+                                        <a class="dropdown-item" href="#">View More Detail</a>
+
+                                    </div>
+                                </span></td>
+                            <tr>
+
+                                <td>2</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+                            <tr>
+
+                                <td>4</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+                            <tr>
+
+                                <td>5</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+
+                            <td>6</td>
+                            <td><a href="#">Khyati Patel</a></td>
+                            <td>Software Development</td>
+                            <td>IT</td>
+                            <td>09-10-2020 11:24</td>
+                            <td>Lorem ipsum dolor sit amet</td>
+                            <td><a href="#"><img src="../images/delete.png"></a></td>
+                            <td><span class="dropdown">
+                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Download Notes</a>
+                                        <a class="dropdown-item" href="#">View More Detail</a>
+
+                                    </div>
+                                </span></td>
+                            <tr>
+
+                                <td>7</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+                            <tr>
+
+                                <td>9</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+                            <tr>
+
+                                <td>10</td>
+                                <td><a href="#">Khyati Patel</a></td>
+                                <td>Software Development</td>
+                                <td>IT</td>
+                                <td>09-10-2020 11:24</td>
+                                <td>Lorem ipsum dolor sit amet</td>
+                                <td><a href="#"><img src="../images/delete.png"></a></td>
+                                <td><span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View More Detail</a>
+
+                                        </div>
+                                    </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <section id="pagination1">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link btn-pagination" href="#1">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </section>
+    </section>
+
+
+
+    <!-- Footer Begins-->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-6 col-sm-7">
+                    <p>Copywriter&copy; TatvaSoft All Rights Reserved by</p>
+                </div>
+                <div class="col-md-4 col-6 col-sm-5 text-right">
+                    <ul class="social-list list-inline ">
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li class="list-inline-item text-center"><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+    <!-- Footer Ends-->
+
+    <!-- JQuery -->
+    <script src="../js/jquery.js"></script>
+
+    <script src="../popper.min.js"></script>
+    <!-- Bootsrtap JS -->
+    <script src="../js/Bootstrap/bootstrap.min.js"></script>
+
+    <!--Custom JS-->
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
