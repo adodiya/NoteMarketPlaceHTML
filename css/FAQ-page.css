@@ -1,0 +1,82 @@
+#faq-banner{
+            background-image: url(../images/User-Profile/banner-with-overlay.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        #faq-banner h1{
+            font-family: "Open Sans";
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 52px;
+            color: white;
+            padding-top: 80px;
+            padding-bottom: 50px;
+            margin-top: 30px;
+        }
+        
+        h3{
+            font-family: "Open Sans", sans-serif;
+            font-size: 34px;
+            font-weight: 600;
+            line-height:38px;
+            color: #6255a5;
+            margin-bottom: 30px;
+        }
+        h3.gq{
+            margin-top: 60px;
+            padding-top: 0;
+        }
+       
+        
+        .card .card-header a.collapsed{
+            font-family: "Open Sans", sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 22px;
+            color: #333333;
+            background-color: transparent;
+        }
+       
+        .card .card-header{
+            border: 0;
+        }
+        
+        .card-body{
+            padding-left: 30;
+        }
+         .card a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\2212";
+    float: right;
+    color: grey;
+}
+ .card a.collapsed:after {
+    content:"\2b";
+}
+        .card{
+            margin-bottom: 15px;
+        }
+        
+        
+      .collapse show .card-body{
+            background-color: white;
+        }
+        .card{
+            
+                background-color: white;
+           
+        }
+        
+        
+        .card .card-header a{
+            
+            font-family: "Open Sans", sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 22px;
+            color: #333333;
+        }
+        
+       

@@ -1,0 +1,97 @@
+html, body{
+    height: 100%;
+} 
+#contact-us-banner{
+            background-image: url(../images/User-Profile/banner-with-overlay.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        #contact-us-banner h1{
+            font-family: "Open Sans";
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 52px;
+            color: white;
+            padding-top: 80px;
+            padding-bottom: 50px;
+        }
+        
+        #contact-us h3{
+            font-family: "Open Sans", sans-serif;
+            font-size: 34px;
+            font-weight: 600;
+            line-height: 38px;
+            color: #6255a5;
+        }
+         #contact-us h5{
+            font-family: "Open Sans", sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            line-height: 22px;
+            color: #333333;
+             margin-bottom: 0;
+             padding-bottom: 50px;
+        }
+        #contact-us label{
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #333333;
+            margin-bottom: 0;
+            margin-top: 0;
+            padding-bottom: 10px;
+        }
+        
+       
+        #contact-us form .form-control#first-name,
+        #contact-us form .form-control#email,
+        #contact-us form .form-control#subject{
+            border: 1px solid #d1d1d1;
+            border-radius: 3px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+        
+        form button.btn{
+            background-color: #6255a5;
+            color: white;
+            border-radius: 3px;
+            font-style: "Open Sans", sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 10px 30px;
+            -webkit-transition: all 0.3s linear;
+            transition: all 0.3s linear;
+        }
+        form textarea.area{
+            border: 1px solid #d1d1d1;
+            border-radius: 3px;
+            height: 273px;
+        }
+        
+        form button.btn:hover{
+            background-color: white;
+            color: #6255a5;
+            border: 1px solid #6255a5;
+            font-weight: 600;
+        }
+.above-footer{
+overflow:auto;
+  padding-bottom: 30px; 
+}
+footer{
+ position: relative;
+  margin-top: -50px; /* negative value of footer height */
+  height: 50px;
+  clear:both;
+  padding-top:10px;
+    border-top: 1px solid #333333;
+ 
+    }
+
+.wrap {
+  min-height: 100%;
+}

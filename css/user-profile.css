@@ -1,0 +1,103 @@
+ 
+        #user-profile-banner{
+            background-image: url(../images/User-Profile/banner-with-overlay.jpg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        #user-profile-banner h1{
+            font-family: "Open Sans";
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 52px;
+            color: white;
+            padding-top: 80px;
+            padding-bottom: 50px;
+        }
+        
+        #profile-details h3{
+            font-family: "Open Sans", sans-serif;
+            font-size: 34px;
+            font-weight: 600;
+            line-height: 38px;
+            color: #6255a5;
+            margin-bottom: 0;
+            padding-bottom: 40px;
+        }
+        
+        #profile-details label{
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #333333;
+            margin-bottom: 0;
+            margin-top: 0;
+            padding-bottom: 10px;
+        }
+        
+       
+        #profile-details form .form-control{
+            border: 1px solid #d1d1d1;
+            border-radius: 3px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+        
+        form button.btn{
+            background-color: #6255a5;
+            color: white;
+            border-radius: 3px;
+            font-style: "Open Sans", sans-serif;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 10px 30px;
+        }
+        form button.btn:hover{
+            background-color: white;
+            color: #6255a5;
+            font-weight: 700;
+            border: 2px solid #6255a5;
+            
+        }
+        .image-upload > input
+{
+    display: none;
+}
+
+.image-upload img
+{
+    width: 80px;
+    cursor: pointer;
+    -ms-flex-line-pack: center;
+    align-content: center;
+}
+        
+.form-control1{
+             border: 1px solid #d1d1d1;
+            border-radius: 3px;
+            height: 100px;
+            margin-bottom: 30px;
+        }
+        
+        .form-control1 label{
+            height: 100px;
+            /*margin-left: 200px;
+            margin-right: 200px;
+            padding-left: 30px;
+            padding-right: 30px;*/
+        }
+         .contact{
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+        }
+        select#countryCode{
+            width: 120px;
+            margin-right: 10px;
+        }
+        header .dropdown-toggle::after { 
+            content: none; 
+        } 
+    

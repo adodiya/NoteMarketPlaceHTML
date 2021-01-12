@@ -1,0 +1,143 @@
+html{
+    height: 100%;
+}
+body{
+            background-image: url(../images/pre-login/banner-with-overlay.jpg);
+            background-repeat: no-repeat;
+            background-position: center;
+    background-size: cover;
+    height: 100%;
+        }
+
+        #login-img{
+            padding-top: 30px;
+        }
+        
+        .form_container{
+            background-color: white;
+            padding: 50px 50px;
+            margin-top: 25px;
+        }
+        h1{
+            font-family: "Open Sans" , sans-serif;
+            font-weight: 600;
+            font-size: 34px;
+            line-height: 38px;
+            color: #6255a5;
+            text-align: center;
+            padding-bottom: 20px;
+            margin: 0;
+        }
+        p{
+            font-family: "Open Sans", sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            line-height: 19px;
+            color: #333333;
+            padding-bottom: 30px;
+            margin-bottom: 0;
+        }
+        form .form-control{
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #000;
+            border: 1px solid #6255a5;
+            height: 50px;
+            border-radius: 3px;
+        }
+        
+        form label{
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #333333;
+            padding-bottom: 0;
+            margin-bottom: 10px;
+        }
+        
+        .form-group{
+            margin-bottom: 30px;
+        }
+        
+        .form-group.pass{
+            margin-bottom: 20px;
+        }
+        .field-icon {
+          float: right;
+          margin-left: -25px;
+          margin-top: -33px;
+          position: relative;
+            z-index: 2;
+            color: dimgrey;
+            padding-right: 10px;
+                }
+
+        .fp{
+            float: right;
+            font-family: "Open Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #6255a5;
+            padding-bottom: 0;
+            margin-bottom: 10px;
+        }
+        form{
+            color: white;
+        }
+        
+        label.form-check-label{
+            font-family: "Open Sans",sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 20px;
+            color: #333333;
+        }
+        button.btn{
+            background-color: #6255a5;
+            border-radius: 3px;
+            color: white;
+            font-size: 18px;
+            font-style: "Open Sans", sans-serif;
+            line-height: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            
+        }
+        button.btn:hover,
+        button.btn:focus{
+            background-color: white;
+            border: 2px solid #6255a5;
+            color: #6255a5;
+            font-weight: 700;
+          
+        }
+       p:nth-last-child(1){
+            color: #333333;
+            font-family: "Open Sans", sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 20px;
+            margin-top: 20px;
+            padding-bottom: 0;
+        
+        }
+        
+        a:nth-last-child(1){
+            color: #6255a5;
+        }
+        
+        label.pwd-incorrect{
+            color: #FF3636;
+            font-family: "Open Sans",sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            line-height: 20px;
+            margin-top: 10px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
