@@ -1,0 +1,210 @@
+﻿@model NotesMarketPlace.Models.Note
+
+@{
+    ViewBag.Title = "AddNote";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    @Styles.Render("~/Content/custom/responsive-tabs.min.css")
+
+    @Styles.Render("~/Content/custom/add-notes.css")
+    @Styles.Render("~/Content/custom/responsive.css")
+}
+
+
+<!-- Banner Starts-->
+<section id="banner">
+    <div class="content-box-md">
+        <div class="container" id="banner-content">
+            <h1 class="text-center">Add notes</h1>
+        </div>
+
+    </div>
+</section>
+<!-- Banner Ends-->
+<!-- Add notes form Starts-->
+<section id="add-notes">
+    <div class="content-box-md">
+        <div class="container">
+            <h3>Basic Note Details</h3>
+
+            @using (Html.BeginForm("AddNote", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model=>model.SellerID)
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Title)
+                    @Html.TextBoxFor(model => model.Title, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CategoryID)
+
+                    @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.CategoryCollection, "CategoryID", "Name"), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CountryID)
+
+                    @Html.DropDownListFor(model => model.CountryID, new SelectList(Model.CountryCollection, "CountryID", "Name"), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TypeID)
+
+                    @Html.DropDownListFor(model => model.TypeID, new SelectList(Model.TypeCollection, "TypeID", "Name"), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Display Picture</label>
+                    <div class="image-upload form-control1 text-center">
+                        <label for="display-picture-input">
+                            <img src="../images/User-Profile/upload.png">
+                            <h6 class="text center">Upload a picture</h6>
+                        </label>
+
+                        <input id="display-picture-input" type="file" name="DisplayImageData" value="@Model.DisplayPic" />
+                    </div>
+                    @Html.ValidationMessageFor(model => model.DisplayPic, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Upload Notes<span> *</span></label>
+                    <div class="image-upload form-control1 text-center">
+                        <label for="notes-picture-input">
+                            <img src="../images/upload-note.png">
+                            <h6 class="text center">Upload your notes</h6>
+                        </label>
+
+                        <input id="notes-picture-input" type="file" name="FileData" value="@Model.DisplayPic"/>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NoOfPages)
+                    @Html.TextBoxFor(model => model.NoOfPages, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description)
+                    @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                </div>
+            </div>
+
+        </div>
+                <h3>Institution Details</h3>
+                <div class="row">
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UniversityName)
+                            @Html.TextBoxFor(model => model.UniversityName, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <h3>Course Details</h3>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Course)
+                            @Html.TextBoxFor(model => model.Course, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.CourseCode)
+                            @Html.TextBoxFor(model => model.CourseCode, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Professor)
+                            @Html.TextBoxFor(model => model.Professor, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                        </div>
+                    </div>
+
+                </div>
+
+                <h3>Selling Information</h3>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Sell For<span> *</span></label><br>
+                            Free
+                            @Html.RadioButtonFor(model => model.IsPaid, "False")
+                            Paid
+                            @Html.RadioButtonFor(model => model.IsPaid, "True")
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Price)
+                        @Html.TextBoxFor(model => model.Price, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Note Preview</label>
+                        <div class="image-upload form-control1 note-preview-input text-center">
+                            <label for="preview-input">
+                                <img src="../images/upload-file.png">
+                                <h6 class="text center">Upload a file</h6>
+                            </label>
+
+                            <input id="note-preview" type="file" />
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="btn-grp">
+                    <button class="btn" id="save" type="submit">SAVE</button>
+                    <button class="btn" id="publish">PUBLISH</button>
+                </div>
+
+
+            }
+
+
+        </div>
+    </div>
+</section>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

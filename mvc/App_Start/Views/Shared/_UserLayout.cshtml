@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - NotesMarketPlace</title>
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/Site.css")
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+
+
+</head>
+<body>
+    <header>
+        <nav class="fixed-top navbar navbar2 navbar-expand-md" id="home">
+            <div class="container-fluid" id="header-logo">
+                <span id="mobile-nav-open-btn">&#9776;</span>
+                <a class="navbar-brand smooth-scroll" href="index.html">
+
+                    <img src="images/top-logo.png">
+                </a>
+            </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav ml-auto" id="header-link">
+                        <li class="nav-item"> @Html.ActionLink("Search Notes", "SearchNotes", "User", new { @class = "nav-link smooth-scroll" }) </li>
+                        <li class="nav-item">@Html.ActionLink("Sell Your Notes", "SellYourNotes", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("Buyer Requests", "BuyerRequest", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("Add Note", "AddNote", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("Contact Us", "Contact Us", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">My Profile</a>
+                                    <a class="dropdown-item" href="#">My Downloads</a>
+                                    <a class="dropdown-item" href="#">My Sold Notes</a>
+                                    <a class="dropdown-item" href="#">My Rejected Notes</a>
+                                    <a class="dropdown-item" href="#">Change Password</a>
+                                    <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="mobile-nav">
+                <span id="mobile-nav-close-btn">&times;</span>
+                <div id="mobile-nav-content">
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item"> @Html.ActionLink("Search Notes", "SearchNotes", "User", new { @class = "nav-link smooth-scroll" }) </li>
+                        <li class="nav-item">@Html.ActionLink("Sell Your Notes", "SellYourNotes", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("Buyer Requests", "BuyerRequest", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("FAQ", "FAQ", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("Contact Us", "Contact Us", "User", new { id = (int)Session["UserID"] }, new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">
+                            <div class="dropdown">
+                                <a class="nav-link smooth-scroll dropdown-toggle" role="button" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../images/member.png" class="rounded-circle"></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">My Profile</a>
+                                    <a class="dropdown-item" href="#">My Downloads</a>
+                                    <a class="dropdown-item" href="#">My Sold Notes</a>
+                                    <a class="dropdown-item" href="#">My Rejected Notes</a>
+                                    <a class="dropdown-item" href="#">Change Password</a>
+                                    <a class="dropdown-item" href="#" role="button">LOGOUT</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll">Logout</button></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @RenderBody()
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
+
+
+
+  
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - NotesMarketPlace</title>
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/Site.css")
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+
+
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="65" id="home-page">
+    <header>
+        <nav class="fixed-top navbar navbar-expand-md" id="home">
+            <div class="container-fluid" id="header-logo">
+                <span id="mobile-nav-open-btn">&#9776;</span>
+                <a class="navbar-brand smooth-scroll" href="index.html">
+                   
+                   <img src="images/top-logo.png">
+                </a>
+            </div>
+            <div class="container">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav ml-auto" id="header-link">
+                        <li class="nav-item"> @Html.ActionLink("Search Notes", "SearchNotes", new { @class = "nav-link smooth-scroll" }) </li>
+                        <li class="nav-item">@Html.ActionLink("Sell Your Notes", "SellYourNotes", new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("FAQ", "FAQ", new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item">@Html.ActionLink("Contact Us", "Contact Us", new { @class = "nav-link smooth-scroll" })</li>
+                        <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll navbar-login-button">Login</button></li>
+                    </ul>
+                </div>
+            </div>
+           <div id="mobile-nav">
+        <span id="mobile-nav-close-btn">&times;</span>
+        <div id="mobile-nav-content">
+            <ul class="nav navbar-nav">
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="search.html" target="_blank">Search Notes</a></li>
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="login.html">Sell Your Notes</a></li>
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="html/FAQ.html">FAQ</a></li>
+                <li class="nav-item"><a class="nav-link smooth-scroll" href="contact-us.html">Contact Us</a></li>
+                <li class="nav-item"><button type="button" class="btn btn-light smooth-scroll navbar-login-button">Login</button></li>
+            </ul>
+        </div>
+    </div>
+        </nav>
+    </header>
+
+    @RenderBody()
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+   @Scripts.Render("~/bundles/custom")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
