@@ -1,4 +1,4 @@
-﻿@model NotesMarketPlace.Models.Note
+﻿@model NotesMarketPlace.Models.Notes_NotesAttachment
 
 @{
     ViewBag.Title = "AddNote";
@@ -32,99 +32,117 @@
 
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.HiddenFor(model=>model.SellerID)
-        <div class="row">
+                @Html.HiddenFor(model => model.Note.SellerID)
+                @Html.HiddenFor(model => model.Note.ID)
+              
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Title)
-                    @Html.TextBoxFor(model => model.Title, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                <div class="row">
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CategoryID)
-
-                    @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.CategoryCollection, "CategoryID", "Name"), "Select", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CountryID)
-
-                    @Html.DropDownListFor(model => model.CountryID, new SelectList(Model.CountryCollection, "CountryID", "Name"), "Select", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TypeID)
-
-                    @Html.DropDownListFor(model => model.TypeID, new SelectList(Model.TypeCollection, "TypeID", "Name"), "Select", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Display Picture</label>
-                    <div class="image-upload form-control1 text-center">
-                        <label for="display-picture-input">
-                            <img src="../images/User-Profile/upload.png">
-                            <h6 class="text center">Upload a picture</h6>
-                        </label>
-
-                        <input id="display-picture-input" type="file" name="DisplayImageData" value="@Model.DisplayPic" />
-                    </div>
-                    @Html.ValidationMessageFor(model => model.DisplayPic, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label>Upload Notes<span> *</span></label>
-                    <div class="image-upload form-control1 text-center">
-                        <label for="notes-picture-input">
-                            <img src="../images/upload-note.png">
-                            <h6 class="text center">Upload your notes</h6>
-                        </label>
-
-                        <input id="notes-picture-input" type="file" name="FileData" value="@Model.DisplayPic"/>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Note.Title)
+                            @Html.TextBoxFor(model => model.Note.Title, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                            @Html.ValidationMessageFor(model => model.Note.Title, "", new { @class = "text-danger" })
+                        </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Note.CategoryID)
+
+                            @Html.DropDownListFor(model => model.Note.CategoryID, new SelectList(Model.Note.CategoryCollection, "CategoryID", "Name"), "Select", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Note.CategoryID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Note.CountryID)
+
+                            @Html.DropDownListFor(model => model.Note.CountryID, new SelectList(Model.Note.CountryCollection, "CountryID", "Name"), "Select", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Note.CountryID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Note.TypeID)
+
+                            @Html.DropDownListFor(model => model.Note.TypeID, new SelectList(Model.Note.TypeCollection, "TypeID", "Name"), "Select", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Note.TypeID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Display Picture</label>
+                           <!-- <div class="image-upload form-control1 text-center">
+                                <label for="display-picture-input">
+                                    <img src="../images/User-Profile/upload.png">
+                                    <h6 class="text center">Upload a picture</h6>
+                                </label>-->
+
+                                <input type="file" name="displaypic" value="@Model.Note.DisplayPic" />
+                                @Html.ValidationMessageFor(model => model.Note.DisplayPic, "", new { @class = "text-danger" })
+                           <!-- </div>-->
+                           
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Upload Notes<span> *</span></label>
+                            <!--  <div class="image-upload form-control1 text-center">
+    <label for="notes-picture-input">
+        <img src="../images/upload-note.png">
+        <h6 class="text center">Upload your notes</h6>
+    </label>-->
+
+                            <input id="notes-picture-input" type="file" name="attachmentfiles" value="@Model.NotesAttachment.FilePath" multiple />
+                            @Html.ValidationMessageFor(model => model.NotesAttachment.FilePath, "", new { @class = "text-danger" })
+                            @if(Model.AttachmentList !=null)
+                            {
+                                <ul>
+                                    @foreach(var file in Model.AttachmentList)
+                                    {
+                                        <li>
+                                            @Html.HiddenFor(model=>@file.ID)
+                                            @Html.DisplayFor(model=>@file.FileName)
+                                            <button onclick="@Url.Action("Delete","User",new { id=@file.ID})">Delete</button>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            <!--</div>-->
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Note.NoOfPages)
+                            @Html.TextBoxFor(model => model.Note.NoOfPages, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Note.Description)
+                            @Html.TextAreaFor(model => model.Note.Description, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                        </div>
+                    </div>
+
                 </div>
-
-            </div>
-
-
-            <div class="col-md-6">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.NoOfPages)
-                    @Html.TextBoxFor(model => model.NoOfPages, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                </div>
-            </div>
-
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Description)
-                    @Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                </div>
-            </div>
-
-        </div>
                 <h3>Institution Details</h3>
                 <div class="row">
 
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.UniversityName)
-                            @Html.TextBoxFor(model => model.UniversityName, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                            @Html.LabelFor(model => model.Note.UniversityName)
+                            @Html.TextBoxFor(model => model.Note.UniversityName, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                         </div>
                     </div>
 
@@ -136,22 +154,22 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Course)
-                            @Html.TextBoxFor(model => model.Course, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                            @Html.LabelFor(model => model.Note.Course)
+                            @Html.TextBoxFor(model => model.Note.Course, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.CourseCode)
-                            @Html.TextBoxFor(model => model.CourseCode, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                            @Html.LabelFor(model => model.Note.CourseCode)
+                            @Html.TextBoxFor(model => model.Note.CourseCode, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.Professor)
-                            @Html.TextBoxFor(model => model.Professor, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                            @Html.LabelFor(model => model.Note.Professor)
+                            @Html.TextBoxFor(model => model.Note.Professor, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                         </div>
                     </div>
 
@@ -164,15 +182,16 @@
                         <div class="form-group">
                             <label>Sell For<span> *</span></label><br>
                             Free
-                            @Html.RadioButtonFor(model => model.IsPaid, "False")
+                            @Html.RadioButtonFor(model => model.Note.IsPaid, "False")
                             Paid
-                            @Html.RadioButtonFor(model => model.IsPaid, "True")
+                            @Html.RadioButtonFor(model => model.Note.IsPaid, "True")
                         </div>
                     </div>
 
                     <div class="form-group">
-                        @Html.LabelFor(model => model.Price)
-                        @Html.TextBoxFor(model => model.Price, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                        @Html.LabelFor(model => model.Note.Price)
+
+                        @Html.TextBoxFor(model => model.Note.Price, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                     </div>
                 </div>
 
@@ -184,8 +203,8 @@
                                 <img src="../images/upload-file.png">
                                 <h6 class="text center">Upload a file</h6>
                             </label>
+                            <input id="note-preview" type="file" name="previewfile" value="@Model.Note.Preview" />
 
-                            <input id="note-preview" type="file" />
                         </div>
 
                     </div>
@@ -194,8 +213,11 @@
                 </div>
 
                 <div class="btn-grp">
+
                     <button class="btn" id="save" type="submit">SAVE</button>
-                    <button class="btn" id="publish">PUBLISH</button>
+                    @if (Model.Note.Status.Equals(5))
+                    {<button class="btn" id="publish">PUBLISH</button>}
+
                 </div>
 
 
