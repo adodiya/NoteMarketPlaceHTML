@@ -8,7 +8,7 @@
         <div class="container" id="home-banner-content">
             <h1>Download Free/Paid Notes<br>or Sale your Book</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem ducimus ipsa<br> est harum itaque perspiciatis cumque labore omnis consequatur, dicta optio qui.</p>
-            <button type="button" class="btn btn-outline-light btn-lg" id="home-learn-more-btn">LEARN MORE</button>
+            <button type="button" class="btn btn-outline-light btn-lg" id="home-learn-more-btn" onclick="@Url.Action("FAQ","Home")">LEARN MORE</button>
         </div>
 
     </div>
@@ -45,7 +45,7 @@
                     </i>
                     <h3>Download Free/Paid Notes</h3>
                     <p>Get Material for your<br>Course etc.</p>
-                    <button type="button" class="btn btn-lg" id="home-download-btn">DOWNLOAD</button>
+                    <button type="button" class="btn btn-lg" id="home-download-btn" onclick="@Url.Action("SearchNotes","Home")">DOWNLOAD</button>
                 </div>
                 <div class="col-md-6 text-center">
                     <i>
@@ -53,7 +53,7 @@
                     </i>
                     <h3>Seller</h3>
                     <p>Upload and Download Course<br>and Materials etc.</p>
-                    <button type="button" class="btn btn-lg" id="home-sellbook-btn">SELL BOOK</button>
+                    <button type="button" class="btn btn-lg" id="home-sellbook-btn" onclick="@Url.Action("Login","Home")">SELL BOOK</button>
                 </div>
             </div>
 
