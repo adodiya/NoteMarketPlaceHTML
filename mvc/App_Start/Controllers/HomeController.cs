@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -40,20 +40,26 @@ namespace NotesMarketPlace.Controllers
             if (usersEntities.Users.Where(model => model.EmailID == userobj.EmailID).Any())
             {
                 ModelState.AddModelError("EmailID", "Email Already exists");
+
+                return View();
             }
             else
             {
                 userobj.ActivationCode = Guid.NewGuid();
 
                 userobj.RoleID = 1;
+                userobj.IsActive = true;
                 usersEntities.Users.Add(userobj);
 
                 usersEntities.SaveChanges();
                 SendVerificationLinkEmail(userobj.EmailID, userobj.ActivationCode.ToString());
-                ViewBag.Message = "Done";
+                //ViewBag.result("Record inserted Succesfully");
+                TempData["Referrer"] = "SaveRegister";
+                return View(userobj);
+               
 
             }
-            return View(userobj);
+            
         }
 
         [NonAction]
@@ -64,13 +70,12 @@ namespace NotesMarketPlace.Controllers
 
             var fromEmail = new MailAddress("ahdodiya99@gmail.com", "Dotnet Awesome");
             var toEmail = new MailAddress(emailID);
-            var fromEmailPassword = "******"; // Replace with actual password
+            var fromEmailPassword = "*****"; // Replace with actual password
             string subject = "Your account is successfully created!";
 
             string body = "<br/><br/>We are excited to tell you that your Dotnet Awesome account is" +
                 " successfully created. Please click on the below link to verify your account" +
-                " <br/><br/><a href='" + link + "'>" + link + "</a> ";
-
+                " <br/><br/><a href='" + link + "'>" + link + "</a>";
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -137,52 +142,6 @@ namespace NotesMarketPlace.Controllers
             return View();
         }
 
-        /* [NonAction]
-         public void SendEmail (string EmailID, string Fname, string Lname)
-         {
-             var fullname = Fname + " " + Lname;
-             //var regInfo = usersEntities.Users.Where(x => x.ID == id).FirstOrDefault();
-             var GenertateLink = "/Home/UserVerification?EmailID=" + EmailID;
-             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, GenertateLink);
-             var fromMail = new MailAddress("ahdodiya99@gmail.com", "Aadi");
-             var fromEmailPwd = "Nadoda1816@!@!";
-             var toEmail = new MailAddress(EmailID);
-             var smtp = new SmtpClient();
-
-             smtp.Host = "smtp.gmail.com";
-             smtp.Port = 587;
-             smtp.EnableSsl = true;
-             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-
-             smtp.UseDefaultCredentials = false;
-             smtp.Credentials = new NetworkCredential(fromMail.Address, fromEmailPwd);
-
-             var Message = new MailMessage(fromMail, toEmail);
-             Message.Subject = "NoteMarketPlace - Email Verification";
-             Message.Body = "Hello"+ fullname + "," +
-                            "<br/><br/> Thank you for signing up with us. Please click on below link to verify your email address and to do login. " +
-                            "<br/><br/><a href=" + link + ">" + link + "</a>"+
-                            "<br/><br/>Regards"+
-                            "<br/>NotesMarketPlace";
-             Message.IsBodyHtml = true;
-             smtp.Send(Message);
-         }*/
-
-
-        /* public ActionResult UserVerification(string id)
-         {
-             var userobj = usersEntities.Users.Where(model => model.EmailID == id).FirstOrDefault();
-
-             if(userobj != null)
-             {
-
-
-                 usersEntities.SaveChanges();
-                 ViewBag.Message = "Email Verification completed";
-             }
-
-             return View();
-         }*/
 
         [HttpGet]
         public ActionResult Login()
@@ -196,67 +155,69 @@ namespace NotesMarketPlace.Controllers
         public ActionResult Login(User loginobj)
         {
 
-            using (NotesMarketEntities2 db = new NotesMarketEntities2())
-            {
 
-                var obj1 = db.Users.Where(model => model.EmailID.Equals(loginobj.EmailID) && model.Password.Equals(loginobj.Password)).FirstOrDefault();
+            NotesMarketEntities2 db = new NotesMarketEntities2();
+                var obj1 = db.Users.Where(model => model.EmailID.Equals(loginobj.EmailID)&& model.IsActive.Equals(true)).FirstOrDefault();
 
-
-                if (obj1 != null)
+                if (obj1 == null)
                 {
-                    var obj2 = db.UserProfiles.Where(model => model.UserID.Equals(obj1.ID)).FirstOrDefault();
-                    if (obj1.IsEmailVerified == true)
-                    {
-                        /*   if(obj2==null)
-                           {
-
-
-                               Session["UserID"] = obj1.ID;
-                               Session["Username"] = obj1.FirstName + obj1.LastName;
-
-                               return RedirectToAction("MyProfile","User");
-                           }
-                           else
-                           {
-                           Session["UserID"] = obj1.ID;
-                           Session["Username"] = obj1.FirstName + obj1.LastName;
-                           return RedirectToAction("FAQ");
-                       }
-
-
-                       }
-                       else
-                       {
-
-                       ModelState.AddModelError("", "Verify email");
-                       }*/
-
-                        Session["UserID"] = obj1.ID;
-                        Session["Username"] = obj1.FirstName + obj1.LastName;
-                        return RedirectToAction("AddNote", "User", new { id = (int)Session["UserID"] });
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Invalid Information... Please try again!");
-                    }
-                }
-
-                return View(loginobj);
-
-
-                /*bool Isvalid = usersEntities.Users.Any(model => model.EmailID == loginmodel.EmailID && model.Password == loginmodel.Password);
-                if (Isvalid)
-                {
-
-
-                    return RedirectToAction("Index", "Home");
+                    ModelState.AddModelError("EmailID", "This email id does not exist");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Invalid Information... Please try again!");
+                    if (obj1.Password == loginobj.Password)
+                    {
+                      
+                        if (obj1.IsEmailVerified == true)
+                        {
+                            if (obj1.RoleID == 1)
+                            {
+                            var obj2 = db.UserProfiles.Where(model => model.UserID.Equals(obj1.ID)).FirstOrDefault();
+                                if (obj2 == null)
+                                {
+                                    Session["UserID"] = obj1.ID;
+                               
+                                return RedirectToAction("MyProfile", "User");
+
+                                }
+                                else
+                                {
+                                    Session["UserID"] = obj1.ID;
+                                    return RedirectToAction("Dashboard","User");
+
+                                }
+                            }
+                            else if (obj1.RoleID == 2)
+                            {
+                                Session["UserID"] = obj1.ID;
+                                return RedirectToAction("FAQ");
+                                //ModelState.AddModelError(" ", "Admin");
+                            }
+                            else
+                            {
+                                Session["UserID"] = obj1.ID;
+                                return RedirectToAction("Fjhk");
+
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(" ", "Please verify your email id");
+                        }
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Password", "Incorrect Password");
+                    }
+
                 }
-                return View();*/
-            }
+
+            
+            return View(loginobj);
+
+
+           
         }
 
 
