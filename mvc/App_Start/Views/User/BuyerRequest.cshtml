@@ -1,211 +1,85 @@
-﻿@model NotesMarketPlace.Models.Note
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<NotesMarketPlace.Models.Download>
+
 
 @{
     ViewBag.Title = "BuyerRequest";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<h2>BuyerRequest</h2>
+<section id="buyer-requests">
+    <div class="content-box-md">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Buyer Requests</h3>
+                </div>
+                <div class="col-md-8">
+                    <form class="form-inline">
 
-<div>
-    <h4>Note</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AdminRemarks)
-        </dt>
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.AdminRemarks)
-        </dd>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-secondary">Search</button>
+                            <!-- Button trigger modal -->
+                            <!-- Modal -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">SR NO.</th>
+                            <th scope="col">NOTE TITLE</th>
+                            <th scope="col">CATEGORY</th>
+                            <th scope="col">BUYER</th>
+                            <th scope="col">PHONE NUMBER</th>
+                            <th scope="col">SELL TYPE</th>
+                            <th scope="col">PRICE</th>
+                            <th scope="col">DOWNLOADED DATE/TIME</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.PublishedDate)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.PublishedDate)
-        </dd>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+                            <td>4</td>
+                            <td><a href="#">@item.NoteTitle</a></td>
+                            <td>@item.NoteCategory</td>
+                            <td>@item.User1.EmailID</td>
+                            <td>+@item.User1.UserProfiles.Select(model => model.PhonenoCountryCode) @item.User.UserProfiles.Select(model => model.Phoneno)</td>
+                            <td>@(item.IsPaid?"Paid":"Free")</td>
+                            <td>$@item.Price</td>
+                            <td>@item.DownloadDate</td>
+                            <td>
+                                <a href="#"><img src="../images/Dashboard/eye.png"></a><span class="dropdown">
+                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">Allow Download</a>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DisplayPic)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.DisplayPic)
-        </dd>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("BuyerRequest", new { page }),
+              new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+            </div>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.NoOfPages)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NoOfPages)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UniversityName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UniversityName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Course)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CourseCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CourseCode)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Professor)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Professor)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsPaid)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsPaid)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Preview)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Preview)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreatedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ModifiedBy)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ModifiedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsActive)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Category.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Category.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Country.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Country.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ReferenceData.Value)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReferenceData.Value)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Type.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Type.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User1.FirstName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User1.FirstName)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+</section>
