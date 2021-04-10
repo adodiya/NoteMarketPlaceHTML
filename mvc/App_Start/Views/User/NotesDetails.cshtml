@@ -1,4 +1,4 @@
-﻿@model NotesMarketPlace.Models.Note
+@model NotesMarketPlace.Models.Note
 
 @{
     ViewBag.Title = "NotesDetails";
@@ -29,12 +29,14 @@
                                     <img src="../images/Search/1.jpg" alt="image">
                                 </div>
                                 <div class="col-md-7">
+                                    <h5>@Model.ID</h5>
                                     <h5>@Model.Title</h5>
                                     <h6>@Model.Category.Name</h6>
                                     <p>@Model.Description </p>
-                                    @if (Model.IsPaid == false)
+                                    @if (@Model.IsPaid == false)
                                     {
-                                        <button class="btn" type="submit" onclick="@Url.Action("Download","User")"><D>Download</D> </button>
+                                       @Html.ActionLink("Download","DownloadNote","User",new { id= @Model.ID}, new { @class="btn btn-primary"})
+                                        <button class="btn" type="button" onclick="@Url.Action("MyProfile","User")"><D>Free</D> </button>
 
                                     }
                                     else
@@ -92,16 +94,23 @@
                                     </label>100 reviews
                                 </span>
                             </p>
-                            <p>5 Users marked this note as inappropriate</p>
-                        </div>
-                    </div>
-                </div>
+                            @if (Model.ReportedIssues.Count() > 0) {<p>@Model.ReportedIssues.Count() Users marked this note as inappropriate</p>}
+     
+                             </div>
+     
+                         </div>
+     
+                     </div>
+     
 
-            </div>
+                 </div>
+     
 
-        </section>
-        <!-- Details ends-->
-        <div class="container">
+             </section>
+     
+             <!-- Details ends-->
+     
+             <div class="container">
             <hr class="division">
         </div>
         <!-- Details 2 begins-->
@@ -116,7 +125,7 @@
                                     <div class="responsive-wrapper
      responsive-wrapper-padding-bottom-90pct"
                                          style="-webkit-overflow-scrolling: touch; overflow: auto;">
-                                        <iframe src="http://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf">
+                                        <iframe src="@Model.Preview">
                                             <p style="font-size: 110%;">
                                                 <em>
                                                     <strong>ERROR: </strong>
@@ -207,7 +216,7 @@
         </section>
         <!-- Details 2 ends-->
     </section>
-}
+
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/bundles/custom")
