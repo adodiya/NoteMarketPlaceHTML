@@ -1,11 +1,18 @@
-﻿@using NotesMarketPlace.Models
-@model NotesMarketPlace.Models.UserProfile
+@using PagedList.Mvc;
+@using PagedList;
 
+@model NotesMarketPlace.Models.Note
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
-  
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/responsive-tabs.min.css")
+
+    @Styles.Render("~/Content/custom/dashboard.css")
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/jquery")
 }
+<link href="~/Content/PagedList.css" rel="stylesheet" />
 
 
 <section id="dashboard">
@@ -20,26 +27,26 @@
                     </div>
 
                     <div class="num-notes-sold detail">
-                        <h5><a href="#"></a></h5>
+                        <h5><a href="#">@ViewBag.Count</a></h5>
                         <p>Number of Notes Sold</p>
                     </div>
                     <div class="money-earned detail">
-                        <h5><a href="#">$10,00,000</a></h5>
+                        <h5><a href="#">$@ViewBag.Sum</a></h5>
                         <p>Money Earned</p>
                     </div>
 
                 </div>
                 <div class="block">
                     <div class="my-downloads">
-                        <h5><a href="#">38</a></h5>
+                        <h5><a href="#">@ViewBag.MyDownloads</a></h5>
                         <p>My Downloads</p>
                     </div>
                     <div class="my-rejected-notes">
-                        <h5><a href="#">12</a></h5>
+                        <h5><a href="#">@ViewBag.MyRejected</a></h5>
                         <p>My Rejected Notes</p>
                     </div>
                     <div class="buyer-requests">
-                        <h5><a href="#">102</a></h5>
+                        <h5><a href="#">@ViewBag.BuyerRequest</a></h5>
                         <p>Buyer Requests</p>
                     </div>
                 </div>
@@ -52,7 +59,7 @@
 <section id="in-progress-notes">
     <div class="content-box-md">
         <div class="container">
-           
+
             <div class="row">
                 <div class="col-md-5 col-sm-12 col-12">
                     <h3>In Progress Notes</h3>
@@ -82,71 +89,34 @@
                             <th scope="col">ACTIONS</th>
                         </tr>
                     </thead>
-                    <tbody>
 
-                    <td>09-10-2020</td>
-                    <td><a href="#">Data Science</a></td>
-                    <td>Science</td>
-                    <td>Draft</td>
-                    <td><a href="#"><img src="../images/Dashboard/edit.png"></a><a href="#"><img src="../images/delete.png"></a></td>
-                    <tr>
+                    @foreach (var note in Model.Inprogressnotes)
+                    {
 
-                        <td>10-10-2020</td>
-                        <td><a href="#">Accounts</a></td>
-                        <td>Commerce</td>
-                        <td>In Review</td>
-                        <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    </tr>
-                    <tr>
+                        <tr>
 
-                        <td>11-10-2020</td>
-                        <td><a href="#">Social Studies</a></td>
-                        <td>Social</td>
-                        <td>Submitted</td>
-                        <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    </tr>
-                    <tr>
+                            <td>@note.PublishedDate</td>
+                            <td><a href="#">@note.Title</a></td>
+                            <td>@note.Category.Name</td>
+                            <td>@note.ReferenceData.Value</td>
+                            @if (note.ReferenceData.Value == "5")
+                            {
+                                <td><a href="#"><img src="../images/Dashboard/edit.png"></a><a href="#"><img src="../images/delete.png"></a></td>
+                            }
+                            else
+                            {
+                                <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                            }
 
-                        <td>12-10-2020</td>
-                        <td><a href="#">AI</a></td>
-                        <td>IT</td>
-                        <td>Submitted</td>
-                        <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    </tr>
-                    <tr>
-
-                        <td>03-10-2020</td>
-                        <td><a href="#">Lorem ipsum dolor sit amet</a></td>
-                        <td>Lorem</td>
-                        <td>Draft</td>
-                        <td><a href="#"><img src="../images/Dashboard/edit.png"></a><a href="#"><img src="../images/delete.png"></a></td>
-                    </tr>
-                    </tbody>
+                        </tr>
+                    }
                 </table>
+                @Html.PagedListPager(Model.Inprogressnotes, page2 => Url.Action("Dashboard", new { page2 }),
+               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
             </div>
         </div>
     </div>
-    <section id="pagination1">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link btn-pagination" href="#1">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </section>
+
 </section>
 
 
@@ -183,78 +153,29 @@
                             <th scope="col">ACTION</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    @foreach (var item in Model.Publishednotes)
+                    {
+                        <tr>
 
-                    <td>09-10-2020</td>
-                    <td><a href="#">Data Science</a></td>
-                    <td>Science</td>
-                    <td>Paid</td>
-                    <td>$575</td>
-                    <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    <tr>
+                            <td>@item.PublishedDate</td>
+                            <td><a href="#">@item.Title</a></td>
+                            <td>@item.Category.Name</td>
+                            <td>@(item.IsPaid?"Paid":"False")</td>
+                            <td>$@item.Price</td>
+                            <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
+                        </tr>
+                    }
 
-                        <td>10-10-2020</td>
-                        <td><a href="#">Accounts</a></td>
-                        <td>Commerce</td>
-                        <td>Paid</td>
-                        <td>$575</td>
-                        <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    </tr>
-                    <tr>
 
-                        <td>11-10-2020</td>
-                        <td><a href="#">Social Studies</a></td>
-                        <td>Social</td>
-                        <td>Free</td>
-                        <td>$0</td>
-                        <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    </tr>
-                    <tr>
-
-                        <td>12-10-2020</td>
-                        <td><a href="#">AI</a></td>
-                        <td>IT</td>
-                        <td>Free</td>
-                        <td>$0</td>
-                        <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    </tr>
-                    <tr>
-
-                        <td>03-10-2020</td>
-                        <td><a href="#">Lorem ipsum dolor sit amet</a></td>
-                        <td>Lorem</td>
-                        <td>Free</td>
-                        <td>$3542</td>
-                        <td><a href="#"><img src="../images/Dashboard/eye.png"></a></td>
-                    </tr>
-                    </tbody>
                 </table>
+                @Html.PagedListPager(Model.Publishednotes, page1 => Url.Action("Dashboard", new { page1 }),
+               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
             </div>
         </div>
     </div>
 
 </section>
 
-<section id="pagination2">
-    <nav>
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link btn-pagination" href="#1">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</section>
+
 
 
