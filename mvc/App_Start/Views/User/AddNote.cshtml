@@ -1,4 +1,4 @@
-﻿@model NotesMarketPlace.Models.Notes_NotesAttachment
+@model NotesMarketPlace.Models.Notes_NotesAttachment
 
 @{
     ViewBag.Title = "AddNote";
@@ -7,6 +7,7 @@
 
     @Styles.Render("~/Content/custom/add-notes.css")
     @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/jquery")
 }
 
 
@@ -26,7 +27,7 @@
         <div class="container">
             <h3>Basic Note Details</h3>
 
-            @using (Html.BeginForm("AddNote", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm())
             {
                 @Html.AntiForgeryToken()
 
@@ -34,7 +35,7 @@
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.Note.SellerID)
                 @Html.HiddenFor(model => model.Note.ID)
-              
+            @Html.HiddenFor(model=>model.Note.Status)
 
                 <div class="row">
 
@@ -75,16 +76,22 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Display Picture</label>
-                           <!-- <div class="image-upload form-control1 text-center">
-                                <label for="display-picture-input">
-                                    <img src="../images/User-Profile/upload.png">
-                                    <h6 class="text center">Upload a picture</h6>
-                                </label>-->
 
-                                <input type="file" name="displaypic" value="@Model.Note.DisplayPic" />
-                                @Html.ValidationMessageFor(model => model.Note.DisplayPic, "", new { @class = "text-danger" })
-                           <!-- </div>-->
-                           
+
+                            <input type="file" name="displaypic" value="@Model.Note.DisplayPic" />
+
+
+                            @if (Model.Note.DisplayPic != null)
+                            {
+
+                                <img src="@Url.Content(@Model.Note.DisplayPic)" id="removepic" height="100" width="100" />
+
+                                <button class="btn" id="delete" type="button">Delete</button>
+                                @Html.Hidden("RemoveDisplayPic", "", new { @id = "remove" })
+
+                            }
+
+
                         </div>
                     </div>
 
@@ -92,141 +99,217 @@
                         <div class="form-group">
                             <label>Upload Notes<span> *</span></label>
                             <!--  <div class="image-upload form-control1 text-center">
-    <label for="notes-picture-input">
-        <img src="../images/upload-note.png">
-        <h6 class="text center">Upload your notes</h6>
-    </label>-->
+                    <label for="notes-picture-input">
+                        <img src="../images/upload-note.png">
+                        <h6 class="text center">Upload your notes</h6>
+                    </label>-->
 
                             <input id="notes-picture-input" type="file" name="attachmentfiles" value="@Model.NotesAttachment.FilePath" multiple />
                             @Html.ValidationMessageFor(model => model.NotesAttachment.FilePath, "", new { @class = "text-danger" })
-                            @if(Model.AttachmentList !=null)
-                            {
-                                <ul>
-                                    @foreach(var file in Model.AttachmentList)
-                                    {
-                                        <li>
-                                            @Html.HiddenFor(model=>@file.ID)
-                                            @Html.DisplayFor(model=>@file.FileName)
-                                            <button onclick="@Url.Action("Delete","User",new { id=@file.ID})">Delete</button>
-                                        </li>
-                                    }
-                                </ul>
+
+                            <ul>
+                                @foreach (var file in Model.AttachmentList)
+                                {
+
+
+                                    <li>
+
+                                        <a class="title" href="@Url.Action("DownloadNotes","User",new { id=@file.ID})">@file.FileName</a>
+                                        <a href="javascript:void(0);" data-id="@file.ID" class="deleteItem">X</a>
+                                    </li>
+
+                                }
+</ul>
+                               
                             }
-                            <!--</div>-->
+      
 
-                        </div>
+        <!--</div>-->
 
-                    </div>
+        </div>
 
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.NoOfPages)
-                            @Html.TextBoxFor(model => model.Note.NoOfPages, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                        </div>
-                    </div>
+        </div>
 
 
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.Description)
-                            @Html.TextAreaFor(model => model.Note.Description, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                        </div>
-                    </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note.NoOfPages)
+                @Html.TextBoxFor(model => model.Note.NoOfPages, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+            </div>
+        </div>
 
+
+        <div class="col-md-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note.Description)
+                @Html.TextAreaFor(model => model.Note.Description, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+            </div>
+        </div>
+
+        </div>
+        <h3>Institution Details</h3>
+        <div class="row">
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.UniversityName)
+                    @Html.TextBoxFor(model => model.Note.UniversityName, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                 </div>
-                <h3>Institution Details</h3>
-                <div class="row">
-
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.UniversityName)
-                            @Html.TextBoxFor(model => model.Note.UniversityName, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                        </div>
-                    </div>
+            </div>
 
 
 
+        </div>
+        <h3>Course Details</h3>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.Course)
+                    @Html.TextBoxFor(model => model.Note.Course, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                 </div>
-                <h3>Course Details</h3>
-                <div class="row">
+            </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.Course)
-                            @Html.TextBoxFor(model => model.Note.Course, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.CourseCode)
-                            @Html.TextBoxFor(model => model.Note.CourseCode, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.Professor)
-                            @Html.TextBoxFor(model => model.Note.Professor, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                        </div>
-                    </div>
-
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.CourseCode)
+                    @Html.TextBoxFor(model => model.Note.CourseCode, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
                 </div>
+            </div>
 
-                <h3>Selling Information</h3>
-                <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.Professor)
+                    @Html.TextBoxFor(model => model.Note.Professor, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                </div>
+            </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Sell For<span> *</span></label><br>
-                            Free
-                            @Html.RadioButtonFor(model => model.Note.IsPaid, "False")
-                            Paid
-                            @Html.RadioButtonFor(model => model.Note.IsPaid, "True")
+        </div>
+
+        <h3>Selling Information</h3>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Sell For<span> *</span></label><br>
+                    Free
+                    @Html.RadioButtonFor(model => model.Note.IsPaid, "False", htmlAttributes: new { @id = "free" })
+                    Paid
+                    @Html.RadioButtonFor(model => model.Note.IsPaid, "True", htmlAttributes: new { @id = "paid" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Note.Price)
+
+                @Html.TextBoxFor(model => model.Note.Price, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title", @id = "price" })
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Note Preview</label>
+
+                <input id="note-preview" type="file" name="previewfile" value="@Model.Note.Preview" />
+                @if (Model.Note.DisplayPic != null)
+                {
+                    <img src="@Url.Content(@Model.Note.Preview)" id="removepreview" height="100" width="100" />
+
+                    <button class="btn" id="deletePreview" type="button">Delete</button>
+                    @Html.Hidden("RemovePreview", "", new { @id = "rpreview" })
+                }
+
+
+            </div>
+
+
+        </div>
+
+        <div class="btn-grp">
+
+            <input type="submit" value="Save" formenctype="multipart/form-data" formaction="AddNote" formmethod="post" />
+
+            @if (Model.Note.Status.Equals(5))
+            {
+                if (Model.Note == null)
+                {
+                    <button class="btn" type="button" id="publish" disabled>Publish</button>
+                           }
+                            else
+                            {
+                    <button class="btn" type="button" id="publish" data-target="#publish-modal" data-toggle="modal">PUBLISH</button>
+
+                    <div class="modal fade" id="publish-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="publish-modal">Add Review</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" value="Yes" class="btn" formenctype="multipart/form-data" formaction="PublishNote" formmethod="post" />
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Note.Price)
-
-                        @Html.TextBoxFor(model => model.Note.Price, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Note Preview</label>
-                        <div class="image-upload form-control1 note-preview-input text-center">
-                            <label for="preview-input">
-                                <img src="../images/upload-file.png">
-                                <h6 class="text center">Upload a file</h6>
-                            </label>
-                            <input id="note-preview" type="file" name="previewfile" value="@Model.Note.Preview" />
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-                <div class="btn-grp">
-
-                    <button class="btn" id="save" type="submit">SAVE</button>
-                    @if (Model.Note.Status.Equals(5))
-                    {<button class="btn" id="publish">PUBLISH</button>}
-
-                </div>
-
+                }
 
             }
+
+
+                </div>
+
+
+        }
 
 
         </div>
     </div>
 </section>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/custom")
+<script>
+    $(document).ready(function () {
+        $("#deletePreview").click(function () {
+            $("#removepreview").remove();
+            $("#rpreview").val("Removed");
+
+        });
+
+        $("#delete").click(function () {
+            $("#removepic").remove();
+            $("#remove").val("Removed");
+
+        });
+    });
+
+    $('.deleteItem').click(function (e) {
+           e.preventDefault();
+           var $ctrl = $(this);
+           if (confirm('Do you really want to delete this file?')) {
+               $.ajax({
+                   url: '@Url.Action("DeleteFile")',
+                   type: 'POST',
+                   data: { id: $(this).data('id') }
+               }).done(function (data) {
+                   if (data.Result == "OK") {
+                       $ctrl.closest('li').remove();
+                   }
+                   else if (data.Result.Message) {
+                       alert(data.Result.Message);
+                   }
+               }).fail(function () {
+                   alert("There is something wrong. Please try again.");
+               })
+
+           }
+       });
+</script>
