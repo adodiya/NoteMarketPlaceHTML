@@ -14,6 +14,8 @@ using System.Net;
 using System.IO.Compression;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Ionic.Zip;
+using System.Web.Security;
 
 namespace NotesMarketPlace.Controllers
 {
@@ -27,7 +29,8 @@ namespace NotesMarketPlace.Controllers
         }
 
        
-    public ActionResult MyProfile()
+        //Edit the user information
+        public ActionResult MyProfile()
         {
             if (Session["UserID"] != null)
             {
@@ -35,31 +38,7 @@ namespace NotesMarketPlace.Controllers
 
 
                 int id = (int)Session["UserID"];
-                //User_UserProfile mymodel = new User_UserProfile();
-
-                // mymodel.UserProfile = db.UserProfiles.Find(9);
-                // mymodel.User = db.Users.Find(9);
-                // mymodel.User = db.Users.Find();*/
-
-                /* var getlist = db.Countries.ToList();
-                SelectList list = new SelectList(getlist, "CountryCode", "Name");
-                ViewBag.countrylist = list;
-               var genderlist = db.ReferenceDatas.Where(model => model.RefCategory.Equals("Gender")).ToList();
-                SelectList gender = new SelectList(genderlist, "ID", "Value");
-                ViewBag.data = genderlist;
-
-                var phonecode = db.Countries.ToList();
-                SelectList code = new SelectList(phonecode, "CountryCode", "Name");
-                ViewBag.countrycode = code;*/
-
-                //  mymodel.UserProfile.CountryList = db.Countries.ToList<Country>();
-                // mymodel.UserProfile.GenderList = db.ReferenceDatas.ToList<ReferenceData>();
-                //  return View(mymodel);
-                //}
-                //else
-                //{
-
-                //}
+               
                 var userobj = db.Users.Where(model => model.ID.Equals(id)).FirstOrDefault();
                 var userprofileobj = db.UserProfiles.Where(model => model.UserID.Equals(id)).FirstOrDefault();
                 User_UserProfile obj = new User_UserProfile();
@@ -194,64 +173,33 @@ namespace NotesMarketPlace.Controllers
 
 
 
-        [HttpPost]
-        public JsonResult DeleteFile(string id)
-        {
-            if (String.IsNullOrEmpty(id))
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(new { Result = "Error" });
-            }
-            try
-            {
-                UserProfile detail = db.UserProfiles.Find(id);
-              
-                if (detail == null)
-                {
-                    Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    return Json(new { Result = "Error" });
-                }
-                UserProfile obj = detail;
-                obj.ProfilePic = null;
-                detail.ProfilePic = null;
-                //Remove from database
-               
-                db.Entry(detail).CurrentValues.SetValues(obj);
-                db.SaveChanges();
-
-              
-                return Json(new { Result = "OK" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { Result = "ERROR", Message = ex.Message });
-            }
-        }
-
-
-        [HttpGet] public ActionResult AddNote(int? noteid)
+      
+        //Add or edit the notes
+        [HttpGet] public ActionResult AddNote(int? id)
         {
             if (Session["UserID"] != null)
             {
+                var noteobj2 = db.Notes.Find(id);
                 Notes_NotesAttachment noteobj = new Notes_NotesAttachment();
-               /*Note noteobj = new Note();
-                noteobj.CategoryCollection = db.Categories.ToList<Category>();
-                noteobj.CountryCollection = db.Countries.ToList<Country>();
-                noteobj.TypeCollection = db.Types.ToList<Type>();
-                noteobj.SellerID = (int)Session["UserID"];
-              return View(noteobj);*/
-                if(noteid!=null)
+                
+                if (noteobj2!=null)
                 {
-                    var noteobj2 = db.Notes.Where(model => model.ID.Equals(noteid)).FirstOrDefault();
+                   
                     noteobj2.CategoryCollection = db.Categories.ToList<Category>(); 
                     noteobj2.CountryCollection= db.Countries.ToList<Country>();
-
-                    noteobj.AttachmentList = db.NotesAttachments.Where(model => model.NoteID.Equals(noteid)).ToList();
+                    noteobj2.TypeCollection = db.Types.ToList<Type>();
+                   
+                    noteobj.AttachmentList = db.NotesAttachments.Where(model => model.NoteID==id).ToList();
                     noteobj.Note = noteobj2;
+                    noteobj.NotesAttachment = new NotesAttachment();
+                  
                     return View(noteobj);
+                    
                 }
                 else
                 {
+                   
+                    noteobj.AttachmentList = new List<NotesAttachment>();
                     noteobj.Note = new Note();
                     noteobj.Note.CategoryCollection = db.Categories.ToList<Category>();
                     noteobj.Note.CountryCollection = db.Countries.ToList<Country>();
@@ -269,6 +217,7 @@ namespace NotesMarketPlace.Controllers
             
         }
 
+        //Save notes
         [HttpPost]
         public ActionResult AddNote(Notes_NotesAttachment noteobj1, HttpPostedFileBase previewfile, HttpPostedFileBase displaypic, HttpPostedFileBase[] attachmentfiles)
         {
@@ -276,9 +225,9 @@ namespace NotesMarketPlace.Controllers
             
             var allowedFileExtensions = new[]{".pdf"};
             Note noteobj = noteobj1.Note;
-            NotesAttachment attachobj = noteobj1.NotesAttachment;
+            NotesAttachment attachobj = new NotesAttachment();
             noteobj.SellerID = (int)Session["UserID"];
-            noteobj.Status = 4;
+            
 
             if (noteobj.IsPaid == true && noteobj.Price == null)
             {
@@ -288,54 +237,87 @@ namespace NotesMarketPlace.Controllers
             {
                 ModelState.AddModelError("Price", "Price cannot be 0 for paid notes");
             }
-            if (noteobj.IsPaid == false && noteobj.Price > 0)
-            {
-                ModelState.AddModelError("", "Price for free notes will be 0");
-            }
+           
             if (noteobj.IsPaid == true && noteobj.Preview == null)
             {
-                ModelState.AddModelError("", "Please add a preview fo rpaid notes");
+                ModelState.AddModelError("", "Please add a preview for paid notes");
             }
            
-            var noteExists = db.Notes.Find(noteobj.ID);
+
+            var noteExists = db.Notes.Where(model=>model.ID.Equals(noteobj.ID)).FirstOrDefault();
+            //Add Note
             if(noteExists==null)
             {
-                //Conditions for image and file upload
-                if (previewfile!=null && displaypic!=null)
+                if(noteobj.IsPaid==false)
+                {
+                    noteobj.Price = 0;
+                }
+                noteobj.Status = 4;
+                if (previewfile != null)
                 {
                     string _PreviewFileName = Path.GetFileNameWithoutExtension(previewfile.FileName);
                     string _PreviewFileExtension = Path.GetExtension(previewfile.FileName);
-                    string imagefileName = Path.GetFileNameWithoutExtension(displaypic.FileName);
-                    string imageextension = Path.GetExtension(displaypic.FileName);
+
+                    //Condition to allow only pdfs for preview file 
                     if (allowedFileExtensions.Contains(_PreviewFileExtension))
                     {
-                        if (allowedImageExtensions.Contains(imageextension))
-                        {
-                            imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                            noteobj.DisplayPic = "~/Uploaded_Images/" + imagefileName;
-                            imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
-                            displaypic.SaveAs(imagefileName);
-                            _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
-                            string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
-                            noteobj.Preview = _path;
-                            previewfile.SaveAs(_path);
-                            db.Notes.Add(noteobj);
-                            db.Configuration.ValidateOnSaveEnabled = false;
-                            db.SaveChanges();
-                            int NoteId = noteobj.ID;
+                        //Condition to allow only images
 
-                            //Multiple file upload start
-                            foreach (var attachment in attachmentfiles)
+                        _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
+                        string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
+                        noteobj.Preview = _path;
+                        previewfile.SaveAs(_path);
+                       
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Only pdfs are allowed");
+                    }
+                }
+                if (displaypic != null)
+                {
+
+                    string imagefileName = Path.GetFileNameWithoutExtension(displaypic.FileName);
+                    string imageextension = Path.GetExtension(displaypic.FileName);
+
+
+                    //Condition to allow only images
+                    if (allowedImageExtensions.Contains(imageextension))
+                    {
+                        imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
+                        noteobj.DisplayPic = "~/Uploaded_Images/" + imagefileName;
+                        imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
+                        displaypic.SaveAs(imagefileName);
+
+                      
+                      
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Only pdfs are allowed");
+                    }
+                }
+                noteobj.PublishedDate = DateTime.Now;
+                noteobj.CreatedBy = (int)Session["UserID"];
+                db.Notes.Add(noteobj);
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+                int NoteId = noteobj.ID;
+
+                //Multiple file upload start
+                foreach (var attachment in attachmentfiles)
                             {
                                 if (attachment.ContentLength > 0)
                                 {
                                     string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
                                     string _FileExtension = Path.GetExtension(previewfile.FileName);
+
+                                    //Condition to allow only pdfs for notes attachment
                                     if (allowedFileExtensions.Contains(_FileExtension))
                                     {
                                         _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
                                         string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                        
+
                                         attachobj.NoteID = NoteId;
                                         attachobj.FileName = _FileName;
                                         attachobj.FilePath = _attachmentpath;
@@ -344,140 +326,137 @@ namespace NotesMarketPlace.Controllers
                                         db.Configuration.ValidateOnSaveEnabled = false;
                                         db.SaveChanges();
                                     }
+
+                                 
                                     else
                                     {
                                         ModelState.AddModelError("", "Please choose only Image file");
                                     }
                                 }
                             }
-                            //multiple file upload end
-                            return RedirectToAction("Login", "Home");
+                //multiple file upload end
+
+                return View();
+                       
+               
+               
+            }
+
+            //Edit Note
+            else
+            {
+                noteobj.ModifiedBy = (int)Session["UserID"];
+                noteobj.ModifiedDate = DateTime.Now;
+                string forpreview = Request.Form["Preview"];
+                string fordisplay= Request.Form["Preview"];
+                if (noteobj.IsPaid==true && (previewfile == null && forpreview == "Removed"))
+                {
+                    ModelState.AddModelError("", "Add a file");
+                }
+
+                if(previewfile!=null)
+                {
+                    noteExists = noteobj;
+                    string _PreviewFileName = Path.GetFileNameWithoutExtension(previewfile.FileName);
+                    string _PreviewFileExtension = Path.GetExtension(previewfile.FileName);
+                  
+                    if (allowedFileExtensions.Contains(_PreviewFileExtension))
+                    {
+                      
+                            _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
+                            string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
+                            noteExists.Preview = _path;
+                            previewfile.SaveAs(_path);
+                           
+
+
+
+
+                           
+                        }
+                       
+                   
+                    else
+                    {
+                        ModelState.AddModelError("", "");
+                    }
+                }
+           
+                else
+                {
+
+                    if (forpreview == "Removed")
+                    {
+                        noteExists = noteobj;
+                       noteExists.Preview = null;
+
+                    }
+                    else
+                    {
+                        noteobj.Preview = noteExists.Preview;
+                        noteExists = noteobj;
+                    }
+
+                }
+                if (displaypic!=null)
+                {
+                   
+                        noteExists = noteobj;
+                       
+                        string imagefileName = Path.GetFileNameWithoutExtension(displaypic.FileName);
+                        string imageextension = Path.GetExtension(displaypic.FileName);
+                        
+                            if (allowedImageExtensions.Contains(imageextension))
+                            {
+                                imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
+                                noteExists.DisplayPic = "~/Uploaded_Images/" + imagefileName;
+                                imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
+                                displaypic.SaveAs(imagefileName);
+                               
+                               
+
+
+
                         }
                         else
                         {
                             ModelState.AddModelError("", "");
                         }
                     }
-                    else
-                    {
-                        ModelState.AddModelError("", "");
-                    }
-                }
-
-
-                else if (previewfile ==null && displaypic!=null)
-                {
-                    string imagefileName = Path.GetFileNameWithoutExtension(displaypic.FileName);
-                    string imageextension = Path.GetExtension(displaypic.FileName);
-                    if (allowedImageExtensions.Contains(imageextension))
-                    {
-                        imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                        noteobj.DisplayPic = "~/Uploaded_Images/" + imagefileName;
-                        imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
-                        displaypic.SaveAs(imagefileName);
-
-                        db.Notes.Add(noteobj);
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
-                        int NoteId = noteobj.ID;
-
-                       
-                        //Multiple file upload start
-                        foreach (var attachment in attachmentfiles)
-                        {
-                            if (attachment.ContentLength > 0)
-                            {
-                                NotesAttachment attachobj1 = new NotesAttachment();
-                                string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                                string _FileExtension = Path.GetExtension(attachment.FileName);
-                                if (allowedFileExtensions.Contains(_FileExtension))
-                                {
-                                    _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                    string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                    attachobj1.NoteID = NoteId;
-                                    attachobj1.FileName = _FileName;
-                                    attachobj1.FilePath = _attachmentpath;
-                                    attachment.SaveAs(_attachmentpath);
-                                    db.NotesAttachments.Add(attachobj1);
-                                    db.Configuration.ValidateOnSaveEnabled = false;
-                                    db.SaveChanges();
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError("", "Please choose only Image file");
-                                }
-                            }
-                        }
-                        //multiple file upload end
-                        return RedirectToAction("Login", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "");
-                    }
-                }
-
-                else if (previewfile.ContentLength > 0 && displaypic.ContentLength < 0)
-                {
-                    string _PreviewFileName = Path.GetFileNameWithoutExtension(previewfile.FileName);
-                    string _PreviewFileExtension = Path.GetExtension(previewfile.FileName);
-                    if (allowedFileExtensions.Contains(_PreviewFileExtension))
-                    {
-                        _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
-                        string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
-                        noteobj.Preview = _path;
-                        previewfile.SaveAs(_path);
-                        db.Notes.Add(noteobj);
-
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
-                        int NoteId = noteobj.ID;
-
-
-
-                        //Multiple file upload start
-                        foreach (var attachment in attachmentfiles)
-                        {
-                            if (attachment.ContentLength > 0)
-                            {
-                                string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                                string _FileExtension = Path.GetExtension(previewfile.FileName);
-                                if (allowedFileExtensions.Contains(_FileExtension))
-                                {
-                                    _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                    string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                    attachobj.NoteID = NoteId;
-                                    attachobj.FileName = _FileName;
-                                    attachobj.FilePath = _attachmentpath;
-                                    attachment.SaveAs(_attachmentpath);
-                                    db.NotesAttachments.Add(attachobj);
-                                    db.Configuration.ValidateOnSaveEnabled = false;
-                                    db.SaveChanges();
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError("", "Please choose only Image file");
-                                }
-                            }
-                        }
-                        //multiple file upload end
-
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Please choose only Image file");
-                    }
-                }
-
-
+                
                 else
                 {
-                    db.Notes.Add(noteobj);
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.SaveChanges();
-                    int NoteId = noteobj.ID;
+                    if (fordisplay == "Removed")
+                    {
+                        noteExists = noteobj;
 
-                    //Multiple file upload start
+
+
+
+
+
+
+
+                    }
+                    else
+                    {
+                        noteobj.DisplayPic = noteExists.DisplayPic;
+                        noteExists = noteobj;
+                    }
+
+                }
+
+                int count = db.NotesAttachments.Where(model => model.NoteID.Equals(noteobj.ID)).Count();
+                if (attachmentfiles == null && count==0)
+                {
+                   
+                    
+                        ModelState.AddModelError("Price", "Add Attachments");
+                    
+
+                }
+                else
+                {
                     foreach (var attachment in attachmentfiles)
                     {
                         if (attachment.ContentLength > 0)
@@ -488,11 +467,19 @@ namespace NotesMarketPlace.Controllers
                             {
                                 _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
                                 string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                attachobj.NoteID = NoteId;
+
+                                attachobj.NoteID = noteobj.ID;
                                 attachobj.FileName = _FileName;
                                 attachobj.FilePath = _attachmentpath;
                                 attachment.SaveAs(_attachmentpath);
                                 db.NotesAttachments.Add(attachobj);
+                                db.Configuration.ValidateOnSaveEnabled = false;
+                                db.SaveChanges();
+                                
+                                var update = db.Notes.Find(noteobj.ID);
+                                db.Entry(update).CurrentValues.SetValues(noteExists);
+
+                                //db.Entry(userprofileobj).State = EntityState.Modified;
                                 db.Configuration.ValidateOnSaveEnabled = false;
                                 db.SaveChanges();
                             }
@@ -502,13 +489,10 @@ namespace NotesMarketPlace.Controllers
                             }
                         }
                     }
-                    //multiple file upload end
                 }
-            }
+             
+               
 
-            else
-            {
-                
             }
            
             
@@ -519,338 +503,7 @@ namespace NotesMarketPlace.Controllers
             
            
 
-            //Conditions for image and file upload
-            /*if (previewfile.ContentLength > 0 && noteobj.DisplayImageData != null)
-            {
-                string _PreviewFileName = Path.GetFileNameWithoutExtension(previewfile.FileName);
-                string _PreviewFileExtension = Path.GetExtension(previewfile.FileName);
-                string imagefileName = Path.GetFileNameWithoutExtension(noteobj.DisplayImageData.FileName);
-                string imageextension = Path.GetExtension(noteobj.DisplayImageData.FileName);
-                if (allowedFileExtensions.Contains(_PreviewFileExtension))
-                {
-                    if (allowedImageExtensions.Contains(imageextension))
-                    {
-                        imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                        noteobj.DisplayPic = "~/Uploaded_Images/" + imagefileName;
-                        imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
-                        noteobj.DisplayImageData.SaveAs(imagefileName);
-                        _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
-                        string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
-                        noteobj.Preview = _path;
-                        previewfile.SaveAs(_path);
-                        db.Notes.Add(noteobj);
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
-                        int NoteId = noteobj.ID;
-
-                        //Multiple file upload start
-                        foreach (var attachment in attachobj.attachmentfiles)
-                        {
-                            if (attachment.ContentLength > 0)
-                            {
-                                string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                                string _FileExtension = Path.GetExtension(previewfile.FileName);
-                                if (allowedFileExtensions.Contains(_FileExtension))
-                                {
-                                    _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                    string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                    attachobj.NoteID = NoteId;
-                                    attachobj.FileName = _FileName;
-                                    attachobj.FilePath = _attachmentpath;
-                                    attachment.SaveAs(_attachmentpath);
-                                    db.NotesAttachments.Add(attachobj);
-                                    db.Configuration.ValidateOnSaveEnabled = false;
-                                    db.SaveChanges();
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError("", "Please choose only Image file");
-                                }
-                            }
-                        }
-                        //multiple file upload end
-                        return RedirectToAction("Login", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "");
-                }
-            }
-            
-            
-            else if (previewfile.ContentLength < 0 && noteobj.DisplayImageData != null)
-            {
-                string imagefileName = Path.GetFileNameWithoutExtension(noteobj.DisplayImageData.FileName);
-                string imageextension = Path.GetExtension(noteobj.DisplayImageData.FileName);
-                if (allowedImageExtensions.Contains(imageextension))
-                {
-                    imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                    noteobj.DisplayPic = "~/Uploaded_Images/" + imagefileName;
-                    imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
-                    noteobj.DisplayImageData.SaveAs(imagefileName);
-                   
-                    db.Notes.Add(noteobj);
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.SaveChanges();
-                    int NoteId = noteobj.ID;
-
-                    //Multiple file upload start
-                    foreach (var attachment in attachobj.attachmentfiles)
-                    {
-                        if (attachment.ContentLength > 0)
-                        {
-                            string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                            string _FileExtension = Path.GetExtension(previewfile.FileName);
-                            if (allowedFileExtensions.Contains(_FileExtension))
-                            {
-                                _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                attachobj.NoteID = NoteId;
-                                attachobj.FileName = _FileName;
-                                attachobj.FilePath = _attachmentpath;
-                                attachment.SaveAs(_attachmentpath);
-                                db.NotesAttachments.Add(attachobj);
-                                db.Configuration.ValidateOnSaveEnabled = false;
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Please choose only Image file");
-                            }
-                        }
-                    }
-                    //multiple file upload end
-                    return RedirectToAction("Login", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "");
-                }
-            }
-            
-            else if (previewfile.ContentLength > 0 && noteobj.DisplayImageData == null)
-            {
-                string _PreviewFileName = Path.GetFileNameWithoutExtension(previewfile.FileName);
-                string _PreviewFileExtension = Path.GetExtension(previewfile.FileName);
-                if (allowedFileExtensions.Contains(_PreviewFileExtension))
-                {
-                    _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
-                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
-                    noteobj.Preview = _path;
-                    previewfile.SaveAs(_path);
-                    db.Notes.Add(noteobj);
-
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.SaveChanges();
-                    int NoteId = noteobj.ID;
-
-
-
-                    //Multiple file upload start
-                    foreach (var attachment in attachobj.attachmentfiles)
-                    {
-                        if (attachment.ContentLength > 0)
-                        {
-                            string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                            string _FileExtension = Path.GetExtension(previewfile.FileName);
-                            if (allowedFileExtensions.Contains(_FileExtension))
-                            {
-                                _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                attachobj.NoteID = NoteId;
-                                attachobj.FileName = _FileName;
-                                attachobj.FilePath = _attachmentpath;
-                                attachment.SaveAs(_attachmentpath);
-                                db.NotesAttachments.Add(attachobj);
-                                db.Configuration.ValidateOnSaveEnabled = false;
-                                db.SaveChanges();
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("", "Please choose only Image file");
-                            }
-                        }
-                    }
-                    //multiple file upload end
-
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Please choose only Image file");
-                }
-               }
-           
-            
-            else
-            {
-                db.Notes.Add(noteobj);
-                db.Configuration.ValidateOnSaveEnabled = false;
-                db.SaveChanges();
-                int NoteId = noteobj.ID;
-
-                //Multiple file upload start
-                foreach (var attachment in attachobj.attachmentfiles)
-                {
-                    if (attachment.ContentLength > 0)
-                    {
-                        string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                        string _FileExtension = Path.GetExtension(previewfile.FileName);
-                        if (allowedFileExtensions.Contains(_FileExtension))
-                        {
-                            _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                            string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                            attachobj.NoteID = NoteId;
-                            attachobj.FileName = _FileName;
-                            attachobj.FilePath = _attachmentpath;
-                            attachment.SaveAs(_attachmentpath);
-                            db.NotesAttachments.Add(attachobj);
-                            db.Configuration.ValidateOnSaveEnabled = false;
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "Please choose only Image file");
-                        }
-                    }
-                }
-                //multiple file upload end
-            } */
-
-           /* if (previewfile.ContentLength > 0)
-            {
-                string _PreviewFileName = Path.GetFileNameWithoutExtension(previewfile.FileName);
-                string _PreviewFileExtension = Path.GetExtension(previewfile.FileName);
-                if (allowedFileExtensions.Contains(_PreviewFileExtension)) 
-                {
-                    if(noteobj.DisplayImageData != null)
-                    {
-                        string imagefileName = Path.GetFileNameWithoutExtension(noteobj.DisplayImageData.FileName);
-                        string imageextension = Path.GetExtension(noteobj.DisplayImageData.FileName);
-                        if (allowedImageExtensions.Contains(imageextension))
-                        {
-                            imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                            noteobj.DisplayPic = "~/Uploaded_Images/" + imagefileName;
-                            imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
-                            noteobj.DisplayImageData.SaveAs(imagefileName);
-                            _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
-                            string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
-                            noteobj.Preview = _path;
-                            previewfile.SaveAs(_path);
-                            db.Notes.Add(noteobj);
-                           
-                            db.Configuration.ValidateOnSaveEnabled = false;
-                            db.SaveChanges();
-                            int NoteId = noteobj.ID;
-                          
-                           
-
-                            //Multiple file upload start
-                            foreach (var attachment in attachobj.attachmentfiles)
-                            {
-                                if (attachment.ContentLength > 0)
-                                {
-                                    string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                                    string _FileExtension = Path.GetExtension(previewfile.FileName);
-                                    if (allowedFileExtensions.Contains(_FileExtension))
-                                    {
-                                        _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                        string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                        attachobj.NoteID = NoteId;
-                                        attachobj.FileName = _FileName;
-                                        attachobj.FilePath = _attachmentpath;
-                                        attachment.SaveAs(_attachmentpath);
-                                        db.NotesAttachments.Add(attachobj);
-                                        db.Configuration.ValidateOnSaveEnabled = false;
-                                        db.SaveChanges();
-                                    }
-                                    else
-                                    {
-                                        ModelState.AddModelError("", "Please choose only Image file");
-                                    }
-                                }
-                            }
-                            //multiple file upload end
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("DisplayPic", "Please choose only Image file");
-                        }
-                        
-                    }
-                    else
-                    {
-                        _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
-                        string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
-                        noteobj.Preview = _path;
-                        previewfile.SaveAs(_path);
-                        db.Notes.Add(noteobj);
-                        db.Configuration.ValidateOnSaveEnabled = false;
-                        db.SaveChanges();
-                        int NoteId = noteobj.ID;
-                       
-                        //Multiple file upload start
-                        foreach(var attachment in attachobj.attachmentfiles)
-                        {
-                            if(attachment.ContentLength>0)
-                            {
-                                string _FileName= Path.GetFileNameWithoutExtension(attachment.FileName);
-                                string _FileExtension = Path.GetExtension(previewfile.FileName);
-                                if (allowedFileExtensions.Contains(_FileExtension))
-                                {
-                                    _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                    string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
-                                    attachobj.NoteID = NoteId;
-                                    attachobj.FileName = _FileName;
-                                    attachobj.FilePath = _attachmentpath;
-                                    attachment.SaveAs(_attachmentpath);
-                                    db.NotesAttachments.Add(attachobj);
-                                    db.Configuration.ValidateOnSaveEnabled = false;
-                                    db.SaveChanges();
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError("", "Please choose only Image file");
-                                }
-                              }
-                        }
-                       //multiple file upload end
-                        
-                        return RedirectToAction("Login", "Home");
-                    }
-                   
-                }
-                else
-                {
-                    ModelState.AddModelError("DisplayPic", "Only pdfs are allowed");
-                }
-            }*/
-
-
-
-
-            
-
-            /*      if (noteobj.DisplayImageData != null) 
-            { 
-                string imagefileName = Path.GetFileNameWithoutExtension(noteobj.DisplayImageData.FileName);
-                string imageextension = Path.GetExtension(noteobj.DisplayImageData.FileName);
-                if (allowedImageExtensions.Contains(imageextension))
-                {
-                    imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                    noteobj.DisplayPic = "~/Uploaded_Images/" + imagefileName;
-                    imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
-                    noteobj.DisplayImageData.SaveAs(imagefileName);
-                }
-                else
-                {
-                    ModelState.AddModelError("DisplayPic", "Please choose only Image file");
-                }
-            }*/
+         
            
             noteobj.CategoryCollection = db.Categories.ToList<Category>();
             noteobj.CountryCollection = db.Countries.ToList<Country>();
@@ -860,115 +513,214 @@ namespace NotesMarketPlace.Controllers
            
         }
 
-       [HttpPost]
-        public JsonResult Delete(int id)
+        //Publish notes
+        public ActionResult PublishNote(int id)
+        {
+            
+          var obj = db.Notes.Find(id);
+                obj.Status = 4;
+                db.SaveChanges();
+                return RedirectToAction("AddNote", "User", new { id = obj.ID });
+                
+        }
+       
+        
+        //Delete previously stored notes attachmensts
+        [HttpPost]
+        public JsonResult DeleteFile(int id)
         {
             NotesAttachment file = db.NotesAttachments.Find(id);
             db.NotesAttachments.Remove(file);
-            db.SaveChanges();
-            return Json(new { Result = "Done" });
-        }
-        public FileResult DownloadFile(String p, String d)
-        {
-            return File(p, System.Net.Mime.MediaTypeNames.Application.Octet, d);
-        }
-        public ActionResult SearchNotes(int? page)
-        {
-
-
             
-            return View(db.Notes.ToList().ToPagedList(page??1,6));
+            db.SaveChanges();
+            return Json(new { Result = "OK" });
         }
 
-      
+        public ActionResult SearchNotes(int? page, string searchstring, string searchCategory, string searchType, string searchUniversity, string searchCourse, string searchCountry, string searchRating)
+        {
+            ViewBag.searchCategory = new SelectList(db.Categories.ToList(), "Name", "Name");
+            ViewBag.searchType = new SelectList(db.Types.ToList(), "Name", "Name");
+            ViewBag.searchCountry = new SelectList(db.Countries.ToList(), "Name", "Name");
+            ViewBag.searchCourse = new SelectList(db.Notes.ToList(), "Course", "Course");
+
+
+            var notes = db.Notes.Where(model => model.Status == 5).OrderBy(model => model.PublishedDate);
+            if (!string.IsNullOrEmpty(searchstring))
+            {
+                notes = notes.Where(model => model.Title.Contains(searchstring) || model.Category.Name.Contains(searchstring) || model.User.FirstName.Contains(searchstring) || model.User.LastName.Contains(searchstring) || model.ReferenceData.Value.Contains(searchstring) || model.Price.Equals(searchstring)).OrderBy(model => model.PublishedDate);
+            }
+
+            if (!string.IsNullOrEmpty(searchCategory))
+            {
+                notes = notes.Where(model => model.Category.Name.Contains(searchCategory)).OrderBy(model => model.PublishedDate);
+            }
+
+            if (!string.IsNullOrEmpty(searchType))
+            {
+                notes = notes.Where(model => model.Type.Name == searchType).OrderBy(model => model.PublishedDate);
+            }
+            if (!string.IsNullOrEmpty(searchCountry))
+            {
+                notes = notes.Where(model => model.Country.Name == searchCountry).OrderBy(model => model.PublishedDate);
+            }
+            if (!string.IsNullOrEmpty(searchCourse))
+            {
+                notes = notes.Where(model => model.Course.Contains(searchCourse)).OrderBy(model => model.PublishedDate);
+            }
+            if (!string.IsNullOrEmpty(searchUniversity))
+            {
+                notes = notes.Where(model => model.UniversityName.Contains(searchUniversity)).OrderBy(model => model.PublishedDate);
+            }
+
+            return View(notes.ToPagedList(page ?? 1, 5));
+        }
+
+
         public ActionResult BuyerRequest(int? page)
         {
-            return View(db.Downloads.Where(model=>model.DownloadAllowed.Equals(false)).ToList().ToPagedList(page??1,3));
+            if (Session["UserID"] != null)
+            {
+                int id = (int)Session["UserID"];
+                var downloads = db.Downloads.Where(model => model.DownloadAllowed.Equals(false)).ToList().ToPagedList(page ?? 1, 3);
+                return View(downloads.ToPagedList(page ?? 1, 2));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+           
         }
 
         [HttpGet]public ActionResult NotesDetails(int id)
         {
-           
-           
-            return View(db.Notes.Single(model => model.ID == id));
+
+            var obj1 = db.Notes.Where(model=>model.ID.Equals(id)).FirstOrDefault();
+            return View(obj1);
         }
 
-        public FileResult DownloadNote(int bookid)
+        public ActionResult FileDownload(int id)
         {
-            Note noteobj = db.Notes.Find(bookid);
-            int count= db.NotesAttachments.Where(model => model.NoteID.Equals(bookid)).Count(); 
-            Download entry = new Download();
-            entry.NoteID = noteobj.ID;
-            entry.Seller = noteobj.SellerID;
-            entry.Downloader = (int)Session["UserID"];
-            entry.DownloadAllowed = true;
-            entry.IsAttachmentDownloaded = true;
-           
-                NotesAttachment obj = db.NotesAttachments.Where(model => model.NoteID.Equals(bookid)).FirstOrDefault();
-                byte[] fileBytes = System.IO.File.ReadAllBytes(Url.Content(obj.FilePath));
-                string filename = obj.FileName;
-                return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
-
-           
-            
-           
-        }
-
-        public ActionResult Dashboard()
-        {
-            int id = (int)Session["UserID"];
-
-            UserProfile img = new UserProfile();
-            img = db.UserProfiles.Where(model => model.UserID.Equals(id)).FirstOrDefault();
-          
-          //  var viewmodel = new MyViewModel();
-           // viewmodel.count = db.Downloads.Where(model => model.Seller.Equals(id) && model.IsAttachmentDownloaded.Equals(true)).Count();
-            //viewmodel.sum =(decimal)db.Downloads.Where(model => model.Seller.Equals(id) && model.IsAttachmentDownloaded.Equals(true) && model.IsPaid.Equals(true)).Select(model => model.Price).Sum();
-            //viewmodel.ListA = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status != 4).ToList();
-            //viewmodel.ListB = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status.Equals(6)).ToList();
-            return View(img);
-        }
-        public class MyViewModel
-        {
-            public List<Note> ListA { get; set; }
-            public List<Note> ListB { get; set; }
-
-            public int count { get; set; }
-
-            public decimal sum { get; set; }
-        }
-        /*  public List<Country> GetCountry()
-          {
-              List<Country> countries = db.Countries.ToList();
-              return countries;
-          }
-
-
-
-          public List<Type> GetTypelist()
-          {
-              List<Type> types = db.Types.ToList();
-              return types;
-          }*/
-
-
-        public ActionResult MyDownloads()
-        {
-            if (Session["UserID"]!=null)
-            {
-                return View(db.Downloads.Where(model=>model.Downloader.Equals((int)Session["UserID"]) && (model.IsAttachmentDownloaded.Equals(true) || model.DownloadAllowed.Equals(true))).ToList());
-            }
+            var obj1 = db.Downloads.Where(model => model.NoteID.Equals(id) && model.Downloader.Equals(5) && model.IsAttachmentDownloaded == true).FirstOrDefault();
+            if (obj1 != null) 
+            { 
+                return DownloadNotes(id); }
             else
             {
+                Note noteobj = db.Notes.Find(id);
+                int count = db.NotesAttachments.Where(model => model.NoteID == id).Count();
+                NotesAttachment obj = db.NotesAttachments.Where(model => model.NoteID.Equals(id)).FirstOrDefault();
+                Download entry = new Download();
+                entry.NoteID = noteobj.ID;
+                entry.Seller = noteobj.SellerID;
+                entry.Downloader = (int)Session["UserID"];
+                entry.DownloadAllowed = true;
+                entry.IsAttachmentDownloaded = true;
+                entry.AttachmentPath = obj.FilePath;
+                entry.IsPaid = noteobj.IsPaid;
+                entry.Price = 0;
+                entry.NoteTitle = noteobj.Title;
+                entry.NoteCategory = noteobj.Category.Name;
+                db.Downloads.Add(entry);
+
+                db.SaveChanges();
+                
+                 return DownloadNotes(id);
+                
+                
+
+                
+            }
+           
+        }
+
+        public FileResult DownloadNotes(int id)
+        {
+            //Note noteobj = db.Notes.Find(id);
+            int count= db.NotesAttachments.Where(model => model.NoteID==id).Count();
+           
+           // NotesAttachment obj = db.NotesAttachments.Where(model => model.NoteID.Equals(id)).FirstOrDefault();
+         
+           if(count>1)
+            {
+                using (ZipFile zip = new ZipFile())
+                {
+                    zip.AlternateEncodingUsage = ZipOption.AsNecessary;
+                    zip.AddDirectoryByName("Files");
+                    foreach (var file in db.NotesAttachments.Where(model => model.NoteID == id))
+                    {
+                        zip.AddFile(@Url.Content(file.FilePath), "Files");
+
+                    }
+                    string zipName = String.Format("FilesZip_{0}.zip", DateTime.Now.ToString("yyyy-MMM-dd-HHmmss"));
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        zip.Save(memoryStream);
+                        return File(memoryStream.ToArray(), "application/zip", zipName);
+                    }
+                }
+            }
+
+            else {
+                var obj = db.NotesAttachments.Find(id);
+                byte[] fileBytes = System.IO.File.ReadAllBytes(Url.Content(obj.FilePath));
+                string filename = obj.FileName;
+                return File(fileBytes, "application/pdf", filename);
+            }
+
+
+
+
+
+
+        }
+
+        public ActionResult Dashboard(int?page1, int? page2)
+        {
+            int id = 10;
+
+
+            
+          
+           
+           ViewBag.Count = db.Downloads.Where(model=>model.Seller.Equals(id)&&model.IsAttachmentDownloaded.Equals(true)).Select(model => model.NoteID).Distinct().Count();
+            ViewBag.Sum = db.Downloads.Where(model => model.Seller.Equals(id) && model.DownloadAllowed.Equals(true) && model.IsPaid.Equals(true)).Select(model => model.Price).Sum();
+
+            ViewBag.MyDownloads = db.Downloads.Where(model => model.Downloader.Equals(id) && model.IsAttachmentDownloaded.Equals(true)).Count();
+            ViewBag.MyRejected = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status == 4).Count();
+
+            
+            ViewBag.BuyerRequest = db.Downloads.Where(model => model.Seller.Equals(id) && model.DownloadAllowed==false).Count();
+            Note note = new Note();
+            note.Publishednotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status == 4).OrderBy(model => model.PublishedDate).ToPagedList(page1 ?? 1, 3);
+            note.Inprogressnotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status == 5).OrderBy(model => model.PublishedDate).ToPagedList(page2 ?? 1, 3);
+
+
+            return View(note);
+        }
+       
+       
+
+        public ActionResult MyDownloads(int? page)
+        {
+           if (Session["UserID"]!=null)
+           {
+                int id = (int)Session["UserID"];
+                var downloads = db.Downloads.Where(model => model.Downloader.Equals(10) && (model.IsAttachmentDownloaded.Equals(true) || model.DownloadAllowed.Equals(true)));
+                return View(downloads.ToPagedList(page??1,2));
+           }
+            else
+           {
                 return RedirectToAction("Login", "Home");
             }
         }
 
-        public ActionResult MySoldNotes()
+        public ActionResult MySoldNotes(int? page)
         {
             if(Session["UserID"] != null)
             {
-                return View(db.Downloads.Where(model=>model.Seller.Equals((int)Session["UserID"])&& model.DownloadAllowed.Equals(true)).ToList());
+                int id = (int)Session["UserID"];
+                var soldnotes = db.Downloads.Where(model => model.Seller.Equals(id) && model.DownloadAllowed == true);
+                return View(soldnotes);
             }
             else
             {
@@ -976,11 +728,13 @@ namespace NotesMarketPlace.Controllers
             }
         }
 
-        public ActionResult MyRejectedNotes()
+        public ActionResult MyRejectedNotes(int? page)
         {
             if (Session["UserID"] != null)
             {
-                return View(db.Notes.Where(model=>model.SellerID.Equals((int)Session["UserID"])&&model.Status.Equals(6)).ToList());
+                int id = (int)Session["UserID"];
+                var rejectednotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status.Equals(6));
+                return View(rejectednotes);
             }
             else
             {
@@ -1041,15 +795,15 @@ namespace NotesMarketPlace.Controllers
 
         public ActionResult ChangePassword()
         {
-           // if (Session["UserID"] != null)
-            //{
+            if (Session["UserID"] != null)
+            {
                
                 return View();
-            //}
-            //else
-            //{
-             //   return RedirectToAction("Login", "Home");
-            //}
+            }
+            else
+           {
+               return RedirectToAction("Login", "Home");
+            }
 
         }
 
@@ -1086,6 +840,68 @@ namespace NotesMarketPlace.Controllers
                 return View();
             }
            
+        }
+
+
+      
+        public ActionResult ReportedIssues(FormCollection form, int id)
+        {
+            var find = db.ReportedIssues.Where(model => model.ReportedByID.Equals((int)Session["UserID"])).FirstOrDefault();
+            if(find==null)
+            {
+                var downloadobj = db.Downloads.Where(model => model.NoteID.Equals(id)).FirstOrDefault();
+                ReportedIssue obj = new ReportedIssue();
+                obj.ReportedByID = (int)Session["UserID"];
+                obj.Remarks = form["Comments"];
+                obj.ID = id;
+                obj.DownloadID = downloadobj.ID;
+                obj.NoteID = id;
+                db.ReportedIssues.Add(obj);
+                db.SaveChanges();
+                return View();
+            }
+            else
+            {
+                ViewBag.Message = "You have already given your feedback";
+                return View();
+            }
+            
+
+        }
+
+        public ActionResult Addreview(FormCollection form, int id)
+
+        {
+            if(Session["UserID"]!=null)
+            {
+                int userid = (int)Session["UserID"];
+                var downloadId = db.Downloads.Where(model => model.Seller.Equals(userid) && model.NoteID.Equals(id)).FirstOrDefault();
+               string rate = form["rate"];
+                string comments = form["comments"];
+                NotesReview review = new NotesReview();
+                review.Ratings = decimal.Parse(rate);
+                review.ReviewedBy = userid;
+                review.CreatedDate = DateTime.Now;
+                review.CreatedBy= userid;
+                review.DownloadID = downloadId.ID;
+                review.NoteID = id;
+                review.Comments = comments;
+                db.NotesReviews.Add(review);
+                db.SaveChanges();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+             
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon(); // it will clear the session at the end of request
+            return RedirectToAction("Index", "Home");
         }
 
     }
