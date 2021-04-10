@@ -1,0 +1,313 @@
+﻿@model NotesMarketPlace.Models.User
+
+@{
+    ViewBag.Title = "Members";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div id="members-page">
+<section id="members">
+    <div class="content-box-md">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4"><h3>Members</h3></div>
+                <div class="col-md-8">
+                    <form class="form-inline">
+
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-secondary">Search</button>
+                            <!-- Button trigger modal -->
+                            <!-- Modal -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">SR NO.</th>
+                            <th scope="col">FIRST NAME</th>
+                            <th scope="col">LAST NAME</th>
+                            <th scope="col">EMAIL</th>
+                            <th scope="col">JOINING DATE</th>
+                            <th scope="col">UNDER REVIEW NOTES</th>
+                            <th scope="col">PUBLISHED NOTES</th>
+                            <th scope="col">DOWNLOADED NOTES</th>
+                            <th scope="col">TOTAL EXPENSES</th>
+                            <th scope="col">TOTAL EARNINGS</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <td>1</td>
+
+                    <td>Khyati</td>
+                    <td>Patel</td>
+                    <td>testing123@gmail.com</td>
+                    <td>09-10-2020 11:24</td>
+                    <td><a href="#">19</a></td>
+                    <td><a href="#">10</a></td>
+                    <td><a href="#">22</a></td>
+                    <td><a href="#">$220</a></td>
+                    <td>$170</td>
+                    <td>
+                        <span class="dropdown">
+                            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">View More Details</a>
+                                <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+                            </div>
+                        </span>
+                    </td>
+                    <tr>
+
+                        <td>2</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>4</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>5</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+
+                    <td>6</td>
+
+                    <td>Khyati</td>
+                    <td>Patel</td>
+                    <td>testing123@gmail.com</td>
+                    <td>09-10-2020 11:24</td>
+                    <td><a href="#">19</a></td>
+                    <td><a href="#">10</a></td>
+                    <td><a href="#">22</a></td>
+                    <td><a href="#">$220</a></td>
+                    <td>$170</td>
+                    <td>
+                        <span class="dropdown">
+                            <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">View More Details</a>
+                                <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+                            </div>
+                        </span>
+                    </td>
+                    <tr>
+
+                        <td>7</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>9</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>10</td>
+                        <td>Khyati</td>
+                        <td>Patel</td>
+                        <td>testing123@gmail.com</td>
+                        <td>09-10-2020 11:24</td>
+                        <td><a href="#">19</a></td>
+                        <td><a href="#">10</a></td>
+                        <td><a href="#">22</a></td>
+                        <td><a href="#">$220</a></td>
+                        <td>$170</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">View More Details</a>
+                                    <a class="dropdown-item deactivate-btn" href="#" role="button">Deactivate</a>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <section id="pagination1">
+        <nav>
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true"><i class="fa fa-chevron-left" aria-hidden="true"></i></span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link btn-pagination" href="#1">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true"><i class="fa fa-chevron-right" aria-hidden="true"></i></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </section>
+</section>
+</div>

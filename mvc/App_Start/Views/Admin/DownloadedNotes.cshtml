@@ -1,0 +1,117 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<NotesMarketPlace.Models.Download>
+
+@{
+    ViewBag.Title = "DownloadedNotes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/responsive-tabs.min.css")
+
+
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/jquery")
+    <link href="~/Content/custom/downloaded-notes.css" rel="stylesheet" />
+}
+
+<div id="downloaded-notes-page">
+    <section id="downloaded-notes">
+        <div class="content-box-md">
+            <div class="container">
+                <h1>Downloaded Notes</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <form>
+                            <div class="select-3">
+                                <div class="form-group1">
+                                    <label>Note</label><br>
+                                    <select id="inputState" class="form-control">
+                                        <option selected>Rahul Shah
+                                        <option>IT</option>
+                                        <option>Science</option>
+                                    </select>
+                                </div>
+                                <div class="form-group2">
+                                    <label>Seller</label><br>
+                                    <select id="seller" class="form-control">
+                                        <option selected>Rahul Shah
+                                        <option>IT</option>
+                                        <option>Science</option>
+                                    </select>
+                                </div>
+                                <div class="form-group3">
+                                    <label>Buyer</label><br>
+                                    <select id="buyer" class="form-control">
+                                        <option selected>Rahul Shah
+                                        <option>IT</option>
+                                        <option>Science</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <form class="form-inline">
+
+                            <div class="form-group has-search">
+                                <span class="fa fa-search form-control-feedback"></span>
+                                <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-outline-secondary">Search</button>
+                                <!-- Button trigger modal -->
+                                <!-- Modal -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+                               <tr>
+                                <th scope="col">SR NO.</th>
+                                <th scope="col">NOTE TITLE</th>
+                                <th scope="col">CATEGORY</th>
+                                <th scope="col">BUYER</th>
+                                <th scope="col">SELLER</th>
+                                <th scope="col">SELL TYPE</th>
+                                <th scope="col">PRICE</th>
+                                <th scope="col">DOWNLOADED DATE/TIME</th>
+                                <th scope="col"></th>
+                            </tr>
+                        @foreach(var item in Model) {
+                               <tr>
+                                   <td>1</td>
+
+
+                                   <td><a href="#">@item.NoteTitle</a></td>
+                                   <td>@item.NoteCategory</td>
+                                   <td>@item.User.FullName<span><a @Url.Action("MemberDetails",new { id=item.User.ID})><img src="~/images/eye.png"></a></span></td>
+                                   <td>@item.User1.FullName<span><a  @Url.Action("MemberDetails",new { id=item.User.ID})><img src="~/images/eye.png"></a></span></td>
+                                   <td>@item.Note.ReferenceData.Value</td>
+                                   <td>@item.IsPaid</td>
+                                   <td>@item.Price</td>
+                                   <td>@item.DownloadDate</td>
+
+                                   <td>
+                                       <span class="dropdown">
+                                           <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                               <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                           </a>
+                                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                               <a class="dropdown-item" href="#">Download Notes</a>
+                                               <a class="dropdown-item" href="#">View More Details</a>
+                                           </div>
+                                       </span>
+                                   </td>
+                               </tr>
+                      }
+                    </table>
+                </div>
+            </div>
+        </div>
+       
+    </section>
+</div>
