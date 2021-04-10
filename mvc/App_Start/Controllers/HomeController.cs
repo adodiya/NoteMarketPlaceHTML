@@ -7,29 +7,30 @@ using System.Net.Mail;
 using NotesMarketPlace.Models;
 using System.Net;
 using System.Threading.Tasks;
+using PagedList;
 
 namespace NotesMarketPlace.Controllers
 {
     public class HomeController : Controller
     {
         
-        private NotesMarketEntities2 usersEntities = new NotesMarketEntities2();
-        public JsonResult IsEmailIdAvailable(string EmailID)
-        {
-            return Json(!usersEntities.Users.Any(user => user.EmailID == EmailID), JsonRequestBehavior.AllowGet);
-        }
+        NotesMarketEntities2 db = new NotesMarketEntities2();
+       
+        //Returns Home Page
         public ActionResult Index()
         {
             return View();
         }
 
-        [HttpGet]public ActionResult Signup()
-        {
-            ViewBag.Message = "Your application description page.";
 
+       
+        public ActionResult Signup()
+        {
+          
             return View();
         }
 
+       
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -37,7 +38,7 @@ namespace NotesMarketPlace.Controllers
         {
             
 
-            if (usersEntities.Users.Where(model => model.EmailID == userobj.EmailID).Any())
+            if (db.Users.Where(model => model.EmailID == userobj.EmailID).Any())
             {
                 ModelState.AddModelError("EmailID", "Email Already exists");
 
@@ -45,19 +46,21 @@ namespace NotesMarketPlace.Controllers
             }
             else
             {
-                userobj.ActivationCode = Guid.NewGuid();
+                if(ModelState.IsValid)
+                { 
+                    userobj.ActivationCode = Guid.NewGuid();
+                    userobj.RoleID = 1;
+                    userobj.IsActive = true;
+                    db.Users.Add(userobj);
 
-                userobj.RoleID = 1;
-                userobj.IsActive = true;
-                usersEntities.Users.Add(userobj);
-
-                usersEntities.SaveChanges();
+                db.SaveChanges();
                 SendVerificationLinkEmail(userobj.EmailID, userobj.ActivationCode.ToString());
-                //ViewBag.result("Record inserted Succesfully");
+              
                 TempData["Referrer"] = "SaveRegister";
                 return View(userobj);
-               
+                }
 
+                return View();
             }
             
         }
@@ -143,7 +146,7 @@ namespace NotesMarketPlace.Controllers
         }
 
 
-        [HttpGet]
+      
         public ActionResult Login()
         {
             
@@ -157,7 +160,7 @@ namespace NotesMarketPlace.Controllers
 
 
             NotesMarketEntities2 db = new NotesMarketEntities2();
-                var obj1 = db.Users.Where(model => model.EmailID.Equals(loginobj.EmailID)&& model.IsActive.Equals(true)).FirstOrDefault();
+            var obj1 = db.Users.Where(model => model.EmailID.Equals(loginobj.EmailID)&& model.IsActive.Equals(true)).FirstOrDefault();
 
                 if (obj1 == null)
                 {
@@ -183,32 +186,29 @@ namespace NotesMarketPlace.Controllers
                                 else
                                 {
                                     Session["UserID"] = obj1.ID;
-                                    return RedirectToAction("Dashboard","User");
+                                    return RedirectToAction("SearchNotes","User");
 
                                 }
-                            }
-                            else if (obj1.RoleID == 2)
-                            {
-                                Session["UserID"] = obj1.ID;
-                                return RedirectToAction("FAQ");
-                                //ModelState.AddModelError(" ", "Admin");
                             }
                             else
                             {
                                 Session["UserID"] = obj1.ID;
-                                return RedirectToAction("Fjhk");
-
+                                Session["Role"] = obj1.RoleID;
+                                return RedirectToAction("Dashboard","Admin");
+                                
                             }
+                           
                         }
                         else
                         {
-                            ModelState.AddModelError(" ", "Please verify your email id");
+                        ViewBag.Message = "Plese verify your email id . Verification link has already been sent to your mail id";
+                            return View();
                         }
 
                     }
                     else
                     {
-                        ModelState.AddModelError("Password", "Incorrect Password");
+                    ViewBag.Message = "Password is incorrect";
                     }
 
                 }
@@ -223,22 +223,58 @@ namespace NotesMarketPlace.Controllers
 
         public ActionResult FAQ()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+           return View();
         }
 
-        public ActionResult SearchNotes()
+        public ActionResult SearchNotes(int? page, string searchstring , string searchCategory, string searchType, string searchUniversity, string searchCourse, string searchCountry, string searchRating)
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.searchCategory = new SelectList(db.Categories.ToList(), "Name", "Name");
+            ViewBag.searchType = new SelectList(db.Types.ToList(), "Name", "Name");
+            ViewBag.searchCountry = new SelectList(db.Countries.ToList(), "Name", "Name");
+            ViewBag.searchCourse = new SelectList(db.Notes.ToList(), "Course", "Course");
 
-            return View();
+
+            var notes = db.Notes.Where(model => model.Status == 5).OrderBy(model => model.PublishedDate);
+            if (!string.IsNullOrEmpty(searchstring))
+            {
+                notes = notes.Where(model => model.Title.Contains(searchstring) || model.Category.Name.Contains(searchstring) || model.User.FirstName.Contains(searchstring) || model.User.LastName.Contains(searchstring) || model.ReferenceData.Value.Contains(searchstring) || model.Price.Equals(searchstring)).OrderBy(model => model.PublishedDate);
+            }
+           
+            if (!string.IsNullOrEmpty(searchCategory))
+            {
+                notes = notes.Where(model => model.Category.Name.Contains(searchCategory)).OrderBy(model => model.PublishedDate);
+            }
+           
+            if (!string.IsNullOrEmpty(searchType))
+            {
+                notes = notes.Where(model => model.Type.Name == searchType).OrderBy(model => model.PublishedDate);
+            }
+            if (!string.IsNullOrEmpty(searchCountry))
+            {
+                notes = notes.Where(model => model.Country.Name == searchCountry).OrderBy(model => model.PublishedDate);
+            }
+         if (!string.IsNullOrEmpty(searchCourse))
+            {
+                notes = notes.Where(model => model.Course.Contains(searchCourse)).OrderBy(model => model.PublishedDate);
+            }
+            if (!string.IsNullOrEmpty(searchUniversity))
+            {
+                notes = notes.Where(model => model.UniversityName.Contains(searchUniversity)).OrderBy(model => model.PublishedDate);
+            }
+            
+            return View(notes.ToPagedList(page??1,5));
         }
+
+        public ActionResult NoteDetails(int id)
+        {
+            var obj = db.Notes.Find(id);
+            return View(obj);
+        }
+
 
         public ActionResult SellYourNotes()
         {
-            ViewBag.Message = "Your contact page.";
-
+           
             return View();
         }
 
@@ -257,14 +293,14 @@ namespace NotesMarketPlace.Controllers
         [HttpPost]
         public ActionResult ForgetPassword(User obj)
         {
-            var exists = usersEntities.Users.Where(model => model.EmailID.Equals(obj.EmailID)).FirstOrDefault();
+            var exists = db.Users.Where(model => model.EmailID.Equals(obj.EmailID)).FirstOrDefault();
             if(exists!=null)
             {
 
                 string pwd=GeneratePassword();
                 exists.Password = pwd;
-                usersEntities.Configuration.ValidateOnSaveEnabled = false;
-                usersEntities.SaveChanges();
+                db.Configuration.ValidateOnSaveEnabled = false;
+               db.SaveChanges();
                 SendPasswordEmail(obj.EmailID, pwd);
                 
             }
@@ -311,7 +347,7 @@ namespace NotesMarketPlace.Controllers
         public void SendPasswordEmail(string emailID, string password)
         {
            
-            var fromEmail = new MailAddress("ahdodiya99@gmail.com", "Dotnet Awesome");
+            var fromEmail = new MailAddress("ahdodiya99@gmail.com", "Aadi");
             var toEmail = new MailAddress(emailID);
             var fromEmailPassword = ""; // Replace with actual password
             string subject = "Your new Password is";
