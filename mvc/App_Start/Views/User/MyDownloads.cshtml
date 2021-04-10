@@ -1,11 +1,27 @@
-﻿@model IEnumerable<NotesMarketPlace.Models.Download>
-
+@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<NotesMarketPlace.Models.Download>
 @{
     ViewBag.Title = "MyDownloads";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/responsive-tabs.min.css")
+
+    @Styles.Render("~/Content/custom/my-downloads.css")
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/jquery")
+
+    <script type="text/javascript">
+        $("body").on("submit", "#Form1", function () {
+            return confirm("Are you sure you want to mark this report as spam, you cannot update it later? ");
+        });
+
+
+    </script>
+
 }
 
-<h2>MyDownloads</h2>
 
 <section id="my-downloads">
     <div class="content-box-md">
@@ -41,64 +57,120 @@
                         <th scope="col"></th>
                     </tr>
 
+                    @{int i = 1; }
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td>
-                               @item.NoteTitle
+                                @i
+                                @{ i++;}
                             </td>
                             <td>
-                               @item.C
+                                @Html.ActionLink(item.NoteTitle, "NotesDetails", new { id = item.NoteID })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.DownloadDate)
+                                @item.NoteCategory
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsAttachmentDownloaded)
+                                @item.User.ID
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.IsPaid)
+                                @(item.IsPaid?"Paid":"Free")
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Price)
+                                $@item.Price
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.NoteTitle)
+                                @item.DownloadDate
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.NoteCategory)
+
+                                <a href="@Url.Action("NotesDetails", "User", new { id= item.Note})"><img src="../images/Dashboard/eye.png"></a><span class="dropdown">
+                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                        <a class="dropdown-item" href="@Url.Action("DownloadNote", "User", new { id= item.Note})">Download Note</a>
+                                        <a class="dropdown-item" href="#review-modal" data-toggle="modal">Add Review/Feedback</a>
+
+
+                                        <a class="dropdown-item" href="#report-modal" data-toggle="modal">Report as inappropriate</a>
+
+                                    </div>
+                                    <div class="modal fade" id="review-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="review-modal">Add Review</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form>
+                                                    <div class="modal-body">
+
+                                                        <div class="rate">
+
+                                                            <label for="star5" title="text">5 stars</label>
+                                                            <input type="radio" id="star4" name="rate" value="4" />
+                                                            <label for="star4" title="text">4 stars</label>
+                                                            <input type="radio" id="star3" name="rate" value="3" />
+                                                            <label for="star3" title="text">3 stars</label>
+                                                            <input type="radio" id="star2" name="rate" value="2" />
+                                                            <label for="star2" title="text">2 stars</label>
+                                                            <input type="radio" id="star1" name="rate" value="1" />
+                                                            <label for="star1" title="text">1 star</label>
+                                                        </div>
+                                                        @Html.TextArea("Comments", htmlAttributes: new { @class = "form-input" })
+
+                                                    </div>
+                                                    <div class="modal-footer">
+
+                                                        <button type="submit" class="btn btn-primary" formaction="Addreview" formmethod="post">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="report-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="report-modal">@item.NoteTitle</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                @using (Html.BeginForm("ReportedIssues", "User", new { id = item.NoteID }, FormMethod.Post, new { @id = "Form1" }))
+                                                {
+                                                    <div class="modal-body">
+
+
+                                                        @Html.TextArea("Comments", htmlAttributes: new { @class = "form-input" })
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="submit" value="Submit" class="btn btn-primary" />
+
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </span>
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedBy)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ModifiedDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ModifiedBy)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Note.AdminRemarks)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.User.FirstName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.User1.FirstName)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-                            </td>
+
                         </tr>
                     }
 
                 </table>
-                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/custom")
