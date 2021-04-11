@@ -32,12 +32,13 @@
                 <table class="table">
                     <tr>
                         <th scope="col">SR NO.</th>
-                        <th scope="col">NOTE TITLE</th>
-                        <th scope="col">CATEGORY</th>
-                        <th scope="col">BUYER</th>
-                        <th scope="col">SELL TYPE</th>
-                        <th scope="col">PRICE</th>
-                        <th scope="col">DOWNLOADED DATE/TIME</th>
+                        <th scope="col">@Html.ActionLink("NOTE TITLE", "MyDownloads", new { sortby = ViewBag.SortByTitle, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("CATEGORY", "MyDownloads", new { sortby = ViewBag.SortByCategory, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("BUYER", "MyDownloads", new { sortby = ViewBag.SortByBuyer, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("SELL TYPE", "MyDownloads", new { sortby = ViewBag.SortByType, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("PRICE", "MyDownloads", new { sortby = ViewBag.SortByPrice, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("DOWNLOADED DATE/TIME", "MyDownloads", new { sortby = ViewBag.SortByDate, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+
                         <th scope="col"></th>
                     </tr>
                     @{int i = 1; }
@@ -68,7 +69,7 @@
                                 @item.DownloadDate
                             </td>
                             <td>
-                                <a href="#"><img src="../images/Dashboard/eye.png"></a><span class="dropdown">
+                                <a href="#"><img src="~/images/eye.png"></a><span class="dropdown">
                                     <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                     </a>
@@ -84,7 +85,7 @@
                     }
 
                 </table>
-                @Html.PagedListPager(Model, page => Url.Action("Dashboard", new { page }),
+                @Html.PagedListPager(Model, page => Url.Action("Dashboard", new { searchstring = Request.QueryString["searchstring"], sortby = Request.QueryString["sortby"], page }),
               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
             </div>
         </div>
