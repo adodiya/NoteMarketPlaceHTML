@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -23,13 +23,7 @@ namespace NotesMarketPlace.Controllers
     {
         NotesMarketEntities2 db = new NotesMarketEntities2();
 
-       
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-       
+      
         public ActionResult Dashboard(string searchstring, string dropdownsearch, string sortby, int? page)
         {
             //var notes = db.Notes.AsQueryable();
@@ -472,6 +466,23 @@ namespace NotesMarketPlace.Controllers
             return View(notes.ToPagedList(page??1,5));
         }
 
+
+        public ActionResult Deactivate(int id)
+        {
+            var user = db.Users.Find(id);
+            user.IsActive = false;
+            db.SaveChanges();
+            var notes = db.Notes.Where(model => model.SellerID == id);
+           
+            foreach(var note in notes)
+            {
+                note.IsActive = false;
+                note.Status = 10;
+                db.SaveChanges();
+            }
+            return RedirectToAction("Members", "Admin");
+        }
+        
         [HttpGet]
         public ActionResult UpdateProfile()
         {
@@ -497,9 +508,84 @@ namespace NotesMarketPlace.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateProile(User_UserProfile obj)
+        public ActionResult UpdateProfile(User_UserProfile obj, HttpPostedFileBase DisplayImageData)
         {
-            return View();
+            var allowedImageExtensions = new[] { ".Jpg", ".png", ".jpg", "jpeg" };
+            User obj1 = obj.User;
+            UserProfile obj2 = obj.UserProfile;
+            db.Entry(obj1).State = EntityState.Modified;
+            db.Configuration.ValidateOnSaveEnabled = false;
+            db.SaveChanges();
+
+            var userprofileobj = db.UserProfiles.Where(model => model.UserID.Equals(obj1.ID)).FirstOrDefault();
+
+            if (userprofileobj == null)
+            {
+
+                if (DisplayImageData.ContentLength > 0)
+                {
+
+                    string imagefileName = Path.GetFileNameWithoutExtension(DisplayImageData.FileName);
+                    string imageextension = Path.GetExtension(DisplayImageData.FileName);
+                    //if (allowedImageExtensions.Contains(imageextension))
+                    //{
+
+                    imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
+                    obj2.ProfilePic = "~/ProfileImage/" + imagefileName;
+                    imagefileName = Path.Combine(Server.MapPath("~/ProfileImage/"), imagefileName);
+                    DisplayImageData.SaveAs(imagefileName);
+
+                   
+
+                    
+                }
+                db.UserProfiles.Add(obj2);
+                db.SaveChanges();
+                return RedirectToAction("Dashboard", "User");
+            }
+            else
+            {
+
+                if (DisplayImageData != null && DisplayImageData.ContentLength > 0)
+                {
+                    userprofileobj = obj2;
+                    string imagefileName = Path.GetFileNameWithoutExtension(DisplayImageData.FileName);
+                    string imageextension = Path.GetExtension(DisplayImageData.FileName);
+                    //if (allowedImageExtensions.Contains(imageextension))
+                    //{
+
+                    imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
+                    userprofileobj.ProfilePic = "~/ProfileImage/" + imagefileName;
+                    imagefileName = Path.Combine(Server.MapPath("~/ProfileImage/"), imagefileName);
+                    DisplayImageData.SaveAs(imagefileName);
+                   
+                }
+                else
+                {
+                    string count = Request.Form["Country"];
+                    if (count == "India")
+                    {
+                        obj2.ProfilePic = null;
+                       
+
+                    }
+                    else
+                    {
+                        obj2.ProfilePic = userprofileobj.ProfilePic;
+                       
+                    }
+                }
+
+                var update = db.UserProfiles.Find(obj2.ID);
+                db.Entry(update).CurrentValues.SetValues(userprofileobj);
+
+                //db.Entry(userprofileobj).State = EntityState.Modified;
+                db.Configuration.ValidateOnSaveEnabled = false;
+                db.SaveChanges();
+                return RedirectToAction("SearchNotes", "User");
+
+            }
+
         }
 
         public ActionResult NoteDetails(int id)
@@ -508,12 +594,152 @@ namespace NotesMarketPlace.Controllers
             return View(obj1);
         }
 
+        public ActionResult ChangePassword()
+        {
+            if (Session["UserID"] != null)
+            {
 
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(FormCollection form)
+        {
+            User userobj = db.Users.Find(9);
+            string oldpassword = form["oldpwd"];
+            string newpassword = form["newpwd"];
+            string confirmpassword = form["confirmpwd"];
+            if (oldpassword == userobj.Password)
+            {
+                if (newpassword == confirmpassword)
+                {
+                    userobj.Password = newpassword;
+                    db.Users.Attach(userobj);
+                    db.Entry(userobj).Property(x => x.Password).IsModified = true;
+                    db.SaveChanges();
+                    return RedirectToAction("Dashboard","Admin");
+                }
+                else
+                {
+
+                    ViewBag.Message = "Password doesn't match";
+                    return View();
+                }
+
+
+
+            }
+            else
+            {
+
+                ViewBag.Message = "Please enter corect old password";
+                return View();
+            }
+
+        }
+
+
+        public ActionResult ManageAdmin(int?page,string searchstring,string sortby)
+        {
+            if (Session["UserID"]!=null && (int)Session["RoleID"]==3)
+            {
+                ViewBag.SortByFirstName= string.IsNullOrEmpty(sortby) ? "Firstname" : "";
+                ViewBag.SortByLastName = string.IsNullOrEmpty(sortby) ? "Lastname" : "";
+                ViewBag.SortByEmailID = string.IsNullOrEmpty(sortby) ? "EmailID" : "";
+               
+                ViewBag.SortByDate = string.IsNullOrEmpty(sortby) ? "Date" : "";
+                var admin = db.Users.Where(model => model.RoleID.Equals(2));
+                if(!string.IsNullOrEmpty(searchstring))
+                {
+                    admin = admin.Where(model => model.FirstName.Contains(searchstring) || model.LastName.Contains(searchstring)||model.EmailID.Contains(searchstring));
+                }
+                
+                switch (sortby)
+                {
+                    case "Firstname":
+                        admin = admin.OrderBy(model => model.FirstName);
+                        break;
+                    case "Lastname":
+                        admin = admin.OrderBy(model => model.LastName);
+                        break;
+                    case "EmailID":
+                        admin = admin.OrderBy(model => model.EmailID);
+                        break;
+                    case "Date":
+                        admin = admin.OrderBy(model => model.CreatedDate);
+                        break;
+                 
+                    default:
+                        admin = admin.OrderBy(model => model.CreatedDate);
+                        break;
+                }
+                return View(admin.ToPagedList(page??1,5));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult AddAdmin(int? id)
+        {
+           if(id==null)
+            {
+                User_UserProfile obj = new User_UserProfile();
+                obj.User = new User();
+                    obj.UserProfile = new UserProfile();
+                return View(obj);
+            }
+            else
+            {
+                var userobj=db.Users.Find(id);
+                var userprofileobj = db.UserProfiles.Where(model => model.UserID == id).FirstOrDefault();
+                User_UserProfile obj= new User_UserProfile();
+                obj.User = userobj;
+                obj.UserProfile = userprofileobj;
+                return View(obj);
+            }
+        }
+       
+        public ActionResult AddAdmin(User_UserProfile obj)
+        {
+            int id = obj.User.ID;
+            var user = db.Users.Find(id);
+            if(user==null)
+            {
+                User userobj = obj.User;
+                UserProfile userprofile = obj.UserProfile;
+                db.Users.Add(userobj);
+                db.SaveChanges();
+                var obj1 = db.Users.Find(userobj.ID);
+                userprofile.UserID = obj1.ID;
+                db.UserProfiles.Add(userprofile);
+                db.SaveChanges();
+                return View();
+            }
+            else
+            {
+                
+                user = obj.User;
+                db.SaveChanges();
+                return View();
+            }
+            
+        }
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
             Session.Abandon(); // it will clear the session at the end of request
             return RedirectToAction("Index", "Home");
         }
+
+
+
     }
 }
