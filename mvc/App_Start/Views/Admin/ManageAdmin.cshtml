@@ -1,0 +1,76 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<NotesMarketPlace.Models.User>
+@{
+    ViewBag.Title = "ManageAdmin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section id="manage-administrator">
+    <div class="content-box-md">
+        <div class="container">
+            <h1>Manage Administrator</h1>
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-outline-secondary manage" onclick="window.location='@Url.Action("AddAdmin", "Admin")'">ADD ADMINISTRATOR</button>
+
+                </div>
+                <div class="col-md-8">
+                    <form class="form-inline">
+
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">SR NO.</th>
+                            <th scope="col">FIRST NAME</th>
+                            <th scope="col">LAST NAME</th>
+                            <th scope="col">EMAIL</th>
+                            <th scope="col">PHONE NO.</th>
+                            <th scope="col">DATE ADDED</th>
+                            <th scope="col">ACTIVE</th>
+                            <th scope="col">ACTION</th>
+                        </tr>
+                    </thead>
+
+
+
+                    @foreach (var admin in Model)
+                    {
+                        <tr>
+
+                            <td>2</td>
+                            <td>@admin.FirstName</td>
+                            <td>@admin.LastName</td>
+                            <td>@admin.EmailID</td>
+                            <td>@admin.UserProfiles.Select(model => model.Phoneno)</td>
+                            <td>@admin.CreatedDate</td>
+                            <td>@(admin.IsActive?"Yes":"False")</td>
+                            <td><a @Url.Action("AddAdmin", "Admin", new { id = admin.ID })><img src="../images/Dashboard/eye.png"></a><a @Url.Action("Inactive", "Admin", new { id = admin.ID })><img src="../images/delete.png"></a></td>
+                        </tr>
+                    }
+
+
+
+                </table>
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("NotesUnderReview", new { searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"], sortby = Request.QueryString["sortby"], page }),
+                 new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+        </div>
+    </div>
+   
+</section>
+
