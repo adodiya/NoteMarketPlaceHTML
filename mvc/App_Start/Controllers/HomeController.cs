@@ -51,6 +51,8 @@ namespace NotesMarketPlace.Controllers
                     userobj.ActivationCode = Guid.NewGuid();
                     userobj.RoleID = 1;
                     userobj.IsActive = true;
+                    userobj.CreatedDate = DateTime.Now;
+                    
                     db.Users.Add(userobj);
 
                 db.SaveChanges();
@@ -268,6 +270,9 @@ namespace NotesMarketPlace.Controllers
         public ActionResult NoteDetails(int id)
         {
             var obj = db.Notes.Find(id);
+            ViewBag.Reviews = db.NotesReviews.Where(model => model.NoteID == id).ToList();
+            int count = (int)Math.Round(db.NotesReviews.Where(model => model.NoteID == id).Select(model => model.Ratings).Average());
+            ViewBag.Count = count;
             return View(obj);
         }
 
@@ -280,6 +285,11 @@ namespace NotesMarketPlace.Controllers
 
         public ActionResult ContactUs()
         {
+            return View();
+        }
+        public ActionResult ContactUs(FormCollection form)
+        {
+            
             return View();
         }
 
