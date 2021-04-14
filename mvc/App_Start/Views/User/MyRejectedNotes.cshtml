@@ -1,10 +1,17 @@
-@using PagedList.Mvc;
+﻿@using PagedList.Mvc;
 @using PagedList;
 @model IPagedList<NotesMarketPlace.Models.Note>
 
 @{
     ViewBag.Title = "MyRejectedNotes";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/responsive-tabs.min.css")
+
+    @Styles.Render("~/Content/custom/my-rejected-notes.css")
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/jquery")
 }
 
 <section id="my-rejected-notes">
@@ -15,18 +22,21 @@
                     <h3>My Rejected Notes</h3>
                 </div>
                 <div class="col-md-8">
-                    <form class="form-inline">
+                    @using (Html.BeginForm("MyRejectedNotes", "User", FormMethod.Get, new { @class = "form-inline" }))
+                    {
 
                         <div class="form-group has-search">
                             <span class="fa fa-search form-control-feedback"></span>
-                            <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                            @Html.TextBox("searchstring", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
+
                         </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-outline-secondary">Search</button>
-                           
+                            <!-- Button trigger modal -->
+                            <!-- Modal -->
                         </div>
-                    </form>
+                    }
                 </div>
             </div>
             <div class="table-responsive">
@@ -34,37 +44,45 @@
                     <thead>
                         <tr>
                             <th scope="col">SR NO.</th>
-                            <th scope="col">NOTE TITLE</th>
-                            <th scope="col">CATEGORY</th>
-                            <th scope="col">REMARKS</th>
-                            <th scope="col">CLONE</th>
+                            <th scope="col">@Html.ActionLink("NOTE TITLE", "MyRejectedNotes", new { sortby = ViewBag.SortByTitle, searchstring = Request.QueryString["searchstring"] })</th>
+                            <th scope="col">@Html.ActionLink("CATEGORY", "MyRejectedNotes", new { sortby = ViewBag.SortByCategory, searchstring = Request.QueryString["searchstring"]})</th>
+                            <th scope="col">@Html.ActionLink("REMARKS", "MyRejectedNotes", new { sortby = ViewBag.SortByRemarks, searchstring = Request.QueryString["searchstring"]})</th>
+                            <th scope="col">@Html.ActionLink("DATE", "MyRejectedNotes", new { sortby = ViewBag.SortByDate, searchstring = Request.QueryString["searchstring"]})</th>
+
                             <th scope="col"></th>
                         </tr>
                     </thead>
-                    @foreach(var item in Model) {
-                    <tr>
+                    @{int i = 1; }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
 
-                        <td>2</td>
-                        <td><a href="#">@item.Title</a></td>
-                        <td>@item.Category.Name</td>
-                        <td>@item.AdminRemarks</td>
-                        <td><a href="#">Clone</a></td>
-                        <td>
-                            <span class="dropdown">
-                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" @Url.Action("Download",new { id=item.ID})>Download</a>
+                            <td>
+                                @i
+                                @{ i++;}
+                            </td>
+                            <td><a href="#">@item.Title</a></td>
+                            <td>@item.Category.Name</td>
+                            <td>@item.AdminRemarks</td>
+                            <td>@item.ModifiedDate</td>
+                            <td>
+                                <span class="dropdown">
+                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" @Url.Action("DownloadNotes", new { id = item.ID })>Download</a>
 
-                                </div>
-                            </span>
-                        </td>
-                    </tr>
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
 
                     }
 
                 </table>
+                @Html.PagedListPager(Model, page => Url.Action("MyRejectedNotes", new { searchstring = Request.QueryString["searchstring"], sortby = Request.QueryString["sortby"], page }),
+              new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
             </div>
         </div>
     </div>

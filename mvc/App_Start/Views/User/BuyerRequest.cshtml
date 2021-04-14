@@ -1,4 +1,4 @@
-@using PagedList.Mvc;
+﻿@using PagedList.Mvc;
 @using PagedList;
 @model IPagedList<NotesMarketPlace.Models.Download>
 
@@ -6,6 +6,16 @@
 @{
     ViewBag.Title = "BuyerRequest";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/responsive-tabs.min.css")
+
+   
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/jquery")
+
+    <link href="~/Content/custom/buyer-requests.css" rel="stylesheet" />
+   
+
 }
 
 <section id="buyer-requests">
@@ -61,12 +71,12 @@
                             <td>$@item.Price</td>
                             <td>@item.DownloadDate</td>
                             <td>
-                                <a href="#"><img src="../images/Dashboard/eye.png"></a><span class="dropdown">
+                                <a href="#"><img src="~/images/eye.png"></a><span class="dropdown">
                                     <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">Allow Download</a>
+                                        <a class="dropdown-item" href="@Url.Action("AllowDownload",new { id=item.ID})">Allow Download</a>
                                     </div>
                                 </span>
                             </td>
@@ -83,3 +93,6 @@
     </div>
 
 </section>
+<script src="~/Scripts/bootstrap.bundle.min.js"></script>
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/custom")

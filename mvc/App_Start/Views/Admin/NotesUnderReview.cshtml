@@ -23,34 +23,34 @@
 
                 @using (Html.BeginForm("NotesUnderReview", "Admin", FormMethod.Get, new { @class = "form-inline" }))
                 {
-                    <div class="row">
+            <div class="row">
+                
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Seller</label>
 
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Seller</label>
-
-                                @Html.DropDownList("dropdownsearch", ViewBag.dropdownsearch as SelectList, "Select", new { @class = "form-control dropddown" })
-
-                            </div>
-                        </div>
-                        <div class="col-md-6 form-right form-inline">
-
-
-                            <div class="form-group has-search">
-                                <span class="fa fa-search form-control-feedback"></span>
-                                @Html.TextBox("searchstring", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
-
-
-                            </div>
-
-                            <div class="form-group">
-                                <input type="submit" value="Search" class="btn btn-outline-secondary" />
-
-                            </div>
-
-                        </div>
+                        @Html.DropDownList("dropdownsearch", ViewBag.dropdownsearch as SelectList, "Select", new { @class = "form-control dropddown" })
 
                     </div>
+                </div>
+                <div class="col-md-6 form-right form-inline">
+
+
+                    <div class="form-group has-search">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        @Html.TextBox("searchstring", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Search" class="btn btn-outline-secondary" />
+
+                    </div>
+
+                </div>
+
+            </div>
 
                 }
                 <div class="table-responsive">
@@ -114,14 +114,18 @@
                                                         <div class="form-group">
                                                             @Html.HiddenFor(model => item.ID)
                                                             @Html.TextArea("Remarks", htmlAttributes: new { @class = "form-control", placeholder = "Write remarks" })
-                                                            <input type="submit" value="Yes" />
+                                                            
+                                                           
+
+                                                        </div>
+                                                        <div class="form-group">
                                                             <button type="submit" class="btn btn-danger" value="Yes" onclick="@Url.Action("Rejected",new { id=item.ID})" />
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-
                                                         </div>
                                                     }
 
                                                 </div>
+                                               
 
 
 
@@ -137,8 +141,8 @@
 
                                                 <div class="modal-body">
                                                     <div class="form-group">
-                                                        If you approve the notes – System will publish the notes over portal. Please press yes to continue
-                                                        <button type="submit" class="btn btn-danger" onclick="@Url.Action("InReview","User", new { id=item.ID})">Yes</button>
+                                                        <p>If you approve the notes – System will publish the notes over portal. Please press yes to continue</p>
+                                                        <button type="submit" class="btn btn-danger" onclick="window.location='@Url.Action("InReview", "Admin",new { id=item.ID})'">Yes</button>
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                                                     </div>
                                                 </div>

@@ -1,4 +1,4 @@
-@using PagedList.Mvc;
+﻿@using PagedList.Mvc;
 @using PagedList;
 
 @model NotesMarketPlace.Models.Note
@@ -18,7 +18,7 @@
 <section id="dashboard">
     <div class="content-box-md">
         <div class="container">
-            <h1>Dashboard<span><button class="btn" role="button">ADD NOTE</button></span></h1>
+            <h1>Dashboard<span><button class="btn" role="button" onclick="window.location='@Url.Action("AddNote", "User")'">ADD NOTE</button></span></h1>
             <div class="dashboard-blocks text-center">
                 <div class="block">
                     <div class="earnings detail">
@@ -56,6 +56,7 @@
     </div>
 </section>
 
+
 <section id="in-progress-notes">
     <div class="content-box-md">
         <div class="container">
@@ -65,19 +66,19 @@
                     <h3>In Progress Notes</h3>
                 </div>
                 <div class="col-md-7 col-sm-12 col-12">
-                    @using (Html.BeginForm("Dashboard", "User", FormMethod.Get, new { @class = "sb" }))
+                    @using (Html.BeginForm("InProgessDashboard", "User", FormMethod.Get, new { @class = "sb" }))
                     {
 
-                    <div class="form-group has-search">
-                        <span class="fa fa-search form-control-feedback"></span>
-                        @Html.TextBox("searchString2", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
-                    </div>
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            @Html.TextBox("searchString2", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
+                        </div>
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-outline-secondary">Search</button>
                         </div>
                     }
-                    </div>
+                </div>
             </div>
             <div class="table-responsive">
                 <table class="table">
@@ -87,7 +88,7 @@
                             <th scope="col">@Html.ActionLink("TITLE", "Dashboard", new { sortby2 = ViewBag.Title, searchString2 = Request.QueryString["searchString2"] })</th>
                             <th scope="col">@Html.ActionLink("CATEGORY", "Dashboard", new { sortby2 = ViewBag.Category, searchString2 = Request.QueryString["searchString2"] })</th>
                             <th scope="col">@Html.ActionLink("STATUS", "Dashboard", new { sortby2 = ViewBag.Status, searchString2 = Request.QueryString["searchString2"] })</th>
-                           
+
                             <th scope="col">ACTIONS</th>
                         </tr>
                     </thead>
@@ -101,9 +102,9 @@
                             <td><a href="#">@note.Title</a></td>
                             <td>@note.Category.Name</td>
                             <td>@note.ReferenceData.Value</td>
-                            @if (note.ReferenceData.Value == "5")
+                            @if (note.ReferenceData.ID == 5)
                             {
-                                <td><a href="#"><img src="~/images/edit.png"></a><a href="#"><img src="~/images/delete.png"></a></td>
+                                <td><a href="@Url.Action("AddNote",new { id=note.ID})"><img src="~/images/edit.png"></a><a href="#"><img src="~/images/delete.png"></a></td>
                             }
                             else
                             {
@@ -113,8 +114,8 @@
                         </tr>
                     }
                 </table>
-                @Html.PagedListPager(Model.Inprogressnotes, page2 => Url.Action("Dashboard", new { searchString2 = Request.QueryString["searchString2"], sortby2 = Request.QueryString["sortby2"], page2 }),
-               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+                @Html.PagedListPager(Model.Inprogressnotes, page2 => Url.Action("Dashboard", new { page2, searchString2 = Request.QueryString["searchString2"], sortby2 = Request.QueryString["sortby2"] }),
+               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
             </div>
         </div>
     </div>
@@ -133,28 +134,28 @@
                     @using (Html.BeginForm("Dashboard", "User", FormMethod.Get, new { @class = "sb" }))
                     {
 
-                    <div class="form-group has-search">
-                        <span class="fa fa-search form-control-feedback"></span>
-                        @Html.TextBox("searchString1", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
-                       
-                    </div>
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            @Html.TextBox("searchString1", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
 
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-outline-secondary">Search</button>
-                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-secondary">Search</button>
+                        </div>
                     }
-                    </div>
+                </div>
             </div>
             <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">@Html.ActionLink("ADDED DATE", "Dashboard", new { sortby1 = ViewBag.SortByDate, searchString1 = Request.QueryString["searchString1"]})</th>
-                            <th scope="col">@Html.ActionLink("TITLE", "Dashboard", new { sortby1 = ViewBag.SortByTitle, searchString1 = Request.QueryString["searchString1"]})</th>
-                            <th scope="col">@Html.ActionLink("CATEGORY", "Dashboard", new { sortby1 = ViewBag.SortByCategory, searchString1 = Request.QueryString["searchString1"]})</th>
-                            <th scope="col">@Html.ActionLink("SELL TYPE", "Dashboard", new { sortby1 = ViewBag.SortByType, searchString1 = Request.QueryString["searchString1"]})</th>
-                            <th scope="col">@Html.ActionLink("PRICE", "Dashboard", new { sortby1 = ViewBag.SortByPrice, searchString1 = Request.QueryString["searchString1"]})</th>
-                           
+                            <th scope="col">@Html.ActionLink("ADDED DATE", "Dashboard", new { sortby1 = ViewBag.SortByDate, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("TITLE", "Dashboard", new { sortby1 = ViewBag.SortByTitle, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("CATEGORY", "Dashboard", new { sortby1 = ViewBag.SortByCategory, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("SELL TYPE", "Dashboard", new { sortby1 = ViewBag.SortByType, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("PRICE", "Dashboard", new { sortby1 = ViewBag.SortByPrice, searchString1 = Request.QueryString["searchString1"] })</th>
+
                             <th scope="col">ACTION</th>
 
 
@@ -169,20 +170,16 @@
                             <td>@item.Category.Name</td>
                             <td>@(item.IsPaid?"Paid":"False")</td>
                             <td>$@item.Price</td>
-                            <td><a @Url.Action("NoteDetails",new { id=item.ID})><img src="~/images/eye.png"></a></td>
+                            <td><a @Url.Action("NoteDetails", new { id = item.ID })><img src="~/images/eye.png"></a></td>
                         </tr>
                     }
 
 
                 </table>
                 @Html.PagedListPager(Model.Publishednotes, page1 => Url.Action("Dashboard", new { searchString1 = Request.QueryString["searchString1"], sortby1 = Request.QueryString["sortby1"], page1 }),
-               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
             </div>
         </div>
     </div>
 
 </section>
-
-
-
-

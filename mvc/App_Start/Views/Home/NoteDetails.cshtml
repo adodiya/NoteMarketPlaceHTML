@@ -1,22 +1,21 @@
 ﻿@using NotesMarketPlace.Models
 @model NotesMarketPlace.Models.Note
-
 @{
-    ViewBag.Title = "NotesDetails";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "NoteDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     @Styles.Render("~/Content/custom/responsive-tabs.min.css")
 
     @Styles.Render("~/Content/custom/notes-details-page.css")
     @Styles.Render("~/Content/custom/responsive.css")
+
     <style type="text/css">
         i.fa.fa-star {
             color: gold;
         }
-
-        #white-star {
-            color: #ddd;
+        #white-star{
+            color:#ddd;
         }
     </style>
 
@@ -36,56 +35,29 @@
                         <div class="row">
                             <div class="col-md-5">
                                 @if (Model.DisplayPic == null)
-                                {<img src="~/DisplayImage/Default.jpg" />}
-                                else
-                                { <img src="@Url.Content(Model.DisplayPic)" alt="image">}
-
+                                { <img src="~/DisplayImage/Default.jpg"/>}
+                                else { <img src="@Url.Content(Model.DisplayPic)" alt="image">}
+                                
                             </div>
                             <div class="col-md-7">
-
+                               
                                 <h5>@Model.Title</h5>
                                 <h6>@Model.Category.Name</h6>
                                 <p>@Model.Description </p>
                                 @if (@Model.IsPaid == false)
                                 {
 
-                                    <button class="btn" type="button" onclick="window.location='@Url.Action("FileDownload", "User",new { id=Model.ID})'"><D>Free</D> </button>
+                                    <button class="btn" type="button" onclick="window.location='@Url.Action("Login", "Home")'"><D>Free</D> </button>
 
                                 }
                                 else
                                 {
-                                    if (ViewBag.Isdownloaded == 1)
-                                    {
-                                        <button class="btn" type="button" onclick="window.location='@Url.Action("FileDownload", "User",new { id=Model.ID})'"><D>$@Model.Price</D></button>
-                                    }
-                                    else
-                                    {
-                                        <button class="btn" type="button" data-toggle="modal" data-target="#exampleModalCenter"><D>$@Model.Price</D></button>
-                                    }
+                                    <button class="btn" type="button" onclick="window.location='@Url.Action("Login", "Home")'"><D>$@Model.Price</D></button>
                                 }
 
 
-                                <!-- Modal -->
-
-                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title text-center" id="exampleModalCenterTitle"><img src="../images/Notes%2520Details/SUCCESS.png"><br>Thank you for purchasing</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                Dear Smith,<br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur necessitatibus quo, omnis ducimus adipisci a eos saepe temporibus maxime sed unde ratione quis commodi sit repellendus, eligendi porro suscipit. Illum?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                               
+                               
                             </div>
 
                         </div>
@@ -97,7 +69,7 @@
                         <p>Course Code:<span>@Model.CourseCode</span></p>
                         <p>Professor:<span>@Model.Professor</span></p>
                         <p>Number of pages:<span>@Model.NoOfPages</span></p>
-                        <p>Approved Date:<span>November 25 2020</span></p>
+                        <p>Approved Date:<span>@Model.PublishedDate</span></p>
                         <p>
                             Rating: <span>
                                 @{ if (ViewBag.Count != 0)
@@ -120,39 +92,38 @@
                                         for (int rate = 0; rate < 5; rate++)
                                         {<i class="fa fa-star" aria-hidden="true" id="white-star"></i>}
                                     }
-                                } @Model.NotesReviews.Count()reviews
-                            </span>
+                                } @Model.NotesReviews.Count()reviews</span>
 
 
 
 
 
                         </p>
+                        
+                    <p>@ViewBag.Issues Users marked this note as inappropriate</p>
+                       
 
-                        <p>@ViewBag.Issues Users marked this note as inappropriate</p>
+                     </div>
+ 
 
+                 </div>
+ 
 
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-
-        </div>
+             </div>
+ 
 
 
-
-    </section>
-
-
-    <!-- Details ends-->
+         </div>
+ 
 
 
-    <div class="container">
+     </section>
+ 
+
+     <!-- Details ends-->
+ 
+
+     <div class="container">
         <hr class="division">
     </div>
     <!-- Details 2 begins-->
@@ -169,7 +140,7 @@
                                      style="-webkit-overflow-scrolling: touch; overflow: auto;">
                                     @if (Model.Preview == null)
                                     {
-                                        <iframe src="~/images/">
+                                        <iframe src="~/DisplayImage/">
                                             <p style="font-size: 110%;">
                                                 <em>
                                                     <strong>ERROR: </strong>
@@ -199,8 +170,8 @@
                             {
                                 <div class="row">
                                     <div class="col-md-2 col-sm-2 col-3">
-
-                                        <img src="~/images/" class="rounded-circle">
+                                      
+                                      <img src="~/images/" class="rounded-circle">
                                     </div>
                                     <div class="col-md-10 col-sm-10 col-9">
                                         <h5>@review.User.FullName</h5>
@@ -211,7 +182,7 @@
                                             }
                                             @for (int star1 = 0; star1 < 5 - review.Ratings; star1++)
                                             {
-                                                <span><i class="fa fa-star" aria-hidden="true" ,id="white-star"></i></span>
+                                                <span><i class="fa fa-star" aria-hidden="true",id="white-star"></i></span>
                                             }
 
                                         </div><br><br>

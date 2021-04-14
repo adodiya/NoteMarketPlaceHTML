@@ -70,12 +70,12 @@
                             </div>
                             <div class="form-group">
                                 @Html.LabelFor(model => model.Password)<span>@Html.ActionLink("Forgot Password", "ForgetPassword")</span>
-                                @Html.PasswordFor(model => model.Password, htmlAttributes: new { @class = "form-control form-control-lg", placeholder = "Enter your password" })
-                                @Html.ValidationMessage("Password", new { @class = "text-danger" })
-                                <span toggle="#Password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                @Html.PasswordFor(model => model.Password, htmlAttributes: new { @class = "form-control form-control-lg", placeholder = "Enter your password", @id = "password-field" })
+                             
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                             </div>
 
-                            <button type="submit" class="btn btn-block" id="sign-up-btn" data-toggle="modal" data-target="#exampleModalCenter1">Login</button>
+                            <button type="submit" class="btn btn-block" id="sign-up-btn">Login</button>
 
                             <p class="text-center">Already have an account?@Html.ActionLink("SignUP", "Signup")</p>
                         }

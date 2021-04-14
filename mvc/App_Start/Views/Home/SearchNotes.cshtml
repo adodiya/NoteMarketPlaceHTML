@@ -11,6 +11,15 @@
 
     @Styles.Render("~/Content/custom/search-page.css")
     @Styles.Render("~/Content/custom/responsive.css")
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+    <style type="text/css">
+        #whitestar {
+            color:#ccc;
+        }
+        i.fa.fa-star{
+            color:gold;
+        }
+    </style>
 
 }
 
@@ -24,7 +33,6 @@
 
     </section>
     <!-- Search Banner ends-->
-   
     <!-- Search Filters-->
     <section id="search-filter">
         <div class="content-box-md">
@@ -46,7 +54,7 @@
 
                             <div class="col-md-4 col-lg-2 col-sm-8">
                                 <div class="form-group">
-                                    @Html.DropDownList("searchType", ViewBag.searchType as SelectList, "Select type", new { @class = "form-control",  onchange = "this.form.submit();" })
+                                    @Html.DropDownList("searchType", ViewBag.searchType as SelectList, "Select type", new { @class = "form-control", onchange = "this.form.submit();" })
 
                                 </div>
                             </div>
@@ -59,53 +67,36 @@
                             </div>
                             <div class="col-md-4 col-lg-2 col-sm-8">
                                 <div class="form-group">
-                                    <select class="form-control" id="select-university" name="selectUniversity">
-                                        <option>Select university</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
+                                    @Html.DropDownList("searchCountry", ViewBag.searchCountry as SelectList, "Select category", new { @class = "form-control drop", onchange = "this.form.submit();" })
                                 </div>
 
                             </div>
                             <div class="col-md-4 col-lg-2 col-sm-8">
                                 <div class="form-group">
-                                    <select class="form-control" id="select-course" name="searchCourse">
-                                        <option>Select course</option>
-                                        <option>IT</option>
-                                        <option>Computer</option>
-                                        <option>Robotics</option>
-                                        <option>Mechanical</option>
-                                        <option>5</option>
-                                    </select>
+                                    @Html.DropDownList("searchUniversity", ViewBag.searchUniversity as SelectList, "Select university", new { @class = "form-control drop", onchange = "this.form.submit();" })
                                 </div>
 
                             </div>
                             <div class="col-md-4 col-lg-2 col-sm-8">
                                 <div class="form-group">
-                                    @Html.DropDownList("searchCountry", ViewBag.searchCountry as SelectList, "Select country", new { @class = "form-control", id = "country" })
+                                    @Html.DropDownList("searchCourse", ViewBag.searchCourse as SelectList, "Select course", new { @class = "form-control drop", onchange = "this.form.submit()" })
                                 </div>
 
                             </div>
                             <div class="col-md-4 col-lg-2 col-sm-8">
                                 <div class="form-group">
-                                    <select class="form-control" id="select-rating" name="searchRating">
-                                        <option>Select rating</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
+                                    @Html.DropDownList("FooBarDropDown", new List<SelectListItem>{
+    new SelectListItem{ Text="Option 1", Value = "1" },
+    new SelectListItem{ Text="Option 2", Value = "2" },
+    new SelectListItem{ Text="Option 3", Value = "3" },
+ },"Select", new { @class = "form-control drop", onchange = "this.form.submit()" })
+                                                                 </div>
 
                             </div>
                         </div>
                     </div>
                 }
-                </div>
+            </div>
 
         </div>
     </section>
@@ -117,7 +108,7 @@
                 <h3>Total @Model.Count() notes</h3>
                 <div class="row row-cols-1 row-cols-md-3">
                     @foreach (var booklist in Model)
-                    {
+                    {@Html.HiddenFor(model=>booklist.Category.Name)
                         <div class="col mb-4 Search content">
 
 
@@ -131,23 +122,41 @@
                                     <h5 class="card-title" h-100>@Html.ActionLink(@booklist.Title, "NoteDetails", new { id = booklist.ID }, htmlAttributes: new { @class = "book-title" })</h5>
                                     <div class="card-text">
                                         <ul class="book-details">
-                                            <li><i class="fa fa-university"></i><span>@booklist.UniversityName, @booklist.CountryID </span></li>
+                                            <li><i class="fa fa-university"></i><span>@booklist.UniversityName, @booklist.Country.Name </span></li>
                                             <li><i class="fa fa-book"></i><span>@booklist.NoOfPages Pages</span></li>
                                             <li><i class="fa fa-calendar"></i><span>@booklist.PublishedDate</span></li>
                                             <li><i class="fa fa-flag"></i><span>@booklist.ReportedIssues.Count() Users marked this note as inappropriate</span></li>
-                                            <li class="rate">
-                                                <input type="radio" id="star5" name="rate" value="5" />
-                                                <label for="star5" title="text">5 stars</label>
-                                                <input type="radio" id="star4" name="rate" value="4" />
-                                                <label for="star4" title="text">4 stars</label>
-                                                <input type="radio" id="star3" name="rate" value="3" />
-                                                <label for="star3" title="text">3 stars</label>
-                                                <input type="radio" id="star2" name="rate" value="2" />
-                                                <label for="star2" title="text">2 stars</label>
-                                                <input type="radio" id="star1" name="rate" value="1" />
-                                                <label for="star1" title="text">1 star</label>
+
+                                            @{ if (@booklist.NotesReviews.Count() != 0)
+                                                {
+                                                    int count = (int)Math.Round(booklist.NotesReviews.Select(model => model.Ratings).Average());
+                                                    int count2 = 5 - count;
+                                                    <li class="rate">
+                                                    @for (int i = 0; i < count; i++)
+                                                    {
+                                                        <span><i class="fa fa-star" aria-hidden="true"></i></span>
+                                                    }
+                                                    @for(int j=0; j<count2; j++)
+                                                    { 
+                                                    <span><i class="fa fa-star" aria-hidden="true" id="whitestar"></i></span>
+                                                    }
+                                                   
+                                                        </li>
+                                                }
+                                                else
+                                                { <li class="rate">
+                                                    @for (int j = 0; j < 5; j++)
+                                                    {
+                                                        <span><i class="fa fa-star" aria-hidden="true" id="whitestar"></i></span>
+                                                    }
                                             </li>
-                                            <span class="rate-span">@booklist.NotesReviews.Count()</span>
+                                                }
+
+                                            }
+
+
+                                           
+                                            <span class="rate-span">@booklist.NotesReviews.Count()</span>Reviews
                                         </ul>
                                     </div>
                                 </div>
@@ -159,11 +168,11 @@
                 </div>
 
                 @Html.PagedListPager(Model, page => Url.Action("SearchNotes", new { searchstring = Request.QueryString["searchstring"], searchCategory = Request.QueryString["searchCategory"], searchType = Request.QueryString["searchType"], searchRating = Request.QueryString["searchRating"], searchUniversity = Request.QueryString["searchUniversity"], searchCourse = Request.QueryString["searchCourse"], searchCountry = Request.QueryString["searchCountry"], page }),
-             new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+             new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
             </div>
         </div>
 
-      
+
     </section>
 
 
@@ -195,9 +204,9 @@
             liveSearch: true,
             showSubtext: true
         });
-      
-    
+
+
     });
 
-   
+
 </script>

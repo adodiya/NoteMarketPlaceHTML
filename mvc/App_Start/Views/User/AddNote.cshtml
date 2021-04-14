@@ -1,4 +1,4 @@
-@model NotesMarketPlace.Models.Notes_NotesAttachment
+﻿@model NotesMarketPlace.Models.Notes_NotesAttachment
 
 @{
     ViewBag.Title = "AddNote";
@@ -37,119 +37,122 @@
                 @Html.HiddenFor(model => model.Note.ID)
             @Html.HiddenFor(model=>model.Note.Status)
 
-                <div class="row">
+        <div class="row">
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.Title)
-                            @Html.TextBoxFor(model => model.Note.Title, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
-                            @Html.ValidationMessageFor(model => model.Note.Title, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.CategoryID)
-
-                            @Html.DropDownListFor(model => model.Note.CategoryID, new SelectList(Model.Note.CategoryCollection, "CategoryID", "Name"), "Select", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Note.CategoryID, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.CountryID)
-
-                            @Html.DropDownListFor(model => model.Note.CountryID, new SelectList(Model.Note.CountryCollection, "CountryID", "Name"), "Select", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Note.CountryID, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Note.TypeID)
-
-                            @Html.DropDownListFor(model => model.Note.TypeID, new SelectList(Model.Note.TypeCollection, "TypeID", "Name"), "Select", new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Note.TypeID, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Display Picture</label>
-
-
-                            <input type="file" name="displaypic" value="@Model.Note.DisplayPic" />
-
-
-                            @if (Model.Note.DisplayPic != null)
-                            {
-
-                                <img src="@Url.Content(@Model.Note.DisplayPic)" id="removepic" height="100" width="100" />
-
-                                <button class="btn" id="delete" type="button">Delete</button>
-                                @Html.Hidden("RemoveDisplayPic", "", new { @id = "remove" })
-
-                            }
-
-
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Upload Notes<span> *</span></label>
-                            <!--  <div class="image-upload form-control1 text-center">
-                    <label for="notes-picture-input">
-                        <img src="../images/upload-note.png">
-                        <h6 class="text center">Upload your notes</h6>
-                    </label>-->
-
-                            <input id="notes-picture-input" type="file" name="attachmentfiles" value="@Model.NotesAttachment.FilePath" multiple />
-                            @Html.ValidationMessageFor(model => model.NotesAttachment.FilePath, "", new { @class = "text-danger" })
-
-                            <ul>
-                                @foreach (var file in Model.AttachmentList)
-                                {
-
-
-                                    <li>
-
-                                        <a class="title" href="@Url.Action("DownloadNotes","User",new { id=@file.ID})">@file.FileName</a>
-                                        <a href="javascript:void(0);" data-id="@file.ID" class="deleteItem">X</a>
-                                    </li>
-
-                                }
-</ul>
-                               
-                            }
-      
-
-        <!--</div>-->
-
-        </div>
-
-        </div>
-
-
-        <div class="col-md-6">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Note.NoOfPages)
-                @Html.TextBoxFor(model => model.Note.NoOfPages, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.Title)
+                    @Html.TextBoxFor(model => model.Note.Title, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                    @Html.ValidationMessageFor(model => model.Note.Title, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.CategoryID)
 
-        <div class="col-md-12">
-            <div class="form-group">
-                @Html.LabelFor(model => model.Note.Description)
-                @Html.TextAreaFor(model => model.Note.Description, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                    @Html.DropDownListFor(model => model.Note.CategoryID, new SelectList(Model.Note.CategoryCollection, "CategoryID", "Name"), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Note.CategoryID, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Display Picture</label>
+
+
+                    <input type="file" name="displaypic" value="@Model.Note.DisplayPic" />
+
+
+                    @if (Model.Note.DisplayPic != null)
+                    {
+
+                        <img src="@Url.Content(@Model.Note.DisplayPic)" id="removepic" height="100" width="100" />
+
+                        <button class="btn" id="delete" type="button">Delete</button>
+                        @Html.Hidden("RemoveDisplayPic", "", new { @id = "remove" })
+
+                    }
+
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Upload Notes<span> *</span></label>
+                    <!--  <div class="image-upload form-control1 text-center">
+            <label for="notes-picture-input">
+                <img src="../images/upload-note.png">
+                <h6 class="text center">Upload your notes</h6>
+            </label>-->
+
+                    <input id="notes-picture-input" type="file" name="attachmentfiles" value="@Model.NotesAttachment.FilePath" multiple />
+                    @Html.ValidationMessageFor(model => model.NotesAttachment.FilePath, "", new { @class = "text-danger" })
+
+                    <ul>
+                        @foreach (var file in Model.AttachmentList)
+                        {
+
+
+                            <li>
+
+                                <a class="title" href="@Url.Action("DownloadNotes","User",new { id=@file.ID})">@file.FileName</a>
+                                <a href="javascript:void(0);" data-id="@file.ID" class="deleteItem">X</a>
+                            </li>
+
+                        }
+                    </ul>
+
+                    }
+
+
+                    <!--</div>-->
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.TypeID)
+
+                    @Html.DropDownListFor(model => model.Note.TypeID, new SelectList(Model.Note.TypeCollection, "TypeID", "Name"), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Note.TypeID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+         
+
+
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.NoOfPages)
+                    @Html.TextBoxFor(model => model.Note.NoOfPages, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.Description)
+                    @Html.TextAreaFor(model => model.Note.Description, htmlAttributes: new { @class = "form-control", placeholder = "Enter your notes title" })
+                </div>
+            </div>
 
         </div>
         <h3>Institution Details</h3>
         <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Note.CountryID)
 
+                    @Html.DropDownListFor(model => model.Note.CountryID, new SelectList(Model.Note.CountryCollection, "CountryID", "Name"), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Note.CountryID, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             <div class="col-md-6">
                 <div class="form-group">
@@ -230,7 +233,7 @@
 
             <input type="submit" value="Save" formenctype="multipart/form-data" formaction="AddNote" formmethod="post" />
 
-            @if (Model.Note.Status.Equals(5))
+            @if (Model.Note.Status.Equals(5) || Model.Note==null)
             {
                 if (Model.Note == null)
                 {
@@ -250,10 +253,12 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Are you sure
+                                    <p>Publishing this note will send note to administrator for review, once administrator review and approve then this note will be published to portal. Press yes to continue</p>
                                 </div>
                                 <div class="modal-footer">
+                                   
                                     <input type="submit" value="Yes" class="btn" formenctype="multipart/form-data" formaction="PublishNote" formmethod="post" />
+                                    <button type="sumbit" class="btn-block" onclick="window.location='@Url.Action("PublishNote",new { id=Model.Note.ID})'" >Yes</button>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" />
                                 </div>
                             </div>

@@ -70,7 +70,7 @@
     
                                     <td>@item.PublishedDate</td>
     
-                                    <td>@item.User1.FirstName @item.User1.LastName</td>
+                                    <td>@item.User.FirstName @item.User.LastName</td>
     
                                     <td>@item.Downloads.Where(model=>model.IsAttachmentDownloaded==true).Count()</td>
                                     <td>

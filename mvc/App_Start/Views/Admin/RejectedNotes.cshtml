@@ -5,6 +5,7 @@
 @{
     ViewBag.Title = "RejectedNotes";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    <link href="~/Content/custom/rejected-notes.css" rel="stylesheet" />
 }
 
 <div id="rejected-notes">
@@ -12,32 +13,37 @@
         <div class="content-box-md">
             <div class="container">
                 <h1>Rejected Notes</h1>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label>Seller</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Rahul Shah
-                                <option>IT</option>
-                                <option>Science</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <form class="form-inline">
+                @using (Html.BeginForm("NotesUnderReview", "Admin", FormMethod.Get, new { @class = "form-inline" }))
+                {
+            <div class="row">
 
-                            <div class="form-group has-search">
-                                <span class="fa fa-search form-control-feedback"></span>
-                                <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
-                            </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Seller</label>
 
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-outline-secondary">Search</button>
-                               
-                            </div>
-                        </form>
+                        @Html.DropDownList("dropdownsearch", ViewBag.dropdownsearch as SelectList, "Select", new { @class = "form-control dropddown" })
+
                     </div>
                 </div>
+                <div class="col-md-6 form-right form-inline">
+
+
+                    <div class="form-group has-search">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        @Html.TextBox("searchstring", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Search" class="btn btn-outline-secondary" />
+
+                    </div>
+
+                </div>
+            </div>
+
+                }
                 <div class="table-responsive">
                     <table class="table">
 
@@ -51,31 +57,31 @@
                             <th scope="col">REMARK</th>
                             <th scope="col"></th>
                         </tr>
-                        @foreach(var item in Model)
-                        { 
-                        <tr>
-                            <td>1</td>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>1</td>
 
 
-                            <td><a href="#">@item.Title</a></td>
-                            <td>@item.Category.Name</td>
-                            <td>@item.User.FullName<span><a href="#"><img src="../images/Dashboard/eye.png"></a></span></td>
-                            <td>@item.PublishedDate</td>
-                            <td>@item.User1.FullName</td>
-                            <td>@item.AdminRemarks</td>
-                            <td>
-                                <span class="dropdown">
-                                    <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item approve-btn" href="#" role="button">Approve</a>
-                                        <a class="dropdown-item" href="#">Download Notes</a>
-                                        <a class="dropdown-item" href="#">View more detail</a>
-                                    </div>
-                                </span>
-                            </td>
-                        </tr>
+                                <td><a href="#">@item.Title</a></td>
+                                <td>@item.Category.Name</td>
+                                <td>@item.User.FullName<span><a href="#"><img src="../images/Dashboard/eye.png"></a></span></td>
+                                <td>@item.PublishedDate</td>
+                                <td>@item.User1.FullName</td>
+                                <td>@item.AdminRemarks</td>
+                                <td>
+                                    <span class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item approve-btn" href="#" role="button">Approve</a>
+                                            <a class="dropdown-item" href="#">Download Notes</a>
+                                            <a class="dropdown-item" href="#">View more detail</a>
+                                        </div>
+                                    </span>
+                                </td>
+                            </tr>
                         }
                     </table>
                 </div>

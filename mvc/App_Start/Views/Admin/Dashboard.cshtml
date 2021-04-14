@@ -11,6 +11,7 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/custom/responsive-tabs.min.css")
     <link href="~/Content/custom/dashboard-admin.css" rel="stylesheet" />
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
 
     @Styles.Render("~/Content/custom/responsive.css")
     @Scripts.Render("~/bundles/jquery")
@@ -21,9 +22,9 @@
             <div class="container">
                 <h1>Dashboard</h1>
                 <div class="dashboard-blocks text-center">
-                    <div class="notes-in-review"><a @Url.Action("NotesUnderReview", "Admin")>@ViewBag.Submitted</a><p>Number of Notes in Review for Publish</p></div>
-                    <div class="notes-downloads"><a @Url.Action("DownloadedNotes", "Admin")>@ViewBag.Downloaded</a><p>Number of New Notes Downloads</p><p>(Last 7 days)</p></div>
-                    <div class="new-registrations"><a @Url.Action("Members", "Admin")>@ViewBag.Members</a><p>Number of New Registrations</p><p>(Last 7 days)</p></div>
+                    <div class="notes-in-review"><a href="@Url.Action("NotesUnderReview", "Admin")">@ViewBag.Submitted</a><p>Number of Notes in Review for Publish</p></div>
+                    <div class="notes-downloads"><a href="@Url.Action("DownloadedNotes", "Admin")">@ViewBag.Downloaded</a><p>Number of New Notes Downloads</p><p>(Last 7 days)</p></div>
+                    <div class="new-registrations"><a href="@Url.Action("Members", "Admin")">@ViewBag.Members</a><p>Number of New Registrations</p><p>(Last 7 days)</p></div>
                 </div>
             </div>
 
@@ -36,30 +37,32 @@
                 <div class="row">
                     <div class="col-md-4"><h3>Published Notes</h3></div>
                     <div class="col-md-8">
-                        <form class="sb">
+                        @using (Html.BeginForm("Dashboard", "Admin", FormMethod.Get, new { @class = "sb" }))
+                        {
 
-                            <div class="form-group has-search">
-                                <span class="fa fa-search form-control-feedback"></span>
-                                <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
-                            </div>
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            @Html.TextBox("searchstring", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
+                        </div>
 
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-outline-secondary">Search</button>
-                            </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-outline-secondary">Search</button>
+                                </div>
 
-                            <div class="form-group">
-                                <select class="form-control" onchange="submit()" id="month" name="month" style="text-overflow: ellipsis; padding-right: 35px;">
-                                    <option value="">Select Month</option>
-                                    @{ 
-                                        for (int u = 0; u < 6; u++)
-                                                    {
-                                        <option value="@DateTime.Now.AddMonths(-u).ToString("MMMM yyyy")">@DateTime.Now.AddMonths(-u).ToString("MMMM yyyy")</option> 
-                                        } 
-                                     }
-                                </select>
-                            </div>
-                        </form>
-                    </div>
+                                <div class="form-group">
+                                    <select class="form-control" onchange = "this.form.submit();"  id="month" name="dropdownsearch" style="text-overflow: ellipsis; padding-right: 35px;">
+                                        <option value="">Select Month</option>
+                                        @{
+                                            for (int u = 0; u < 6; u++)
+                                            {
+                                                <option value="@DateTime.Now.AddMonths(-u).ToString("MMMM yyyy")">@DateTime.Now.AddMonths(-u).ToString("MMMM yyyy")</option>
+
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                               }
+                        </div>
                 </div>
 
                 <div class="table-responsive">
@@ -81,14 +84,17 @@
 
                             <th scope="col"></th>
                         </tr>
-                        @{ int i = 1;}
+                        @{int i = 1; }
                         @foreach (var item in Model)
                         {
                             <tr>
-                                <td>{@i;}{@i++;}</td>
+                                <td>
+                                    @i
+                                    @{ i++;}
+                                    </td>
 
 
-                                <td><a @Url.Action("NoteDetails","Dashboard",new { id=item.ID})>@item.Title</a></td>
+                                <td><a @Url.Action("NoteDetails", "Dashboard", new { id = item.ID })>@item.Title</a></td>
                                 <td>@item.Category.Name</td>
                                 @{
                                     double count = 0;
@@ -164,7 +170,7 @@
                             </tr>
                         }
                     </table>
-                    @Html.PagedListPager(Model, page => Url.Action("NotesUnderReview", new { searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"], sortby = Request.QueryString["sortby"], page }),
+                    @Html.PagedListPager(Model, page => Url.Action("Dashboard", new { searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"], sortby = Request.QueryString["sortby"], page }),
                  new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
                 </div>
             </div>
