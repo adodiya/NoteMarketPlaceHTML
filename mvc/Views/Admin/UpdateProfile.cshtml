@@ -1,0 +1,132 @@
+﻿@model NotesMarketPlace.Models.User_UserProfile
+
+@{
+    ViewBag.Title = "UpdateProfile";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    <link href="~/Content/custom/my-profile.css" rel="stylesheet" />
+}
+
+<section id="profile-details">
+    <div class="content-box-md">
+        <div class="container">
+            <h3>My Profile</h3>
+            <div class="row">
+                <div class="col-md-6">
+                    @using (Html.BeginForm("UpdateProfile", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.User.ID)
+                        @Html.HiddenFor(model => model.UserProfile.ID)
+                        @Html.HiddenFor(model => model.User.RoleID)
+                        @Html.HiddenFor(model => model.User.Password);
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User.FirstName)
+                            @Html.TextBoxFor(model => model.User.FirstName, new { @class = "form-control", placeholder = "Enter your first name" })
+
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User.LastName)
+                            @Html.TextBoxFor(model => model.User.LastName, new { @class = "form-control", placeholder = "Enter your last name" })
+
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User.EmailID)
+                            @Html.TextBoxFor(model => model.User.EmailID, new { @class = "form-control", placeholder = "Enter your email address" })
+
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.SecondaryEmailID)
+                            @Html.TextBoxFor(model => model.UserProfile.SecondaryEmailID, new { @class = "form-control", placeholder = "Enter your email address" })
+
+                        </div>
+
+
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <div class="form-group contact">
+
+
+                                <br>
+                                @Html.DropDownListFor(model => model.UserProfile.PhonenoCountryCode, new SelectList(Model.UserProfile.CountryCollection, "CountryCode", "Name"), "Select", new { @class = "form-control countryCode" })
+
+
+                                @Html.TextBoxFor(model => model.UserProfile.Phoneno, htmlAttributes: new { @class = "form-control phone", placeholder = "Enter your phone number" })
+                                @Html.ValidationMessageFor(model => model.UserProfile.Phoneno, "", new { @class = "text-danger" })
+
+                            </div>
+
+                        </div>
+
+
+
+
+
+                        <div class="form-group">
+                            <label>Display Picture</label>
+                            <!--<div class="image-upload form-control1 text-center">
+                            <label for="pic-input">
+                                <img src="~/images/upload-file.png">
+                                <h6 class="text center">Upload image</h6>
+                            </label>-->
+                            <input type="file" name="DisplayImageData" value="@Model.UserProfile.ProfilePic" />
+                            @if (Model.UserProfile.ProfilePic != null)
+                            {
+
+
+                                <p>Current Profile Pic</p>
+                                <ul>
+                                    <li id="removeli">
+
+                                        <img src="@Url.Content(@Model.UserProfile.ProfilePic)" id="removed" height="100" width="100" />
+                                        <button class="btn" id="delete" type="button">Delete</button>
+                                        @Html.Hidden("IsRemoved", "", new { @id = "remove" })
+                                    </li>
+                                </ul>
+
+
+
+
+                            }
+                            <!--</div>-->
+
+                        </div>
+
+
+
+
+
+                        <input type="submit" />
+
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- Profile Details Ends-->
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/custom")
+
+<script>
+    $(document).ready(function () {
+        $("#delete").click(function () {
+            $("#removeli").remove();
+            $("#remove").val("Removed");
+
+        });
+
+
+    });
+
+
+</script>

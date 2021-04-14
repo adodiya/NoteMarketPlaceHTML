@@ -1,0 +1,101 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<NotesMarketPlace.Models.Note>
+
+@{
+    ViewBag.Title = "RejectedNotes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    <link href="~/Content/custom/rejected-notes.css" rel="stylesheet" />
+}
+
+<div id="rejected-notes">
+    <section id="rejected-notes">
+        <div class="content-box-md">
+            <div class="container">
+                <h1>Rejected Notes</h1>
+                @using (Html.BeginForm("RejectedNotes", "Admin", FormMethod.Get, new { @class = "form-inline" }))
+                {
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Seller</label>
+
+                        @Html.DropDownList("dropdownsearch", ViewBag.dropdownsearch as SelectList, "Select", new { @class = "form-control dropddown" })
+
+                    </div>
+                </div>
+                <div class="col-md-6 form-right form-inline">
+
+
+                    <div class="form-group has-search">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        @Html.TextBox("searchstring", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Search" class="btn btn-outline-secondary" />
+
+                    </div>
+
+                </div>
+            </div>
+
+                }
+            <div class="table-responsive">
+                <table class="table">
+
+                    <tr>
+                        <th scope="col">SR NO.</th>
+
+                        <th scope="col">@Html.ActionLink("NOTE TITLE", "RejectedNotes", new { sortby = ViewBag.SortByTitle, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("CATEGORY", "RejectedNotes", new { sortby = ViewBag.SortByCategory, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("SELLER", "RejectedNotes", new { sortby = ViewBag.SortBySeller, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+
+                        <th scope="col">@Html.ActionLink("DATE ADDED", "RejectedNotes", new { sortby = ViewBag.SortByDate, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">@Html.ActionLink("REJECTED BY", "RejectedNotes", new { sortby = ViewBag.RejectedBy, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                        <th scope="col">REMARKS</th>
+
+                        <th scope="col"></th>
+                    </tr>
+                    @{int i = 1;}
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @i;
+                            @{i++;}
+                        </td>
+
+
+                        <td><a href="@Url.Action("NoteDetails",new { id=item.ID})">@item.Title</a></td>
+                        <td>@item.Category.Name</td>
+                        <td>@item.User.FullName<span><a href="@Url.Action("MemberDetails",new { id=item.User.ID})"><img src="~/images/eye.png"></a></span></td>
+                        <td>@item.PublishedDate</td>
+                        <td>@item.User1.FullName</td>
+                        <td>@item.AdminRemarks</td>
+                        <td>
+                            <span class="dropdown">
+                                <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item approve-btn" href="@Url.Action("Approved",new { id=item.ID})" role="button">Approve</a>
+                                    <a class="dropdown-item" href="@Url.Action("DownloadNotes",new { id=item.ID})">Download Notes</a>
+                                    <a class="dropdown-item" href="@Url.Action("NoteDetails",new { id=item.ID})">View more detail</a>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                }
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("MyDownloads", new { searchstring = Request.QueryString["searchstring"], sortby = Request.QueryString["sortby"], page }),
+           new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+            </div>
+            </div>
+        </div>
+
+    </section>
+</div>

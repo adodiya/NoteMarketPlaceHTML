@@ -37,6 +37,11 @@ namespace NotesMarketPlace
             bundles.Add(new ScriptBundle("~/bundles/custom").Include(
                       "~/Scripts/custom/script.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
+          "~/Scripts/jquery-ui-{version}.js"));
+            //css  
+            bundles.Add(new StyleBundle("~/Content/cssjqryUi").Include(
+                   "~/Content/jquery-ui.css"));
 
         }
     }

@@ -1,0 +1,82 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+@model IPagedList<NotesMarketPlace.Models.User>
+@{
+    ViewBag.Title = "ManageAdmin";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    <link href="~/Content/custom/manage-administrator.css" rel="stylesheet" />
+}
+
+<section id="manage-administrator">
+    <div class="content-box-md">
+        <div class="container">
+            <h1>Manage Administrator</h1>
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-outline-secondary manage" onclick="window.location='@Url.Action("AddAdmin", "Admin")'">ADD ADMINISTRATOR</button>
+
+                </div>
+                <div class="col-md-8">
+                    @using (Html.BeginForm("ManageAdmin", "User", FormMethod.Get, new { @class = "form-inline" }))
+                    {
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            <input class="form-control" type="text" placeholder="Search notes here.." aria-label="Search">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Search" class="btn btn-outline-secondary" />
+
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">SR NO.</th>
+
+                            <th scope="col">@Html.ActionLink("FIRST NAME", "ManageAdmin", new { sortby = ViewBag.SortByFirstName, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                            <th scope="col">@Html.ActionLink("LAST NAME", "ManageAdmin", new { sortby = ViewBag.SortByFirstLast, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                            <th scope="col">@Html.ActionLink("EMAIL", "ManageAdmin", new { sortby = ViewBag.SortBySortByEmailID, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                            <th scope="col">PhoneNO</th>
+                            <th scope="col">@Html.ActionLink("DATE ADDED", "ManageAdmin", new { sortby = ViewBag.SortByDate, searchstring = Request.QueryString["searchstring"], dropdownsearch = Request.QueryString["dropdownsearch"] })</th>
+                            <th scope="col">ACTIVE</th>
+
+                            <th scope="col">ACTION</th>
+                        </tr>
+                    </thead>
+
+
+                    @{int i = 1; }
+                    @foreach (var admin in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @i
+                                @{ i++;}
+                            </td>
+                            <td>@admin.FirstName</td>
+                            <td>@admin.LastName</td>
+                            <td>@admin.EmailID</td>
+                            <td></td>
+                            <td>@admin.CreatedDate</td>
+                            <td>@(admin.IsActive?"Yes":"No")</td>
+                            <td><a @Url.Action("AddAdmin", "Admin", new { id = admin.ID })><img src="../images/Dashboard/eye.png"></a><a @Url.Action("Inactive", "Admin", new { id = admin.ID })><img src="../images/delete.png"></a></td>
+                        </tr>
+                    }
+
+
+
+                </table>
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("ManageAdmin", new { searchstring = Request.QueryString["searchstring"],sortby = Request.QueryString["sortby"], page }),
+                 new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = true, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+        </div>
+    </div>
+
+</section>
+

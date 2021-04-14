@@ -1,0 +1,126 @@
+﻿@using PagedList.Mvc;
+@using PagedList;
+
+@model IPagedList<NotesMarketPlace.Models.Note>
+
+@{
+    ViewBag.Title = "Dashboard2";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/custom/responsive-tabs.min.css")
+
+    @Styles.Render("~/Content/custom/dashboard2.css")
+    @Styles.Render("~/Content/custom/responsive.css")
+    @Scripts.Render("~/bundles/jquery")
+}
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+
+<section id="dashboard">
+    <div class="content-box-md">
+        <div class="container">
+            <h1>Dashboard<span><button class="btn" role="button" onclick="window.location='@Url.Action("AddNote", "User")'">ADD NOTE</button></span></h1>
+            <div class="dashboard-blocks text-center">
+                <div class="block">
+                    <div class="earnings detail">
+                        <img src="~/images/my-earning.png">
+                        <p>My Earning</p>
+                    </div>
+
+                    <div class="num-notes-sold detail">
+                        <h5><a href="#">@ViewBag.Count</a></h5>
+                        <p>Number of Notes Sold</p>
+                    </div>
+                    <div class="money-earned detail">
+                        <h5><a href="#">$@ViewBag.Sum</a></h5>
+                        <p>Money Earned</p>
+                    </div>
+
+                </div>
+                <div class="block">
+                    <div class="my-downloads">
+                        <h5><a href="#" @Url.Action("MyDownloads")>@ViewBag.MyDownloads</a></h5>
+                        <p>My Downloads</p>
+                    </div>
+                    <div class="my-rejected-notes">
+                        <h5><a href="#" @Url.Action("MyRejectedNotes")>@ViewBag.MyRejected</a></h5>
+                        <p>My Rejected Notes</p>
+                    </div>
+                    <div class="buyer-requests">
+                        <h5><a href="#" @Url.Action("BuyerRequest")>@ViewBag.BuyerRequest</a></h5>
+                        <p>Buyer Requests</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+<section id="published-notes">
+    <div class="content-box-md">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5 col-sm-12 col-12">
+                    <h3>Published Notes</h3>
+                </div>
+                <div class="col-md-7 col-sm-12 col-12">
+                    @using (Html.BeginForm("Dashboard2", "User", FormMethod.Get, new { @class = "sb" }))
+                    {
+
+                        <div class="form-group has-search">
+                            <span class="fa fa-search form-control-feedback"></span>
+                            @Html.TextBox("searchString1", null, htmlAttributes: new { @class = "form-control", placeholder = "Search notes here.." })
+
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-secondary">Search</button>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">@Html.ActionLink("ADDED DATE", "Dashboard2", new { sortby1 = ViewBag.SortByDate, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("TITLE", "Dashboard2", new { sortby1 = ViewBag.SortByTitle, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("CATEGORY", "Dashboard2", new { sortby1 = ViewBag.SortByCategory, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("SELL TYPE", "Dashboard2", new { sortby1 = ViewBag.SortByType, searchString1 = Request.QueryString["searchString1"] })</th>
+                            <th scope="col">@Html.ActionLink("PRICE", "Dashboard2", new { sortby1 = ViewBag.SortByPrice, searchString1 = Request.QueryString["searchString1"] })</th>
+
+                            <th scope="col">ACTION</th>
+
+
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>@item.PublishedDate</td>
+                            <td><a href="#">@item.Title</a></td>
+                            <td>@item.Category.Name</td>
+                            <td>@(item.IsPaid?"Paid":"False")</td>
+                            <td>$@item.Price</td>
+                            <td><a @Url.Action("NoteDetails", new { id = item.ID })><img src="~/images/eye.png"></a></td>
+                        </tr>
+                    }
+
+
+                </table>
+                @Html.PagedListPager(Model, page1 => Url.Action("Dashboard2", new { searchString1 = Request.QueryString["searchString1"], sortby1 = Request.QueryString["sortby1"], page1 }),
+               new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, DisplayPageCountAndCurrentLocation = false, ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null })
+            </div>
+        </div>
+    </div>
+
+</section>
+
+

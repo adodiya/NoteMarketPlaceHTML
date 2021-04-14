@@ -1,0 +1,222 @@
+﻿@using NotesMarketPlace.Models
+@model User_UserProfile
+@{
+    ViewBag.Title = "MyProfile";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+
+
+    @Styles.Render("~/Content/custom/user-profile.css")
+
+
+}
+
+<!-- Banner Starts-->
+<section id="user-profile-banner">
+    <div class="content-box-md">
+        <div class="container" id="banner-content">
+            <h1 class="text-center">User Profile</h1>
+        </div>
+
+    </div>
+</section>
+<!-- Banner Ends-->
+<!-- Profile Details Starts-->
+<section id="profile-details">
+    <div class="content-box-md">
+        <div class="container">
+            <h3>Basic Profile Details</h3>
+            @using (Html.BeginForm("MyProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.UserProfile.UserID);
+                @Html.HiddenFor(model => model.User.ID);
+                @Html.HiddenFor(model => model.User.Password);
+                @Html.HiddenFor(model => model.User.RoleID);
+                
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User.FirstName)
+                            @Html.TextBoxFor(model => model.User.FirstName, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.User.FirstName, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User.LastName)
+                            @Html.TextBoxFor(model => model.User.LastName, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.User.LastName, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.User.EmailID)
+                            @Html.TextBoxFor(model => model.User.EmailID, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.User.EmailID, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Date of Birth</label>
+                            @Html.EditorFor(model => model.UserProfile.DOB, new { htmlAttributes = new { @class = "form-control", placeholder = "Employee Date Of Birth", @readonly = "true" } })
+                            @Html.ValidationMessageFor(model => model.UserProfile.DOB, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            @Html.DropDownListFor(model => model.UserProfile.Gender, new SelectList(Model.UserProfile.GenderList, "ID", "Value"), "Select", new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+
+                            <label>Phone Number</label>
+                            <div class="form-group contact">
+
+
+                                <br>
+                                @Html.DropDownListFor(model => model.UserProfile.PhonenoCountryCode, new SelectList(Model.UserProfile.CountryCollection, "CountryCode", "Name"), "Select", new { @class = "form-control countryCode" })
+
+
+                                @Html.TextBoxFor(model => model.UserProfile.Phoneno, htmlAttributes: new { @class = "form-control phone", placeholder = "Enter your phone number" })
+                                @Html.ValidationMessageFor(model => model.UserProfile.Phoneno, "", new { @class = "text-danger" })
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Display Picture</label>
+                            <div class="image-upload form-control1 text-center">
+                                <label for="pic-input">
+                                    <img src="~/images/upload-file.png">
+                                    <h6 class="text center">Upload image</h6>
+                                </label>
+
+                                <input id="pic-input" type="file" name="DisplayImageData" value="@Model.UserProfile.ProfilePic" />
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <h3>Address Details</h3>
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.AddressL1)
+                            @Html.TextBoxFor(model => model.UserProfile.AddressL1, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.UserProfile.AddressL1, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Address Line 2</label>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.AddressL2)
+                            @Html.TextBoxFor(model => model.UserProfile.AddressL2, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.UserProfile.AddressL2, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.City)
+                            @Html.TextBoxFor(model => model.UserProfile.City, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.UserProfile.City, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.State)
+                            @Html.TextBoxFor(model => model.UserProfile.State, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.UserProfile.State, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.ZipCode)
+                            @Html.TextBoxFor(model => model.UserProfile.ZipCode, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.UserProfile.ZipCode, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.UserProfile.Country)
+                        @Html.DropDownListFor(model => model.UserProfile.Country, new SelectList(Model.UserProfile.CountryCollection, "Name", "Name"), "Select", new { @class = "form-control" })
+                    </div>
+
+                </div>
+                <h3>University and College Information</h3>
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.University)
+                            @Html.TextBoxFor(model => model.UserProfile.University, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.UserProfile.University, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.UserProfile.College)
+                            @Html.TextBoxFor(model => model.UserProfile.College, htmlAttributes: new { @class = "form-control", placeholder = "Enter your email id" })
+                            @Html.ValidationMessageFor(model => model.UserProfile.College, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="btn" type="submit">SUBMIT</button>
+
+
+            }
+        </div>
+
+    </div>
+</section>
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=datetime]').datepicker({
+                dateFormat: "dd/M/yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-60:+0"
+            });
+
+        });
+    </script>
+
+}
