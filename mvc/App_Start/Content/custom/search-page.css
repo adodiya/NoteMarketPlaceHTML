@@ -1,10 +1,10 @@
-#search-banner {
+        #search-banner {
     background-image: url(../../images/banner-with-overlay.jpg);
     background-position: center;
     background-size: cover;
 }
 
-#search-banner h1 {
+        #search-banner h1 {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
     font-size: 54px;
@@ -12,7 +12,7 @@
     padding: 80px 0;
     margin-top: 50px;
 }
-#search-book-page ul.book-details{
+        #search-book-page ul.book-details{
            list-style: none;
            
         }
@@ -47,8 +47,11 @@
             height: 253px;
             margin-bottom: 30px;
         }
-        #search-book-page #search-filter .content-box-md{
-padding-bottom: 0px;}
+        #search-book-page #search-filter .content-box-md
+        {
+            padding-bottom: 0px;
+
+        }
        
        
  
@@ -197,3 +200,4 @@ padding-bottom: 0px;}
 .rate > label:hover ~ input:checked ~ label {
     color: #c59b08;
 }
+
