@@ -11,23 +11,36 @@ namespace NotesMarketPlace.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Web;
+
     public partial class UserProfile
     {
         public int ID { get; set; }
         public int UserID { get; set; }
-        public Nullable<System.DateTime> DOB { get; set; }
+
+
+        [Display(Name = "Date Of Birth")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/yyyy}")] public Nullable<System.DateTime> DOB { get; set; }
+        
+        [Required(ErrorMessage ="Please select your gender")]
         public int Gender { get; set; }
         public string SecondaryEmailID { get; set; }
-        public string PhonenoCountryCode { get; set; }
+
+        [Required(ErrorMessage = "Please select country")] public string PhonenoCountryCode { get; set; }
+
+        [Required(ErrorMessage = "Please enter your phone number")]
+        [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
         public string Phoneno { get; set; }
         public string ProfilePic { get; set; }
-        public string AddressL1 { get; set; }
-        public string AddressL2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
-        public string Country { get; set; }
+
+        [Required(ErrorMessage = "Please enter your address")] public string AddressL1 { get; set; }
+        [Required(ErrorMessage = "Please enter your address")] public string AddressL2 { get; set; }
+        [Required(ErrorMessage = "Please enter your city")] public string City { get; set; }
+        [Required(ErrorMessage = "Please enter your state")] public string State { get; set; }
+        [Required(ErrorMessage = "Please enter your zipcode")] public string ZipCode { get; set; }
+        [Required(ErrorMessage = "Please enter your country")] public string Country { get; set; }
         public string University { get; set; }
         public string College { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
@@ -37,5 +50,12 @@ namespace NotesMarketPlace.Models
     
         public virtual ReferenceData ReferenceData { get; set; }
         public virtual User User { get; set; }
+
+        [NotMapped] public List<Country> CountryCollection { get; set; }
+
+       [NotMapped]public List<ReferenceData> GenderList { get; set; }
+
+        [NotMapped] public string ispresent { get; set; }
+
     }
 }

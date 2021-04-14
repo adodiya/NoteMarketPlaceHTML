@@ -11,7 +11,9 @@ namespace NotesMarketPlace.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -28,11 +30,22 @@ namespace NotesMarketPlace.Models
     
         public int ID { get; set; }
         public int RoleID { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        
+       [Required(ErrorMessage ="Please enter your first name")] public string FirstName { get; set; }
+        [Required(ErrorMessage = "Please enter your last name")] public string LastName { get; set; }
+        
+        [Required(ErrorMessage = "Please enter your email address")]
+        [EmailAddress(ErrorMessage = "Invalied email id")]
         public string EmailID { get; set; }
+        
+        [Required(ErrorMessage = "Please enter your password")] 
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,24}$", ErrorMessage = " between 6 and 24 characters long <br/>at least 1 lowercase character <br/>It must have at least 1 special character <br/> It must have at least 1-digit character <br/>It must not contain whitespaces")]
+        
+        
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Please enter confirm your password")] 
+        [Compare("Password",ErrorMessage ="Password does not match")]
         public string ConfirmPassword { get; set; }
         public bool IsEmailVerified { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
@@ -57,5 +70,11 @@ namespace NotesMarketPlace.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserProfile> UserProfiles { get; set; }
         public virtual UserRole UserRole { get; set; }
+
+        [NotMapped] public string FullName { get { 
+            
+            return string.Concat(FirstName + "" + LastName);
+            }
+        }
     }
 }

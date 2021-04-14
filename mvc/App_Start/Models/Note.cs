@@ -9,8 +9,10 @@
 
 namespace NotesMarketPlace.Models
 {
+    using PagedList;
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Web;
     using System.Web.Mvc;
@@ -32,7 +34,11 @@ namespace NotesMarketPlace.Models
         public Nullable<int> ActionedBy { get; set; }
         public string AdminRemarks { get; set; }
         public Nullable<System.DateTime> PublishedDate { get; set; }
+        
+        [Required(ErrorMessage ="required")]
         public string Title { get; set; }
+
+        [Required(ErrorMessage = "required")]
         public int CategoryID { get; set; }
         public string DisplayPic { get; set; }
         public Nullable<int> TypeID { get; set; }
@@ -52,8 +58,8 @@ namespace NotesMarketPlace.Models
         public Nullable<int> ModifiedBy { get; set; }
         public bool IsActive { get; set; }
     
-        public HttpPostedFileBase DisplayImageData { get; set; }
-        public HttpPostedFileBase FileData { get; set; }
+       // public HttpPostedFileBase DisplayImageData { get; set; }
+       //public HttpPostedFileBase FileData { get; set; }
         //public SelectList Categorylist { get; set; }
         public virtual Category Category { get; set; }
         public virtual Country Country { get; set; }
@@ -79,5 +85,10 @@ namespace NotesMarketPlace.Models
         [NotMapped] public List<Category> CategoryCollection { get; set; }
         [NotMapped] public List<Country> CountryCollection { get; set; }
         [NotMapped] public List<Type> TypeCollection { get; set; }
+
+       
+       [NotMapped]public IPagedList<Note> Inprogressnotes { get; set; }
+        [NotMapped] public IPagedList<Note> Publishednotes { get; set; }
+
     }
 }

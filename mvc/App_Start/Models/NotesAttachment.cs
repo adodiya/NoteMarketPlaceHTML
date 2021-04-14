@@ -10,8 +10,12 @@
 namespace NotesMarketPlace.Models
 {
     using System;
+    using System.Web;
     using System.Collections.Generic;
-    
+    using System.Data.Entity;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.IO;
+
     public partial class NotesAttachment
     {
         public int ID { get; set; }
@@ -25,5 +29,20 @@ namespace NotesMarketPlace.Models
         public bool IsActive { get; set; }
     
         public virtual Note Note { get; set; }
+
+       
+        [NotMapped] public double FileSize { get {
+
+                FileInfo fi = new FileInfo(FilePath);
+
+               // long size = fi.Length;
+            
+                double len = new FileInfo(FilePath).Length;
+               
+               
+               
+                return len;
+            } }
+       
     }
 }
