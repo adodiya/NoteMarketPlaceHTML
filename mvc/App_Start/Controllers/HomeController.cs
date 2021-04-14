@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -234,9 +234,12 @@ namespace NotesMarketPlace.Controllers
             ViewBag.searchType = new SelectList(db.Types.ToList(), "Name", "Name");
             ViewBag.searchCountry = new SelectList(db.Countries.ToList(), "Name", "Name");
             ViewBag.searchCourse = new SelectList(db.Notes.ToList(), "Course", "Course");
+            ViewBag.searchUniversity = new SelectList(db.Notes.ToList(), "UniversityName", "UniversityName");
 
 
-            var notes = db.Notes.Where(model => model.Status == 5).OrderBy(model => model.PublishedDate);
+            ViewBag.Count = db.NotesReviews;
+            ViewBag.NoteReview = db.NotesReviews.ToList();
+            var notes = db.Notes.Where(model => model.Status == 4).OrderBy(model => model.PublishedDate);
             if (!string.IsNullOrEmpty(searchstring))
             {
                 notes = notes.Where(model => model.Title.Contains(searchstring) || model.Category.Name.Contains(searchstring) || model.User.FirstName.Contains(searchstring) || model.User.LastName.Contains(searchstring) || model.ReferenceData.Value.Contains(searchstring) || model.Price.Equals(searchstring)).OrderBy(model => model.PublishedDate);
@@ -263,16 +266,35 @@ namespace NotesMarketPlace.Controllers
             {
                 notes = notes.Where(model => model.UniversityName.Contains(searchUniversity)).OrderBy(model => model.PublishedDate);
             }
-            
-            return View(notes.ToPagedList(page??1,5));
+            if (!string.IsNullOrEmpty(searchRating))
+            {
+               
+            }
+            return View(notes.ToPagedList(page??1,6));
         }
 
         public ActionResult NoteDetails(int id)
         {
             var obj = db.Notes.Find(id);
             ViewBag.Reviews = db.NotesReviews.Where(model => model.NoteID == id).ToList();
-            int count = (int)Math.Round(db.NotesReviews.Where(model => model.NoteID == id).Select(model => model.Ratings).Average());
-            ViewBag.Count = count;
+            int count = db.NotesReviews.Where(model => model.NoteID == id).Count();
+            int issue= db.ReportedIssues.Where(model => model.NoteID == id).Count();
+           
+            if(issue==0)
+            {
+                ViewBag.Issues = 0;
+            }
+            else
+            {
+                ViewBag.Issues = issue;
+            }
+            if(count==0)
+            { ViewBag.Count = 0; }
+            else
+            {
+                int count1 = (int)Math.Round(db.NotesReviews.Where(model => model.NoteID == id).Select(model => model.Ratings).Average());
+                ViewBag.Count = count1; }
+          
             return View(obj);
         }
 
@@ -280,18 +302,50 @@ namespace NotesMarketPlace.Controllers
         public ActionResult SellYourNotes()
         {
            
-            return View();
+            return RedirectToAction("Login","Home");
         }
 
         public ActionResult ContactUs()
         {
             return View();
         }
-        public ActionResult ContactUs(FormCollection form)
+        [HttpPost]
+
+        public async Task<ActionResult> email(FormCollection form)
         {
-            
-            return View();
+            var fullname = form["fname"];
+            var email = form["email"];
+            var subject = form["subject"];
+            var comments = form["comments"];
+            var x = await SendEmail(fullname, email, subject, comments);
+            if (x == "sent")
+                ViewData["esent"] = "Your Message Has Been Sent";
+            return RedirectToAction("ContactUs");
         }
+        private async Task<string> SendEmail(string fullname, string email, string subject, string comments)
+        {
+            var message = new MailMessage();
+            message.To.Add(new MailAddress("ahdodiya99@gmail.com")); // replace with receiver's email id     
+            message.From = new MailAddress("ahdodiya99@gmail.com"); // replace with sender's email id     
+            message.Subject = email + " - " + subject;
+            message.Body = "Hello,\n\n " + comments + "\n\nRegards:,\n " + fullname;
+            message.IsBodyHtml = true;
+            using (var smtp = new SmtpClient())
+            {
+                var credential = new NetworkCredential
+                {
+                    UserName = "ahdodiya99@gmail.com", // replace with sender's email id     
+                    Password = "" // replace with password     
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(message);
+                return "sent";
+            }
+        }
+
 
         [HttpGet]
         public ActionResult ForgetPassword()

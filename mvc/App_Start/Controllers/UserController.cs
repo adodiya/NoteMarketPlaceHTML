@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -28,7 +28,7 @@ namespace NotesMarketPlace.Controllers
             return View();
         }
 
-       
+
         //Edit the user information
         public ActionResult MyProfile()
         {
@@ -38,7 +38,7 @@ namespace NotesMarketPlace.Controllers
 
 
                 int id = (int)Session["UserID"];
-               
+
                 var userobj = db.Users.Where(model => model.ID.Equals(id)).FirstOrDefault();
                 var userprofileobj = db.UserProfiles.Where(model => model.UserID.Equals(id)).FirstOrDefault();
                 User_UserProfile obj = new User_UserProfile();
@@ -61,7 +61,7 @@ namespace NotesMarketPlace.Controllers
                     return View(obj);
                 }
             }
-            
+
             else
             {
                 return RedirectToAction("Login", "User");
@@ -71,92 +71,119 @@ namespace NotesMarketPlace.Controllers
 
         [HttpPost] public ActionResult MyProfile(User_UserProfile obj, HttpPostedFileBase DisplayImageData)
         {
-
-            var allowedImageExtensions = new[] { ".Jpg", ".png", ".jpg", "jpeg" };
-            User obj1 = obj.User;
-             UserProfile obj2 = obj.UserProfile;
-            db.Entry(obj1).State = EntityState.Modified;
-            db.Configuration.ValidateOnSaveEnabled = false;
-            db.SaveChanges();
-            
-            var userprofileobj = db.UserProfiles.Where(model => model.UserID.Equals(obj1.ID)).FirstOrDefault();
-            
-            if (userprofileobj == null)
+            if (Session["UserID"] != null) 
             {
-
-                if (DisplayImageData.ContentLength >0)
+                if(ModelState.IsValid)
                 {
+                    var allowedImageExtensions = new[] { ".Jpg", ".png", ".jpg", "jpeg" };
+                    User obj1 = obj.User;
+                    UserProfile obj2 = obj.UserProfile;
+                    var update1 = db.Users.Find(obj1.ID);
+                    db.Entry(update1).CurrentValues.SetValues(obj1);
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.SaveChanges();
 
-                    string imagefileName = Path.GetFileNameWithoutExtension(DisplayImageData.FileName);
-                    string imageextension = Path.GetExtension(DisplayImageData.FileName);
-                    if (allowedImageExtensions.Contains(imageextension))
+                    var userprofileobj = db.UserProfiles.Where(model => model.UserID.Equals(obj1.ID)).FirstOrDefault();
+
+                    if (userprofileobj == null)
                     {
-                        imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                        obj2.ProfilePic = "~/ProfileImage/" + imagefileName;
-                        imagefileName = Path.Combine(Server.MapPath("~/ProfileImage/"), imagefileName);
-                        DisplayImageData.SaveAs(imagefileName);
-                    
-                     
+
+                        if (DisplayImageData.ContentLength > 0)
+                        {
+
+                            string imagefileName = Path.GetFileNameWithoutExtension(DisplayImageData.FileName);
+                            string imageextension = Path.GetExtension(DisplayImageData.FileName);
+                            if (allowedImageExtensions.Contains(imageextension))
+                            {
+                                imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
+                                obj2.ProfilePic = "~/ProfileImage/" + imagefileName;
+                                imagefileName = Path.Combine(Server.MapPath("~/ProfileImage/"), imagefileName);
+                                DisplayImageData.SaveAs(imagefileName);
+
+
+
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("ProfilePic", "Add an image");
+                            }
+                        }
+                        db.UserProfiles.Add(obj2);
+                        db.SaveChanges();
+                        return RedirectToAction("Dashboard", "User");
+                    }
+                    else
+                    {
+
+                        if (DisplayImageData != null && DisplayImageData.ContentLength > 0)
+                        {
+                            userprofileobj = obj2;
+                            string imagefileName = Path.GetFileNameWithoutExtension(DisplayImageData.FileName);
+                            string imageextension = Path.GetExtension(DisplayImageData.FileName);
+                            if (allowedImageExtensions.Contains(imageextension))
+                            {
+
+                                imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
+                                userprofileobj.ProfilePic = "~/ProfileImage/" + imagefileName;
+                                imagefileName = Path.Combine(Server.MapPath("~/ProfileImage/"), imagefileName);
+                                DisplayImageData.SaveAs(imagefileName);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("ProfilePic", "only png/jpg formet allowed");
+                            }
+
+                        }
+                        else
+                        {
+                            string count = Request.Form["IsRemoved"];
+                            if (count == "Removed")
+                            {
+                                obj2.ProfilePic = null;
+                                userprofileobj = obj2;
+
+
+                            }
+                            else
+                            {
+                                obj2.ProfilePic = userprofileobj.ProfilePic;
+                                userprofileobj = obj2;
+
+                            }
+                        }
+
+                        obj2.ModifiedBy = (int)Session["UserID"];
+                        obj2.ModifiedDate = DateTime.Now;
+                        var update = db.UserProfiles.Find(obj2.ID);
+                        db.Entry(update).CurrentValues.SetValues(userprofileobj);
+
+
+                        db.SaveChanges();
+                        return RedirectToAction("SearchNotes");
 
                     }
-                   else
-                    {
-                        ModelState.AddModelError("","Add an image");
-                    }
+
                 }
-                db.UserProfiles.Add(obj2);
-                db.SaveChanges();
-                return RedirectToAction("Dashboard", "User");
+
+                else {
+                    return View();
+                }
+               
+
             }
+
+
             else
             {
-                
-                if(DisplayImageData!= null && DisplayImageData.ContentLength>0 )
-                {
-                    userprofileobj = obj2;
-                    string imagefileName = Path.GetFileNameWithoutExtension(DisplayImageData.FileName);
-                    string imageextension = Path.GetExtension(DisplayImageData.FileName);
-                    //if (allowedImageExtensions.Contains(imageextension))
-                    //{
-
-                    imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                    userprofileobj.ProfilePic = "~/ProfileImage/" + imagefileName;
-                    imagefileName = Path.Combine(Server.MapPath("~/ProfileImage/"), imagefileName);
-                    DisplayImageData.SaveAs(imagefileName);
-                  
-                }
-                else
-                {
-                    string count = Request.Form["Country"];
-                    if(count=="India")
-                    {
-                        obj2.ProfilePic = null;
-                        userprofileobj = obj2;
-
-
-                    }
-                    else {
-                        obj2.ProfilePic = userprofileobj.ProfilePic;
-                        userprofileobj = obj2;
-
-                    }
-                }
-                var update = db.UserProfiles.Find(obj2.ID);
-                db.Entry(update).CurrentValues.SetValues(userprofileobj);
-
-                //db.Entry(userprofileobj).State = EntityState.Modified;
-                db.Configuration.ValidateOnSaveEnabled = false;
-                db.SaveChanges();
-                return View();
+                return RedirectToAction("Login", "User");
             }
 
-          
         }
 
 
 
 
-      
+
         //Add or edit the notes
         [HttpGet] public ActionResult AddNote(int? id)
         {
@@ -164,31 +191,31 @@ namespace NotesMarketPlace.Controllers
             {
                 var noteobj2 = db.Notes.Find(id);
                 Notes_NotesAttachment noteobj = new Notes_NotesAttachment();
-                
-                if (noteobj2!=null)
+
+                if (noteobj2 != null)
                 {
-                   
-                    noteobj2.CategoryCollection = db.Categories.ToList<Category>(); 
-                    noteobj2.CountryCollection= db.Countries.ToList<Country>();
+
+                    noteobj2.CategoryCollection = db.Categories.ToList<Category>();
+                    noteobj2.CountryCollection = db.Countries.ToList<Country>();
                     noteobj2.TypeCollection = db.Types.ToList<Type>();
-                   
-                    noteobj.AttachmentList = db.NotesAttachments.Where(model => model.NoteID==id).ToList();
+
+                    noteobj.AttachmentList = db.NotesAttachments.Where(model => model.NoteID == id).ToList();
                     noteobj.Note = noteobj2;
                     noteobj.NotesAttachment = new NotesAttachment();
-                  
+
                     return View(noteobj);
-                    
+
                 }
                 else
                 {
-                   
+
                     noteobj.AttachmentList = new List<NotesAttachment>();
                     noteobj.Note = new Note();
                     noteobj.Note.CategoryCollection = db.Categories.ToList<Category>();
                     noteobj.Note.CountryCollection = db.Countries.ToList<Country>();
                     noteobj.Note.TypeCollection = db.Types.ToList<Type>();
                     noteobj.Note.SellerID = (int)Session["UserID"];
-                    noteobj.NotesAttachment = new NotesAttachment();                    
+                    noteobj.NotesAttachment = new NotesAttachment();
                     return View(noteobj);
                 }
             }
@@ -196,21 +223,21 @@ namespace NotesMarketPlace.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-               
-            
+
+
         }
 
         //Save notes
         [HttpPost]
         public ActionResult AddNote(Notes_NotesAttachment noteobj1, HttpPostedFileBase previewfile, HttpPostedFileBase displaypic, HttpPostedFileBase[] attachmentfiles)
         {
-            var allowedImageExtensions = new[]{".Jpg", ".png", ".jpg", "jpeg"};
-            
-            var allowedFileExtensions = new[]{".pdf"};
+           
+            var allowedImageExtensions = new[] { ".Jpg", ".png", ".jpg", "jpeg" };
+            var allowedFileExtensions = new[] { ".pdf" };
             Note noteobj = noteobj1.Note;
             NotesAttachment attachobj = new NotesAttachment();
             noteobj.SellerID = (int)Session["UserID"];
-            
+
 
             if (noteobj.IsPaid == true && noteobj.Price == null)
             {
@@ -220,18 +247,17 @@ namespace NotesMarketPlace.Controllers
             {
                 ModelState.AddModelError("Price", "Price cannot be 0 for paid notes");
             }
-           
             if (noteobj.IsPaid == true && noteobj.Preview == null)
             {
                 ModelState.AddModelError("", "Please add a preview for paid notes");
             }
-           
 
-            var noteExists = db.Notes.Where(model=>model.ID.Equals(noteobj.ID)).FirstOrDefault();
+
+            var noteExists = db.Notes.Where(model => model.ID.Equals(noteobj.ID)).FirstOrDefault();
             //Add Note
-            if(noteExists==null)
+            if (noteExists == null)
             {
-                if(noteobj.IsPaid==false)
+                if (noteobj.IsPaid == false)
                 {
                     noteobj.Price = 0;
                 }
@@ -250,7 +276,7 @@ namespace NotesMarketPlace.Controllers
                         string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
                         noteobj.Preview = _path;
                         previewfile.SaveAs(_path);
-                       
+
                     }
                     else
                     {
@@ -272,8 +298,8 @@ namespace NotesMarketPlace.Controllers
                         imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
                         displaypic.SaveAs(imagefileName);
 
-                      
-                      
+
+
                     }
                     else
                     {
@@ -289,40 +315,40 @@ namespace NotesMarketPlace.Controllers
 
                 //Multiple file upload start
                 foreach (var attachment in attachmentfiles)
-                            {
-                                if (attachment.ContentLength > 0)
-                                {
-                                    string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
-                                    string _FileExtension = Path.GetExtension(previewfile.FileName);
+                {
+                    if (attachment.ContentLength > 0)
+                    {
+                        string _FileName = Path.GetFileNameWithoutExtension(attachment.FileName);
+                        string _FileExtension = Path.GetExtension(previewfile.FileName);
 
-                                    //Condition to allow only pdfs for notes attachment
-                                    if (allowedFileExtensions.Contains(_FileExtension))
-                                    {
-                                        _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
-                                        string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
+                        //Condition to allow only pdfs for notes attachment
+                        if (allowedFileExtensions.Contains(_FileExtension))
+                        {
+                            _FileName = _FileName + DateTime.Now.ToString("yymmssff") + _FileExtension;
+                            string _attachmentpath = Path.Combine(Server.MapPath("~/UploadedFiles/"), _FileName);
 
-                                        attachobj.NoteID = NoteId;
-                                        attachobj.FileName = _FileName;
-                                        attachobj.FilePath = _attachmentpath;
-                                        attachment.SaveAs(_attachmentpath);
-                                        db.NotesAttachments.Add(attachobj);
-                                        db.Configuration.ValidateOnSaveEnabled = false;
-                                        db.SaveChanges();
-                                    }
+                            attachobj.NoteID = NoteId;
+                            attachobj.FileName = _FileName;
+                            attachobj.FilePath = _attachmentpath;
+                            attachment.SaveAs(_attachmentpath);
+                            db.NotesAttachments.Add(attachobj);
+                            db.Configuration.ValidateOnSaveEnabled = false;
+                            db.SaveChanges();
+                        }
 
-                                 
-                                    else
-                                    {
-                                        ModelState.AddModelError("", "Please choose only Image file");
-                                    }
-                                }
-                            }
+
+                        else
+                        {
+                            ModelState.AddModelError("", "Please choose only Image file");
+                        }
+                    }
+                }
                 //multiple file upload end
 
                 return View();
-                       
-               
-               
+
+
+
             }
 
             //Edit Note
@@ -331,48 +357,39 @@ namespace NotesMarketPlace.Controllers
                 noteobj.ModifiedBy = (int)Session["UserID"];
                 noteobj.ModifiedDate = DateTime.Now;
                 string forpreview = Request.Form["Preview"];
-                string fordisplay= Request.Form["Preview"];
-                if (noteobj.IsPaid==true && (previewfile == null && forpreview == "Removed"))
+                string fordisplay = Request.Form["Preview"];
+                if (noteobj.IsPaid == true && (previewfile == null && forpreview == "Removed"))
                 {
                     ModelState.AddModelError("", "Add a file");
                 }
 
-                if(previewfile!=null)
+                if (previewfile != null)
                 {
                     noteExists = noteobj;
                     string _PreviewFileName = Path.GetFileNameWithoutExtension(previewfile.FileName);
                     string _PreviewFileExtension = Path.GetExtension(previewfile.FileName);
-                  
+
                     if (allowedFileExtensions.Contains(_PreviewFileExtension))
                     {
-                      
-                            _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
-                            string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
-                            noteExists.Preview = _path;
-                            previewfile.SaveAs(_path);
-                           
 
+                        _PreviewFileName = _PreviewFileName + DateTime.Now.ToString("yymmssff") + _PreviewFileExtension;
+                        string _path = Path.Combine(Server.MapPath("~/UploadedFiles/"), _PreviewFileName);
+                        noteExists.Preview = _path;
+                        previewfile.SaveAs(_path);
+                    }
 
-
-
-                           
-                        }
-                       
-                   
                     else
                     {
                         ModelState.AddModelError("", "");
                     }
                 }
-           
+
                 else
                 {
-
                     if (forpreview == "Removed")
                     {
                         noteExists = noteobj;
-                       noteExists.Preview = null;
-
+                        noteExists.Preview = null;
                     }
                     else
                     {
@@ -381,45 +398,37 @@ namespace NotesMarketPlace.Controllers
                     }
 
                 }
-                if (displaypic!=null)
+                if (displaypic != null)
                 {
-                   
-                        noteExists = noteobj;
-                       
-                        string imagefileName = Path.GetFileNameWithoutExtension(displaypic.FileName);
-                        string imageextension = Path.GetExtension(displaypic.FileName);
-                        
-                            if (allowedImageExtensions.Contains(imageextension))
-                            {
-                                imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
-                                noteExists.DisplayPic = "~/Uploaded_Images/" + imagefileName;
-                                imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
-                                displaypic.SaveAs(imagefileName);
-                               
-                               
+
+                    noteExists = noteobj;
+
+                    string imagefileName = Path.GetFileNameWithoutExtension(displaypic.FileName);
+                    string imageextension = Path.GetExtension(displaypic.FileName);
+
+                    if (allowedImageExtensions.Contains(imageextension))
+                    {
+                        imagefileName = imagefileName + DateTime.Now.ToString("yymmssff") + imageextension;
+                        noteExists.DisplayPic = "~/Uploaded_Images/" + imagefileName;
+                        imagefileName = Path.Combine(Server.MapPath("~/Uploaded_Images/"), imagefileName);
+                        displaypic.SaveAs(imagefileName);
 
 
 
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("", "");
-                        }
+
+
                     }
-                
+                    else
+                    {
+                        ModelState.AddModelError("", "");
+                    }
+                }
+
                 else
                 {
                     if (fordisplay == "Removed")
                     {
                         noteExists = noteobj;
-
-
-
-
-
-
-
-
                     }
                     else
                     {
@@ -430,15 +439,7 @@ namespace NotesMarketPlace.Controllers
                 }
 
                 int count = db.NotesAttachments.Where(model => model.NoteID.Equals(noteobj.ID)).Count();
-                if (attachmentfiles == null && count==0)
-                {
-                   
-                    
-                        ModelState.AddModelError("Price", "Add Attachments");
-                    
-
-                }
-                else
+                if (attachmentfiles != null)
                 {
                     foreach (var attachment in attachmentfiles)
                     {
@@ -458,7 +459,7 @@ namespace NotesMarketPlace.Controllers
                                 db.NotesAttachments.Add(attachobj);
                                 db.Configuration.ValidateOnSaveEnabled = false;
                                 db.SaveChanges();
-                                
+
                                 var update = db.Notes.Find(noteobj.ID);
                                 db.Entry(update).CurrentValues.SetValues(noteExists);
 
@@ -473,39 +474,32 @@ namespace NotesMarketPlace.Controllers
                         }
                     }
                 }
-             
-               
+                else
+                {
+                   if(count==0)
+                    {
+                        ModelState.AddModelError("", "");
+                    }
+                    
+                }
 
             }
-           
-            
-            
-            
-            
-            
-            
-           
+            return RedirectToAction("SearchNotes");
 
-         
-           
-            noteobj.CategoryCollection = db.Categories.ToList<Category>();
-            noteobj.CountryCollection = db.Countries.ToList<Country>();
-            noteobj.TypeCollection = db.Types.ToList<Type>();
-            return View(noteobj);
-            
-           
+
         }
 
         //Publish notes
         public ActionResult PublishNote(int id)
         {
+
+            var obj = db.Notes.Find(id);
+            obj.Status = 4;
+            db.SaveChanges();
             
-          var obj = db.Notes.Find(id);
-                obj.Status = 4;
-                db.SaveChanges();
-            SendPublishEmail(obj.Title,obj.User.FullName);
-                return RedirectToAction("AddNote", "User", new { id = obj.ID });
-                
+           // SendPublishEmail(obj.Title, obj.User.FullName);
+            return RedirectToAction("SearchNotes");
+
         }
 
         public void SendPublishEmail(string title, string sellername)
@@ -514,11 +508,11 @@ namespace NotesMarketPlace.Controllers
 
             var fromEmail = new MailAddress("ahdodiya99@gmail.com", "Dotnet Awesome");
             var toEmail = new MailAddress("ahdodiya99@gmail.com");
-            
+
             var fromEmailPassword = "*****"; // Replace with actual password
             string subject = sellername + "sent their note for review";
 
-            string body = "Hello Admins\n\n"+ "We want to inform you that, " + sellername + ",\nsent his note"+ title+ "for review. Please look at the notes and take required actions.\n\n" + "Regards,\n" + "Notes Marketplace";
+            string body = "Hello Admins\n\n" + "We want to inform you that, " + sellername + ",\nsent his note" + title + "for review. Please look at the notes and take required actions.\n\n" + "Regards,\n" + "Notes Marketplace";
 
 
 
@@ -542,7 +536,7 @@ namespace NotesMarketPlace.Controllers
                 smtp.Send(message);
 
             };
-                
+
         }
 
         //Delete previously stored notes attachmensts
@@ -597,7 +591,7 @@ namespace NotesMarketPlace.Controllers
             return View(notes.ToPagedList(page ?? 1, 5));
         }
 
-        public ActionResult SendRequest(int id)
+        public ActionResult AddRequest(int id)
         {
             var obj = db.Notes.Find(id);
             Download request = new Download();
@@ -617,15 +611,16 @@ namespace NotesMarketPlace.Controllers
             var user = db.Users.Find(obj.SellerID);
             var buyer = db.Users.Find((int)Session["UserID"]);
             SendEmailToSeller(buyer,user);
-            return View();
+            ViewBag.Message = "Request Sent";
+            return RedirectToAction("NotesDetails", "User", new { id=id});
         }
         public void SendEmailToSeller(User buyer,User seller)
         {
            
 
-            var fromEmail = new MailAddress("ahdodiya99@gmail.com", "Dotnet Awesome");
+            var fromEmail = new MailAddress("ahdodiya99@gmail.com", "Aadi");
             var toEmail = new MailAddress(seller.EmailID);
-            var fromEmailPassword = "*****"; // Replace with actual password
+            var fromEmailPassword = ""; // Replace with actual password
             string subject = buyer.FullName + "wants to purchase your notes";
 
             string body = "Hello" + seller.FullName+",\nWe would like to inform you that," + buyer.FullName + "wants to purchase your notes. Please see Buyer Requests tab and allow download access to Buyer if you have received the payment from him.\n\n" + "Regards,\n" + "Notes Marketplace";
@@ -660,8 +655,8 @@ namespace NotesMarketPlace.Controllers
             db.SaveChanges();
             var buyer = db.Users.Find(note.Downloader);
             var seller = db.Users.Find((int)Session["UserID"]);
-            SendEmailToBuyer(buyer, seller);
-            return View();
+            //SendEmailToBuyer(buyer, seller);
+            return RedirectToAction("BuyerRequest");
         }
 
         public void SendEmailToBuyer(User buyer, User seller)
@@ -712,47 +707,91 @@ namespace NotesMarketPlace.Controllers
 
         [HttpGet]public ActionResult NotesDetails(int id)
         {
+            if(Session["UserID"]!=null)
+            {
+                int userid = (int)Session["UserID"];
+                var obj = db.Notes.Find(id);
+                ViewBag.Reviews = db.NotesReviews.Where(model => model.NoteID == id).ToList();
+                int count = db.NotesReviews.Where(model => model.NoteID == id).Count();
+                int issue = db.ReportedIssues.Where(model => model.NoteID == id).Count();
 
-            var obj1 = db.Notes.Where(model => model.ID.Equals(id)).FirstOrDefault();
-            ViewBag.Reviews = db.NotesReviews.Where(model => model.NoteID == id).ToList();
-            int count = (int)Math.Round(db.NotesReviews.Where(model => model.NoteID == id).Select(model => model.Ratings).Average());
-            ViewBag.Count = count;
-            return View(obj1);
+                if (issue == 0)
+                {
+                    ViewBag.Issues = 0;
+                }
+                else
+                {
+                    ViewBag.Issues = issue;
+                }
+                if (count == 0)
+                { ViewBag.Count = 0; }
+                else
+                {
+                    int count1 = (int)Math.Round(db.NotesReviews.Where(model => model.NoteID == id).Select(model => model.Ratings).Average());
+                    ViewBag.Count = count1;
+                }
+                ViewBag.Isdownloaded = db.Downloads.Where(model => model.NoteID == id && model.IsAttachmentDownloaded == false && model.DownloadAllowed == true && model.Downloader == userid).Count();
+
+
+                return View(obj);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
         }
 
         public ActionResult FileDownload(int id)
         {
-            var obj1 = db.Downloads.Where(model => model.NoteID.Equals(id) && model.Downloader.Equals(5) && model.IsAttachmentDownloaded == true).FirstOrDefault();
-            if (obj1 != null) 
-            { 
-                return DownloadNotes(id); }
+            if(Session["UserID"]!=null)
+            {
+                int userid = (int)Session["UserID"];
+                var obj1 = db.Downloads.Where(model => model.NoteID.Equals(id) && model.Downloader.Equals(userid) && model.IsAttachmentDownloaded == true).FirstOrDefault();
+                if (obj1 != null)
+                {
+                    if (obj1.IsAttachmentDownloaded == false)
+                    {
+                        obj1.IsAttachmentDownloaded = true;
+                        db.SaveChanges();
+                        return DownloadNotes(id);
+                    }
+                    else
+                    {
+                        return DownloadNotes(id);
+                    }
+                }
+                else
+                {
+                    Note noteobj = db.Notes.Find(id);
+                  
+                    var obj = db.NotesAttachments.Where(model => model.NoteID.Equals(id)).FirstOrDefault();
+                    Download entry = new Download();
+                    entry.NoteID = noteobj.ID;
+                    entry.Seller = noteobj.SellerID;
+                    entry.Downloader = (int)Session["UserID"];
+                    entry.DownloadAllowed = true;
+                    entry.IsAttachmentDownloaded = true;
+                    entry.AttachmentPath = obj.FilePath;
+                    entry.IsPaid = noteobj.IsPaid;
+                    entry.Price = noteobj.Price;
+                    entry.NoteTitle = noteobj.Title;
+                    entry.NoteCategory = noteobj.Category.Name;
+                    db.Downloads.Add(entry);
+
+                    db.SaveChanges();
+
+                    return DownloadNotes(id);
+
+
+
+
+                }
+            }
             else
             {
-                Note noteobj = db.Notes.Find(id);
-                int count = db.NotesAttachments.Where(model => model.NoteID == id).Count();
-                NotesAttachment obj = db.NotesAttachments.Where(model => model.NoteID.Equals(id)).FirstOrDefault();
-                Download entry = new Download();
-                entry.NoteID = noteobj.ID;
-                entry.Seller = noteobj.SellerID;
-                entry.Downloader = (int)Session["UserID"];
-                entry.DownloadAllowed = true;
-                entry.IsAttachmentDownloaded = true;
-                entry.AttachmentPath = obj.FilePath;
-                entry.IsPaid = noteobj.IsPaid;
-                entry.Price = 0;
-                entry.NoteTitle = noteobj.Title;
-                entry.NoteCategory = noteobj.Category.Name;
-                db.Downloads.Add(entry);
-
-                db.SaveChanges();
-                
-                 return DownloadNotes(id);
-                
-                
-
-                
+                return RedirectToAction("Login", "Home");
             }
-           
+
         }
 
         public FileResult DownloadNotes(int id)
@@ -783,7 +822,7 @@ namespace NotesMarketPlace.Controllers
             }
 
             else {
-                var obj = db.NotesAttachments.Find(id);
+                var obj = db.NotesAttachments.Where(model=>model.NoteID==id).FirstOrDefault();
                 byte[] fileBytes = System.IO.File.ReadAllBytes(Url.Content(obj.FilePath));
                 string filename = obj.FileName;
                 return File(fileBytes, "application/pdf", filename);
@@ -796,10 +835,10 @@ namespace NotesMarketPlace.Controllers
 
         }
 
-        public ActionResult Dashboard(int?page1, int? page2,string sortby1, string sortby2, string searchString1, string searchString2)
+        public ActionResult Dashboard(int?page1,int?page2,string searchString1,string sortby1, string searchString2, string sortby2)
         {
-           // if(Session!=null)
-            //{
+           if(Session!=null)
+            {
                 int id = 10;
                 ViewBag.Count = db.Downloads.Where(model => model.Seller.Equals(id) && model.IsAttachmentDownloaded.Equals(true)).Select(model => model.NoteID).Distinct().Count();
                 ViewBag.Sum = db.Downloads.Where(model => model.Seller.Equals(id) && model.DownloadAllowed.Equals(true) && model.IsPaid.Equals(true)).Select(model => model.Price).Sum();
@@ -807,7 +846,7 @@ namespace NotesMarketPlace.Controllers
                 ViewBag.MyDownloads = db.Downloads.Where(model => model.Downloader.Equals(id) && model.IsAttachmentDownloaded.Equals(true)).Count();
                 ViewBag.MyRejected = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status == 4).Count();
 
-                ViewBag.BuyerRequest = db.Downloads.Where(model => model.Seller.Equals(id) && model.DownloadAllowed == false).Count();
+              ViewBag.BuyerRequest = db.Downloads.Where(model => model.Seller.Equals(id) && model.DownloadAllowed == false).Count();
                 ViewBag.SortByTitle = string.IsNullOrEmpty(sortby1) ? "Title desc" : "";
                 ViewBag.SortByCategory = string.IsNullOrEmpty(sortby1) ? "Category desc" : "";
                 ViewBag.SortByPrice = string.IsNullOrEmpty(sortby1) ? "Price desc" : "";
@@ -820,15 +859,15 @@ namespace NotesMarketPlace.Controllers
                 ViewBag.Date = string.IsNullOrEmpty(sortby2) ? "Date" : "";
                 Note note = new Note();
                 note.Publishednotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status == 4).OrderByDescending(model => model.PublishedDate).ToPagedList(page1 ?? 1, 5);
-                note.Inprogressnotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status == 5).OrderByDescending(model => model.PublishedDate).ToPagedList(page2 ?? 1, 5);
+                note.Inprogressnotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status != 4).OrderByDescending(model => model.PublishedDate).ToPagedList(page2 ?? 1, 5);
                 if(!string.IsNullOrEmpty(searchString1))
                 {
-                    note.Publishednotes = note.Publishednotes.Where(model => model.Title.Contains(searchString1)||model.Category.Name.Contains(searchString1)||model.ReferenceData.Value.Contains(searchString1)).ToPagedList(page2 ?? 1, 3);
+                    note.Publishednotes = note.Publishednotes.Where(model => model.Title.Contains(searchString1)||model.Category.Name.Contains(searchString1)||model.ReferenceData.Value.Contains(searchString1)).ToPagedList(page1 ?? 1, 5);
                 }
-                if (!string.IsNullOrEmpty(searchString2))
-                {
-                    note.Inprogressnotes = note.Inprogressnotes.Where(model => model.Title.Contains(searchString2) || model.Category.Name.Contains(searchString2)).ToPagedList(page1 ?? 1, 3);
-                }
+            if (!string.IsNullOrEmpty(searchString2))
+            {
+                note.Inprogressnotes = note.Inprogressnotes.Where(model => model.Title.Contains(searchString2) || model.Category.Name.Contains(searchString2)).OrderByDescending(model => model.PublishedDate).ToPagedList(page2 ?? 1, 5);
+            }   
                 switch (sortby1)
                 {
                     case "Title desc":
@@ -849,57 +888,98 @@ namespace NotesMarketPlace.Controllers
                         break;
                     
                     default:
-                        note.Publishednotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status == 4).OrderBy(model => model.PublishedDate).ToPagedList(page1 ?? 1, 5);
+                        note.Publishednotes = note.Publishednotes.OrderBy(model => model.PublishedDate).ToPagedList(page1 ?? 1, 5);
                         break;
                 }
 
                 switch (sortby2)
                 {
                     case "Title":
-                        note.Inprogressnotes = note.Inprogressnotes.OrderBy(model => model.Title).ToPagedList(page2 ?? 1, 5);
-                        break;
+                        note.Inprogressnotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status != 4).OrderBy(model => model.Title).ToPagedList(page2 ?? 1, 5);
+                        break; 
                     case "Category":
-                        note.Inprogressnotes = note.Inprogressnotes.OrderBy(model => model.Category.Name).ToPagedList(page2?? 1, 5);
+                        note.Inprogressnotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status != 4).OrderBy(model => model.Category.Name).ToPagedList(page2?? 1, 5);
                         break;
                     case "Status":
-                        note.Inprogressnotes = note.Inprogressnotes.OrderBy(model => model.IsPaid).ToPagedList(page2 ?? 1, 5);
+                        note.Inprogressnotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status != 4).OrderBy(model => model.IsPaid).ToPagedList(page2 ?? 1, 5);
                         break;
 
                     
                     case "Date":
-                        note.Inprogressnotes = note.Inprogressnotes.OrderBy(model => model.PublishedDate).ToPagedList(page2 ?? 1, 5);
+                        note.Inprogressnotes = db.Notes.Where(model => model.SellerID.Equals(id) && model.Status != 4).OrderBy(model => model.PublishedDate).ToPagedList(page2 ?? 1, 5);
                         break;
 
                     default:
                         note.Inprogressnotes = note.Inprogressnotes.OrderByDescending(model => model.PublishedDate).ToPagedList(page2 ?? 1, 5);
                         break;
                 }
-                return View(note);
-            /*}
+                return View();
+            }
 
-            else
+           else
             {
                 return RedirectToAction("Login", "User");
-            }*/
+            }
 
 
 
         }
-       
-       
 
+     
+        public ActionResult Publish(int?page1,string searchString1,string sortby1)
+        {
+            ViewBag.SortByTitle = string.IsNullOrEmpty(sortby1) ? "Title desc" : "";
+            ViewBag.SortByCategory = string.IsNullOrEmpty(sortby1) ? "Category desc" : "";
+            ViewBag.SortByPrice = string.IsNullOrEmpty(sortby1) ? "Price desc" : "";
+            ViewBag.SortByType = string.IsNullOrEmpty(sortby1) ? "Type desc" : "";
+            ViewBag.SortByDate = string.IsNullOrEmpty(sortby1) ? "Date desc" : "";
+            var note= db.Notes.Where(model => model.SellerID.Equals(10) && model.Status == 4);
+            if (!string.IsNullOrEmpty(searchString1))
+            {
+                note = note.Where(model => model.Title.Contains(searchString1) || model.Category.Name.Contains(searchString1) || model.ReferenceData.Value.Contains(searchString1));
+            }
+            switch (sortby1)
+            {
+                case "Title desc":
+                    note = note.OrderBy(model => model.Title);
+                    break;
+                case "Category desc":
+                    note = note.OrderBy(model => model.Category.Name);
+                    break;
+                case "Sell desc":
+                    note= note.OrderBy(model => model.IsPaid);
+                    break;
+
+                case "Price desc":
+                    note= note.OrderBy(model => model.Price);
+                    break;
+                case "Date desc":
+                    note = note.OrderBy(model => model.PublishedDate);
+                    break;
+                    
+                default:
+                    note = note.OrderBy(model => model.PublishedDate);
+                    break;
+            }
+
+            return PartialView("_InProgressDashboard",note.ToPagedList(page1 ?? 1, 5));
+        }
+
+       
+      
+        
         public ActionResult MyDownloads(int? page, string searchstring, string sortby)
         {
            if (Session["UserID"]!=null)
            {
                 int id = (int)Session["UserID"];
-                var notes = db.Downloads.Where(model => model.Downloader.Equals(10) && (model.IsAttachmentDownloaded.Equals(true) || model.DownloadAllowed.Equals(true)));
+                var notes = db.Downloads.Where(model => model.Downloader.Equals(id) && (model.IsAttachmentDownloaded.Equals(true) || model.DownloadAllowed.Equals(true)));
                 ViewBag.SortByTitle = string.IsNullOrEmpty(sortby) ? "Title desc" : "";
                 ViewBag.SortByCategory = string.IsNullOrEmpty(sortby) ? "Category desc" : "";
                 ViewBag.SortByBuyer = string.IsNullOrEmpty(sortby) ? "Buyer desc" : "";
                 ViewBag.Type = string.IsNullOrEmpty(sortby) ? "Status desc" : "";
                 ViewBag.Price = string.IsNullOrEmpty(sortby) ? "Price desc" : "";
-                ViewBag.SortByDate = string.IsNullOrEmpty(sortby) ? "Date desc" : "";
+                ViewBag.SortByDate = string.IsNullOrEmpty(sortby) ? "Date" : "Date desc";
                
                
 
@@ -919,7 +999,7 @@ namespace NotesMarketPlace.Controllers
                         notes = notes.OrderBy(model => model.NoteCategory);
                         break;
                     case "Buyer desc":
-                        notes = notes.OrderBy(model => model.User.FullName);
+                        notes = notes.OrderBy(model => model.User.FirstName);
                         break;
                     case "Type desc":
                         notes = notes.OrderBy(model => model.IsPaid);
@@ -937,12 +1017,84 @@ namespace NotesMarketPlace.Controllers
                         notes = notes.OrderByDescending(model => model.DownloadDate);
                         break;
                 }
-                return View(notes.ToPagedList(page??1,2));
+                return View(notes.ToPagedList(page??1,5));
            }
             else
            {
                 return RedirectToAction("Login", "Home");
             }
+        }
+
+        public ActionResult ReportedIssues(FormCollection form, int id)
+        {
+            if (Session["UserID"] != null)
+            {
+
+                int userid = (int)Session["UserID"];
+                    var downloadobj = db.Downloads.Find(id);
+                    ReportedIssue obj = new ReportedIssue();
+                    obj.ReportedByID =userid;
+                    obj.Remarks = form["Remarks"];
+                   
+                    obj.DownloadID = downloadobj.ID;
+                    obj.NoteID = downloadobj.NoteID;
+                obj.CreatedDate = DateTime.Now;
+                obj.CreatedBy = userid;
+                
+                    db.ReportedIssues.Add(obj);
+                    db.SaveChanges();
+                    return RedirectToAction("MyDownloads", "User");
+                
+                
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public ActionResult Addreview(FormCollection form, int id)
+
+        {
+            if (Session["UserID"] != null)
+            {
+                int userid = (int)Session["UserID"];
+                var obj = db.Downloads.Find(id);
+                var obj1 = db.NotesReviews.Where(model => model.ReviewedBy == userid).FirstOrDefault();
+                string rate = form["rate"];
+                string comments = form["Comments"];
+                if (obj==null)
+                {
+                    NotesReview review = new NotesReview();
+                    review.Ratings = decimal.Parse(rate);
+                    review.ReviewedBy = userid;
+                    review.CreatedDate = DateTime.Now;
+                    review.CreatedBy = userid;
+                    review.DownloadID = id;
+                    review.NoteID = obj.NoteID;
+                    review.Comments = comments;
+                    review.IsActive = true;
+                    db.NotesReviews.Add(review);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    obj1.Ratings = decimal.Parse(rate);
+                    obj1.Comments = comments;
+                    obj1.ModifiedBy = userid;
+                    obj1.ModifiedDate = DateTime.Now;
+                    obj1.IsActive = true;
+                    db.SaveChanges();
+                }
+               
+               
+                return RedirectToAction("MyDownloads", "User");
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
         }
 
         public ActionResult MySoldNotes(int? page, string searchstring, string sortby)
@@ -976,7 +1128,7 @@ namespace NotesMarketPlace.Controllers
                         notes = notes.OrderBy(model => model.NoteCategory);
                         break;
                     case "Buyer desc":
-                        notes = notes.OrderBy(model => model.User.FullName);
+                        notes = notes.OrderBy(model => model.User1.FirstName);
                         break;
                     case "Type desc":
                         notes = notes.OrderBy(model => model.IsPaid);
@@ -1148,59 +1300,6 @@ namespace NotesMarketPlace.Controllers
 
 
       
-        public ActionResult ReportedIssues(FormCollection form, int id)
-        {
-            var find = db.ReportedIssues.Where(model => model.ReportedByID.Equals((int)Session["UserID"])).FirstOrDefault();
-            if(find==null)
-            {
-                var downloadobj = db.Downloads.Where(model => model.NoteID.Equals(id)).FirstOrDefault();
-                ReportedIssue obj = new ReportedIssue();
-                obj.ReportedByID = (int)Session["UserID"];
-                obj.Remarks = form["Comments"];
-                obj.ID = id;
-                obj.DownloadID = downloadobj.ID;
-                obj.NoteID = id;
-                db.ReportedIssues.Add(obj);
-                db.SaveChanges();
-                return RedirectToAction("index");
-            }
-            else
-            {
-                ViewBag.Message = "You have already given your feedback";
-                return RedirectToAction("index");
-            }
-            
-
-        }
-
-        public ActionResult Addreview(FormCollection form, int id)
-
-        {
-            if(Session["UserID"]!=null)
-            {
-                int userid = (int)Session["UserID"];
-                var obj = db.Downloads.Find(id);
-               string rate = form["rate"];
-                string comments = form["Comments"];
-                NotesReview review = new NotesReview();
-                review.Ratings = decimal.Parse(rate);
-                review.ReviewedBy = userid;
-                review.CreatedDate = DateTime.Now;
-                review.CreatedBy= userid;
-                review.DownloadID = id;
-                review.NoteID = obj.NoteID;
-                review.Comments = comments;
-                db.NotesReviews.Add(review);
-                db.SaveChanges();
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-             
-        }
-
       
         public ActionResult Logout()
         {
